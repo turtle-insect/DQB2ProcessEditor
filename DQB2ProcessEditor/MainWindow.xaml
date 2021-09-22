@@ -1,0 +1,72 @@
+﻿<Window x:Class="DQB2ProcessEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:properties="clr-namespace:DQB2ProcessEditor.Properties"
+        xmlns:local="clr-namespace:DQB2ProcessEditor"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Closed="Window_Closed"
+        Title="DQB2 Process Editor Steam" Height="450" Width="800">
+    <Window.DataContext>
+        <local:ViewModel/>
+    </Window.DataContext>
+    <TabControl>
+        <TabItem Header="Item Injection">
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Top">
+                    <Label Content="Filter"/>
+                    <TextBox DockPanel.Dock="Right" Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="50"/>
+                    <Label DockPanel.Dock="Right" Content="Count"/>
+                    <TextBox Text="{Binding ItemNameFilter, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBoxItemFilter_TextChanged"/>
+                </DockPanel>
+                <Button DockPanel.Dock="Bottom" Content="Injection All Item" Click="ButtonInjectionAllItem_Click"/>
+                <ListBox ItemsSource="{Binding Info.FilterItem}" DisplayMemberPath="Name" MouseDoubleClick="ListBoxItem_MouseDoubleClick"/>
+            </DockPanel>
+        </TabItem>
+        <TabItem Header="Advance">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="14*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="All Inventory's Item Count"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <TextBox Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="50"/>
+                    <Button Content="    " Click="ButtonWriteInventoryItemCount_Click"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Setting">
+            <StackPanel>
+                <DockPanel>
+                    <Label Content="Process Name"/>
+                    <TextBox Text="{Binding Path=ProcessName, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                </DockPanel>
+                <CheckBox Content="If the inventory is full, overwrite it." IsChecked="{Binding Path=ItemForceWrite, Source={x:Static properties:Settings.Default}}"/>
+                <ComboBox SelectedIndex="{Binding Path=InventoryIndex, Source={x:Static properties:Settings.Default}}">
+                    <ComboBoxItem Content="Inventory 01"/>
+                    <ComboBoxItem Content="Inventory 02"/>
+                    <ComboBoxItem Content="Inventory 03"/>
+                    <ComboBoxItem Content="Inventory 04"/>
+                    <ComboBoxItem Content="Inventory 05"/>
+                    <ComboBoxItem Content="Inventory 06"/>
+                    <ComboBoxItem Content="Inventory 07"/>
+                    <ComboBoxItem Content="Inventory 08"/>
+                    <ComboBoxItem Content="Inventory 09"/>
+                    <ComboBoxItem Content="Inventory 10"/>
+                    <ComboBoxItem Content="Inventory 11"/>
+                    <ComboBoxItem Content="Inventory 12"/>
+                    <ComboBoxItem Content="Inventory 13"/>
+                    <ComboBoxItem Content="Inventory 14"/>
+                    <ComboBoxItem Content="Inventory 15"/>
+                </ComboBox>
+            </StackPanel>
+        </TabItem>
+    </TabControl>
+</Window>
