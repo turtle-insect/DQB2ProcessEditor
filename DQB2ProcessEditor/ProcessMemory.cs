@@ -8,12 +8,23 @@ namespace DQB2ProcessEditor
 {
 	class ProcessMemory
 	{
+		public enum CarryType
+		{
+			eInventory,
+			eBag,
+		}
+		Dictionary<CarryType, Carry> Carrys = new Dictionary<CarryType, Carry>()
+		{
+			{CarryType.eInventory,  new Carry(){ Distance = 0xB88650, ItemCount = 15 } },
+			{CarryType.eBag,  new Carry(){ Distance = 0xB8DF74, ItemCount = 420 } },
+		};
 		private readonly Memory.Mem mMemory = new Memory.Mem();
 		private UInt64 mBaseAddress;
 
 		public bool CalcBaseAddress()
 		{
-			int pID = mMemory.GetProcIdFromName("DQB2");
+			String ProcName = Properties.Settings.Default.ProcessName;
+			int pID = mMemory.GetProcIdFromName(ProcName);
 			if (mMemory.OpenProcess(pID) == false) return false;
 
 			// 主人公のアドレス取得からインベントリのアドレス取得
@@ -21,63 +32,64 @@ namespace DQB2ProcessEditor
 			// mov rax, [DQB2.exe + 0x137E490]
 			// mov rcx, [rax + 60]
 
-			var processList = System.Diagnostics.Process.GetProcessesByName("DQB2");
-			if (processList == null || processList.Length == 0) return false;
-			UInt64 address = (UInt64)processList[0].MainModule.BaseAddress;
-			address += 0x137E490;
-			Byte[] buffer = mMemory.ReadBytes(address.ToString("x"), 8);
-			address = BitConverter.ToUInt64(buffer, 0);
-			if (address == 0) return false;
-			address += 0x60;
-			buffer = mMemory.ReadBytes(address.ToString("x"), 8);
-			address = BitConverter.ToUInt64(buffer, 0);
+			Byte[] buffer = mMemory.ReadBytes(ProcName + ".exe+0x137E490,0x60", 8);
+			UInt64 address = BitConverter.ToUInt64(buffer, 0);
 			if (address == 0) return false;
 
 			mBaseAddress = address;
 			return true;
 		}
 
-		public List<Item> ReadInventoryItem()
+		public List<Item> ReadItem(CarryType type)
 		{
 			if (mBaseAddress == 0) return null;
 
-			var inventory = new List<Item>();
-			UInt64 address = mBaseAddress + 0xB88650;
-			Byte[] buffer = mMemory.ReadBytes(address.ToString("x"), 15 * 2 * 2);
-			for (int i = 0; i < 15; i++)
+			var Items = new List<Item>();
+			var carry = Carrys[type];
+			UInt64 address = mBaseAddress + carry.Distance;
+			Byte[] buffer = mMemory.ReadBytes(address.ToString("x"), carry.ItemCount * 2 * 2);
+			for (int i = 0; i < carry.ItemCount; i++)
 			{
 				var item = new Item();
 				item.ID = BitConverter.ToUInt16(buffer, i * 4);
 				item.Count = BitConverter.ToUInt16(buffer, i * 4 + 2);
-				inventory.Add(item);
+				Items.Add(item);
 			}
-			return inventory;
+			return Items;
 		}
 
-		public void WriteInventoryItem(int inventoryIndex, Item item)
+		public void WriteItem(CarryType type, int inventoryIndex, Item item)
 		{
 			if (mBaseAddress == 0) return;
 
-			UInt64 address = mBaseAddress + 0xB88650 + (UInt64)inventoryIndex * 4;
-			WriteMemory(address, BitConverter.GetBytes(item.ID));
-			WriteMemory(address + 2, BitConverter.GetBytes(item.Count));
+			var carry = Carrys[type];
+			UInt64 address = mBaseAddress + carry.Distance + (UInt64)inventoryIndex * 4;
+			mMemory.WriteBytes((address + 0).ToString("x"), BitConverter.GetBytes(item.ID));
+			mMemory.WriteBytes((address + 2).ToString("x"), BitConverter.GetBytes(item.Count));
 		}
 
-		public void WriteInventory(List<Item> inventory)
+		public void WriteItems(CarryType type, List<Item> Items)
 		{
-			for(int index = 0; index < inventory.Count; index++)
+			for (int index = 0; index < Items.Count; index++)
 			{
-				WriteInventoryItem(index, inventory[index]);
+				WriteItem(type, index, Items[index]);
 			}
 		}
 
-		private void WriteMemory(UInt64 address, Byte[] buffer)
+		public void ClearItem(CarryType type)
 		{
-			for (int i = 0; i < buffer.Length; i++)
-			{
-				mMemory.WriteMemory(address.ToString("x"), "byte", buffer[i].ToString("x"));
-				address++;
-			}
+			var carry = Carrys[type];
+			Byte[] buffer = new Byte[carry.ItemCount * 4];
+			UInt64 address = mBaseAddress + carry.Distance;
+			mMemory.WriteBytes(address.ToString("x"), buffer);
+		}
+
+		public void ClearItem(int page)
+		{
+			var carry = Carrys[CarryType.eBag];
+			Byte[] buffer = new Byte[60 * 4];
+			UInt64 address = mBaseAddress + carry.Distance + (UInt64)page * 240;
+			mMemory.WriteBytes(address.ToString("x"), buffer);
 		}
 	}
 }

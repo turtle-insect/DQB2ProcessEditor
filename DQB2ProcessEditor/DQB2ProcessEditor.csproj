@@ -81,6 +81,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Carry.cs" />
+    <Compile Include="CarryTypeConverter.cs" />
     <Compile Include="Info.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ProcessMemory.cs" />

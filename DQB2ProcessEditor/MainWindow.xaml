@@ -12,15 +12,33 @@
     <Window.DataContext>
         <local:ViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <local:CarryTypeConverter x:Key="CarryTypeConverter"/>
+    </Window.Resources>
     <TabControl>
         <TabItem Header="Item Injection">
             <DockPanel>
-                <DockPanel DockPanel.Dock="Top">
-                    <Label Content="Filter"/>
-                    <TextBox DockPanel.Dock="Right" Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="50"/>
-                    <Label DockPanel.Dock="Right" Content="Count"/>
-                    <TextBox Text="{Binding ItemNameFilter, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBoxItemFilter_TextChanged"/>
-                </DockPanel>
+                <Grid DockPanel.Dock="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="8*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Type"/>
+                    <ComboBox Grid.Column="1" SelectedIndex="{Binding CarryType, Converter={StaticResource CarryTypeConverter}}">
+                        <ComboBoxItem Content="Inventory"/>
+                        <ComboBoxItem Content="Bag"/>
+                    </ComboBox>
+                    <Label Grid.Row="1" Content="Filter"/>
+                    <DockPanel Grid.Row="1" Grid.Column="1">
+                        <TextBox DockPanel.Dock="Right" Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                        <Label DockPanel.Dock="Right" Content="Count"/>
+                        <TextBox Text="{Binding ItemNameFilter, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBoxItemFilter_TextChanged"/>
+                    </DockPanel>
+                </Grid>
                 <Button DockPanel.Dock="Bottom" Content="Injection All Item" Click="ButtonInjectionAllItem_Click"/>
                 <ListBox ItemsSource="{Binding Info.FilterItem}" DisplayMemberPath="Name" MouseDoubleClick="ListBoxItem_MouseDoubleClick"/>
             </DockPanel>
@@ -29,27 +47,63 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition Height="14*"/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition Height="9*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="All Inventory's Item Count"/>
+                <DockPanel>
+                    <Label DockPanel.Dock="Left" Content="All"/>
+                    <Label DockPanel.Dock="Right" Content="Item Count"/>
+                    <ComboBox SelectedIndex="{Binding CarryType, Converter={StaticResource CarryTypeConverter}}">
+                        <ComboBoxItem Content="Inventory"/>
+                        <ComboBoxItem Content="Bag"/>
+                    </ComboBox>
+                </DockPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
-                    <TextBox Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="50"/>
-                    <Button Content="    " Click="ButtonWriteInventoryItemCount_Click"/>
+                    <TextBox Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                    <Button Content="                " Click="ButtonWriteItemCount_Click"/>
+                </StackPanel>
+                <Label Grid.Row="1" Content="Inventory All Clear"/>
+                <Button Grid.Row="1" Grid.Column="1" Click="ButtonClearInventory_Click"/>
+                <Label Grid.Row="2" Content="Bag All Clear"/>
+                <Button Grid.Row="2" Grid.Column="1" Click="ButtonClearBag_Click"/>
+                <Label Grid.Row="3" Content="Bag Clear"/>
+                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                    <ComboBox SelectedIndex="{Binding ClearBagPageIndex}" Width="80">
+                        <ComboBoxItem Content="Page 1"/>
+                        <ComboBoxItem Content="Page 2"/>
+                        <ComboBoxItem Content="Page 3"/>
+                        <ComboBoxItem Content="Page 4"/>
+                        <ComboBoxItem Content="Page 5"/>
+                        <ComboBoxItem Content="Page 6"/>
+                        <ComboBoxItem Content="Page 7"/>
+                    </ComboBox>
+                    <Button Content="                " Click="ButtonClearBagPage_Click"/>
                 </StackPanel>
             </Grid>
         </TabItem>
         <TabItem Header="Setting">
-            <StackPanel>
-                <DockPanel>
-                    <Label Content="Process Name"/>
-                    <TextBox Text="{Binding Path=ProcessName, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                </DockPanel>
-                <CheckBox Content="If the inventory is full, overwrite it." IsChecked="{Binding Path=ItemForceWrite, Source={x:Static properties:Settings.Default}}"/>
-                <ComboBox SelectedIndex="{Binding Path=InventoryIndex, Source={x:Static properties:Settings.Default}}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition Height="10*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Process Name"/>
+                <TextBox Grid.Column="1" Text="{Binding Path=ProcessName, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="1" Content="Inventory" FontWeight="Bold"/>
+                <CheckBox Grid.Row="2" Grid.ColumnSpan="2" Content="If the inventory is full, overwrite it." IsChecked="{Binding Path=ItemForceWrite, Source={x:Static properties:Settings.Default}}" VerticalAlignment="Center"/>
+                <ComboBox Grid.Row="2" Grid.Column="1" SelectedIndex="{Binding Path=InventoryIndex, Source={x:Static properties:Settings.Default}}">
                     <ComboBoxItem Content="Inventory 01"/>
                     <ComboBoxItem Content="Inventory 02"/>
                     <ComboBoxItem Content="Inventory 03"/>
@@ -66,7 +120,7 @@
                     <ComboBoxItem Content="Inventory 14"/>
                     <ComboBoxItem Content="Inventory 15"/>
                 </ComboBox>
-            </StackPanel>
+            </Grid>
         </TabItem>
     </TabControl>
 </Window>

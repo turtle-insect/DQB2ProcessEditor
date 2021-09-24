@@ -55,12 +55,36 @@ namespace DQB2ProcessEditor
 			vm.InjectionAllItem();
 		}
 
-		private void ButtonWriteInventoryItemCount_Click(object sender, RoutedEventArgs e)
+		private void ButtonWriteItemCount_Click(object sender, RoutedEventArgs e)
 		{
 			var vm = DataContext as ViewModel;
 			if (vm == null) return;
 
 			vm.WriteInventoryItemCount();
+		}
+
+		private void ButtonClearInventory_Click(object sender, RoutedEventArgs e)
+		{
+			var vm = DataContext as ViewModel;
+			if (vm == null) return;
+
+			vm.ClearItem(ProcessMemory.CarryType.eInventory);
+		}
+
+		private void ButtonClearBag_Click(object sender, RoutedEventArgs e)
+		{
+			var vm = DataContext as ViewModel;
+			if (vm == null) return;
+
+			vm.ClearItem(ProcessMemory.CarryType.eBag);
+		}
+
+		private void ButtonClearBagPage_Click(object sender, RoutedEventArgs e)
+		{
+			var vm = DataContext as ViewModel;
+			if (vm == null) return;
+
+			vm.ClearItem();
 		}
 	}
 }

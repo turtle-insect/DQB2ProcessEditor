@@ -11,7 +11,9 @@ namespace DQB2ProcessEditor
 	{
 		public Info Info { get; set; } = new Info();
 		public String ItemNameFilter { get; set; }
-		
+		public ProcessMemory.CarryType CarryType { get; set; }
+		public int ClearBagPageIndex { get; set; }
+
 
 		public ViewModel()
 		{
@@ -25,21 +27,21 @@ namespace DQB2ProcessEditor
 
 			// アイテムの情報取得.
 			// 存在しないところを探す.
-			var inventory = pm.ReadInventoryItem();
-			if (inventory == null) return false;
-			for (int index = 0; index < inventory.Count; index++)
+			var items = pm.ReadItem(CarryType);
+			if (items == null) return false;
+			for (int index = 0; index < items.Count; index++)
 			{
-				if(inventory[index].ID == 0)
+				if(items[index].ID == 0)
 				{
-					inventory[index].ID = itemID;
-					inventory[index].Count = Properties.Settings.Default.ItemCount;
-					pm.WriteInventoryItem(index, inventory[index]);
+					items[index].ID = itemID;
+					items[index].Count = Properties.Settings.Default.ItemCount;
+					pm.WriteItem(CarryType, index, items[index]);
 					return true;
 				}
 			}
 
 			// 設定によって強制的に上書き.
-			if (Properties.Settings.Default.ItemForceWrite == false)
+			if (CarryType == ProcessMemory.CarryType.eBag || Properties.Settings.Default.ItemForceWrite == false)
 			{
 				return false;
 			}
@@ -47,7 +49,7 @@ namespace DQB2ProcessEditor
 			var item = new Item();
 			item.ID = itemID;
 			item.Count = Properties.Settings.Default.ItemCount;
-			pm.WriteInventoryItem(Properties.Settings.Default.InventoryIndex, item);
+			pm.WriteItem(CarryType, Properties.Settings.Default.InventoryIndex, item);
 			return true;
 		}
 
@@ -58,20 +60,20 @@ namespace DQB2ProcessEditor
 
 			// アイテムの情報取得.
 			// 存在しないところを探す.
-			var inventory = pm.ReadInventoryItem();
-			if (inventory == null) return false;
+			var items = pm.ReadItem(CarryType);
+			if (items == null) return false;
 			int filterIndex = 0;
-			for (int index = 0; index < inventory.Count && filterIndex < Info.FilterItem.Count; index++)
+			for (int index = 0; index < items.Count && filterIndex < Info.FilterItem.Count; index++)
 			{
-				if (inventory[index].ID == 0)
+				if (items[index].ID == 0)
 				{
-					inventory[index].ID = Info.FilterItem[filterIndex].ID;
-					inventory[index].Count = Properties.Settings.Default.ItemCount;
+					items[index].ID = Info.FilterItem[filterIndex].ID;
+					items[index].Count = Properties.Settings.Default.ItemCount;
 					filterIndex++;
 				}
 			}
 
-			pm.WriteInventory(inventory);
+			pm.WriteItems(CarryType, items);
 			return true;
 		}
 
@@ -82,17 +84,35 @@ namespace DQB2ProcessEditor
 
 			// アイテムの情報取得.
 			// 存在しているところを探す.
-			var inventory = pm.ReadInventoryItem();
-			if (inventory == null) return false;
-			for (int index = 0; index < inventory.Count; index++)
+			var items = pm.ReadItem(CarryType);
+			if (items == null) return false;
+			for (int index = 0; index < items.Count; index++)
 			{
-				if (inventory[index].ID != 0)
+				if (items[index].ID != 0)
 				{
-					inventory[index].Count = Properties.Settings.Default.ItemCount;
+					items[index].Count = Properties.Settings.Default.ItemCount;
 				}
 			}
 
-			pm.WriteInventory(inventory);
+			pm.WriteItems(CarryType, items);
+			return true;
+		}
+
+		public bool ClearItem()
+		{
+			var pm = new ProcessMemory();
+			if (!pm.CalcBaseAddress()) return false;
+
+			pm.ClearItem(ClearBagPageIndex);
+			return true;
+		}
+
+		public bool ClearItem(ProcessMemory.CarryType type)
+		{
+			var pm = new ProcessMemory();
+			if (!pm.CalcBaseAddress()) return false;
+
+			pm.ClearItem(type);
 			return true;
 		}
 
