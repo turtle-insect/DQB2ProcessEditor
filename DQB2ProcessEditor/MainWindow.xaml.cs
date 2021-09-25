@@ -52,6 +52,7 @@ namespace DQB2ProcessEditor
 		{
 			var vm = DataContext as ViewModel;
 			if (vm == null) return;
+			
 			vm.InjectionAllItem();
 		}
 
