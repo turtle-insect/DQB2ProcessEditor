@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
 namespace DQB2ProcessEditor
 {
-	class Info
+    class Info
 	{
 		private List<ItemInfo> AllItem = new List<ItemInfo>();
 		public ObservableCollection<ItemInfo> FilterItem { get; private set; } = new ObservableCollection<ItemInfo>();

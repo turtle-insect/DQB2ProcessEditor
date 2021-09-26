@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DQB2ProcessEditor
 {
-	class ViewModel
+    class ViewModel
 	{
 		public Info Info { get; set; } = new Info();
 		public String ItemNameFilter { get; set; }

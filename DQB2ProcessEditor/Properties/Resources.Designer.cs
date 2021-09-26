@@ -11,14 +11,14 @@
 
 namespace DQB2ProcessEditor.Properties
 {
-	/// <summary>
-	///   ローカライズされた文字列などを検索するための、厳密に型指定されたリソース クラスです。
-	/// </summary>
-	// このクラスは StronglyTypedResourceBuilder クラスによって ResGen
-	// または Visual Studio のようなツールを使用して自動生成されました。
-	// メンバーを追加または削除するには、.ResX ファイルを編集して、/str オプションと共に
-	// ResGen を実行し直すか、または VS プロジェクトをリビルドします。
-	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    /// <summary>
+    ///   ローカライズされた文字列などを検索するための、厳密に型指定されたリソース クラスです。
+    /// </summary>
+    // このクラスは StronglyTypedResourceBuilder クラスによって ResGen
+    // または Visual Studio のようなツールを使用して自動生成されました。
+    // メンバーを追加または削除するには、.ResX ファイルを編集して、/str オプションと共に
+    // ResGen を実行し直すか、または VS プロジェクトをリビルドします。
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
 	[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
 	[global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
 	internal class Resources

@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DQB2ProcessEditor
 {
-	class ProcessMemory
+    class ProcessMemory
 	{
 		public enum CarryType
 		{
