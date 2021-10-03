@@ -50,7 +50,8 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
-                    <RowDefinition Height="9*"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="8*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -84,6 +85,11 @@
                         <ComboBoxItem Content="Page 7"/>
                     </ComboBox>
                     <Button Content="                " Click="ButtonClearBagPage_Click"/>
+                </StackPanel>
+                <Label Grid.Row="4" Content="Player Jump Power"/>
+                <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
+                    <TextBox Text="{Binding PlayerJumpPower, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                    <Button Content="                " Click="ButtonWritePlayerJumpPower_Click"/>
                 </StackPanel>
             </Grid>
         </TabItem>

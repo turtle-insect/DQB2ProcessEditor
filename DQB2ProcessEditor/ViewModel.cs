@@ -8,6 +8,7 @@ namespace DQB2ProcessEditor
 		public String ItemNameFilter { get; set; }
 		public ProcessMemory.CarryType CarryType { get; set; }
 		public int ClearBagPageIndex { get; set; }
+		public float PlayerJumpPower { get; set; } = 1.5F;
 
 
 		public ViewModel()
@@ -18,7 +19,7 @@ namespace DQB2ProcessEditor
 		public bool InjectionItem(UInt16 itemID)
 		{
 			var pm = new ProcessMemory();
-			if (!pm.CalcBaseAddress()) return false;
+			if (!pm.CalcPlayerAddress()) return false;
 
 			// アイテムの情報取得.
 			// 存在しないところを探す.
@@ -51,7 +52,7 @@ namespace DQB2ProcessEditor
 		public bool InjectionAllItem()
 		{
 			var pm = new ProcessMemory();
-			if (!pm.CalcBaseAddress()) return false;
+			if (!pm.CalcPlayerAddress()) return false;
 
 			// アイテムの情報取得.
 			// 存在しないところを探す.
@@ -75,7 +76,7 @@ namespace DQB2ProcessEditor
 		public bool WriteInventoryItemCount()
 		{
 			var pm = new ProcessMemory();
-			if (!pm.CalcBaseAddress()) return false;
+			if (!pm.CalcPlayerAddress()) return false;
 
 			// アイテムの情報取得.
 			// 存在しているところを探す.
@@ -93,10 +94,16 @@ namespace DQB2ProcessEditor
 			return true;
 		}
 
+		public bool WritePlayerJumpPower()
+        {
+			var pm = new ProcessMemory();
+			return pm.WritePlayerJumpPower(PlayerJumpPower);
+		}
+
 		public bool ClearItem()
 		{
 			var pm = new ProcessMemory();
-			if (!pm.CalcBaseAddress()) return false;
+			if (!pm.CalcPlayerAddress()) return false;
 
 			pm.ClearItem(ClearBagPageIndex);
 			return true;
@@ -105,7 +112,7 @@ namespace DQB2ProcessEditor
 		public bool ClearItem(ProcessMemory.CarryType type)
 		{
 			var pm = new ProcessMemory();
-			if (!pm.CalcBaseAddress()) return false;
+			if (!pm.CalcPlayerAddress()) return false;
 
 			pm.ClearItem(type);
 			return true;
