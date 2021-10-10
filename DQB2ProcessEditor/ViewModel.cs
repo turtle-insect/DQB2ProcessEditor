@@ -8,11 +8,15 @@ namespace DQB2ProcessEditor
 		public String ItemNameFilter { get; set; }
 		public ProcessMemory.CarryType CarryType { get; set; }
 		public int ClearBagPageIndex { get; set; }
-		public float PlayerJumpPower { get; set; } = 1.5F;
 
 
 		public ViewModel()
 		{
+			LoadInfo();
+		}
+
+		public void LoadInfo()
+        {
 			CreateItem();
 			CreateBlock();
 		}
@@ -37,12 +41,12 @@ namespace DQB2ProcessEditor
 				}
 			}
 
-			// 設定によって強制的に上書き.
 			if (CarryType == ProcessMemory.CarryType.eBag || Properties.Settings.Default.ItemForceWrite == false)
 			{
 				return false;
 			}
 
+			// 設定によって強制的に上書き.
 			var item = new Item();
 			item.ID = itemID;
 			item.Count = Properties.Settings.Default.ItemCount;
@@ -145,7 +149,7 @@ namespace DQB2ProcessEditor
 		private void CreateItem()
 		{
 			Info.ItemLoad();
-			Info.ItemFilter("");
+			Info.ItemFilter(ItemNameFilter);
 		}
 
 		private void CreateBlock()

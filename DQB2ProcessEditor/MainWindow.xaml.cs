@@ -89,5 +89,13 @@ namespace DQB2ProcessEditor
 
 			vm.ImportBluePrint(dlg.FileName);
 		}
+
+        private void ButtonReloadInfo_Click(object sender, RoutedEventArgs e)
+        {
+			var vm = DataContext as ViewModel;
+			if (vm == null) return;
+
+			vm.LoadInfo();
+		}
     }
 }

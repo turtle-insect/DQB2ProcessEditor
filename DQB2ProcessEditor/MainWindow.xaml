@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed"
-        Title="DQB2 Process Editor Steam" Height="450" Width="800">
+        Title="DQB2 Process Editor (Steam)" Height="450" Width="800">
     <Window.DataContext>
         <local:ViewModel/>
     </Window.DataContext>
@@ -62,13 +62,18 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
-                    <RowDefinition Height="8*"/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition Height="4*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                <DockPanel>
+                <Label Content="Count" FontWeight="Bold"/>
+                <DockPanel Grid.Row="1">
                     <Label DockPanel.Dock="Left" Content="All"/>
                     <Label DockPanel.Dock="Right" Content="Item Count"/>
                     <ComboBox SelectedIndex="{Binding CarryType, Converter={StaticResource CarryTypeConverter}}">
@@ -76,16 +81,17 @@
                         <ComboBoxItem Content="Bag"/>
                     </ComboBox>
                 </DockPanel>
-                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
                     <TextBox Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
                     <Button Content="                " Click="ButtonWriteItemCount_Click"/>
                 </StackPanel>
-                <Label Grid.Row="1" Content="Inventory All Clear"/>
-                <Button Grid.Row="1" Grid.Column="1" Click="ButtonClearInventory_Click"/>
-                <Label Grid.Row="2" Content="Bag All Clear"/>
-                <Button Grid.Row="2" Grid.Column="1" Click="ButtonClearBag_Click"/>
-                <Label Grid.Row="3" Content="Bag Clear"/>
-                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                <Label Grid.Row="2" Content="Clear" FontWeight="Bold"/>
+                <Label Grid.Row="3" Content="Inventory All Clear"/>
+                <Button Grid.Row="3" Grid.Column="1" Click="ButtonClearInventory_Click"/>
+                <Label Grid.Row="4" Content="Bag All Clear"/>
+                <Button Grid.Row="4" Grid.Column="1" Click="ButtonClearBag_Click"/>
+                <Label Grid.Row="5" Content="Bag Clear"/>
+                <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
                     <ComboBox SelectedIndex="{Binding ClearBagPageIndex}" Width="80">
                         <ComboBoxItem Content="Page 1"/>
                         <ComboBoxItem Content="Page 2"/>
@@ -97,8 +103,9 @@
                     </ComboBox>
                     <Button Content="                " Click="ButtonClearBagPage_Click"/>
                 </StackPanel>
-                <Label Grid.Row="4" Content="Import BluePrint in Bag"/>
-                <Button Grid.Row="4" Grid.Column="1" Click="ButtonBluePrintImport_Click"/>
+                <Label Grid.Row="6" Content="Import" FontWeight="Bold"/>
+                <Label Grid.Row="7" Content="Import BluePrint in Bag"/>
+                <Button Grid.Row="7" Grid.Column="1" Click="ButtonBluePrintImport_Click"/>
             </Grid>
         </TabItem>
         <TabItem Header="Setting">
@@ -107,17 +114,23 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
-                    <RowDefinition Height="10*"/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition Height="7*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="Process Name"/>
-                <TextBox Grid.Column="1" Text="{Binding Path=ProcessName, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                <Label Grid.Row="1" Content="Inventory" FontWeight="Bold"/>
-                <CheckBox Grid.Row="2" Grid.ColumnSpan="2" Content="If the inventory is full, overwrite it." IsChecked="{Binding Path=ItemForceWrite, Source={x:Static properties:Settings.Default}}" VerticalAlignment="Center"/>
-                <ComboBox Grid.Row="2" Grid.Column="1" SelectedIndex="{Binding Path=InventoryIndex, Source={x:Static properties:Settings.Default}}">
+                <Label Content="Global" FontWeight="Bold"/>
+                <Label Grid.Row="1" Content="Process Name"/>
+                <Label Grid.Row="2" Content="Reload Info/*.txt"/>
+                <Button Grid.Row="2" Grid.Column="1" Click="ButtonReloadInfo_Click"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=ProcessName, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="3" Content="Inventory" FontWeight="Bold"/>
+                <CheckBox Grid.Row="4" Grid.ColumnSpan="2" Content="If the inventory is full, overwrite it." IsChecked="{Binding Path=ItemForceWrite, Source={x:Static properties:Settings.Default}}" VerticalAlignment="Center"/>
+                <ComboBox Grid.Row="4" Grid.Column="1" SelectedIndex="{Binding Path=InventoryIndex, Source={x:Static properties:Settings.Default}}">
                     <ComboBoxItem Content="Inventory 01"/>
                     <ComboBoxItem Content="Inventory 02"/>
                     <ComboBoxItem Content="Inventory 03"/>
@@ -134,6 +147,9 @@
                     <ComboBoxItem Content="Inventory 14"/>
                     <ComboBoxItem Content="Inventory 15"/>
                 </ComboBox>
+                <Label Grid.Row="5" Content="Error Log" FontWeight="Bold"/>
+                <ListBox Grid.Row="6" Grid.ColumnSpan="2" ItemsSource="{Binding Info.ErrorLog}">
+                </ListBox>
             </Grid>
         </TabItem>
     </TabControl>

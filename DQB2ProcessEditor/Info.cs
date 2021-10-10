@@ -7,9 +7,10 @@ namespace DQB2ProcessEditor
     class Info
 	{
 		private List<ItemInfo> AllItem = new List<ItemInfo>();
-		// Category => List<Block>
-		private Dictionary<UInt16, List<BlockInfo>> AllBlock = new Dictionary<UInt16, List<BlockInfo>>();
+		// Category -> <ID, Name>
+		private Dictionary<UInt16, Dictionary<UInt16, String>> AllBlock = new Dictionary<UInt16, Dictionary<UInt16, String>>();
 		public ObservableCollection<ItemInfo> FilterItem { get; private set; } = new ObservableCollection<ItemInfo>();
+		public ObservableCollection<String> ErrorLog { get; private set; } = new ObservableCollection<String>();
 
 		public void ItemFilter(String filter)
 		{
@@ -52,6 +53,7 @@ namespace DQB2ProcessEditor
 			if (!System.IO.File.Exists(filename)) return;
 
 			AllBlock.Clear();
+			ErrorLog.Clear();
 			foreach (var text in System.IO.File.ReadAllLines(filename))
 			{
 				var line = text.Replace("\n", "");
@@ -63,30 +65,36 @@ namespace DQB2ProcessEditor
 				if (items.Length != 3) continue;
 
 				if (String.IsNullOrEmpty(items[0])) continue;
-				UInt16 category = Convert.ToUInt16(items[0]);
-
-				var info = new BlockInfo();
 				if (String.IsNullOrEmpty(items[1])) continue;
-				info.ID = Convert.ToUInt16(items[1]);
-				info.Name = items[2];
-				if (String.IsNullOrEmpty(info.Name)) continue;
+				if (String.IsNullOrEmpty(items[2])) continue;
 
-				List<BlockInfo> infos = null; 
+				UInt16 category = Convert.ToUInt16(items[0]);
+				UInt16 blockID = Convert.ToUInt16(items[1]);
+				String name = items[2];
+
+				Dictionary<UInt16, String> blocks = null; 
 				if (AllBlock.ContainsKey(category))
 				{
-					infos = AllBlock[category];
+					blocks = AllBlock[category];
 				}
 				else
 				{
-					infos = new List<BlockInfo>();
-					AllBlock.Add(category, infos);
+					blocks = new Dictionary<UInt16, String>();
+					AllBlock.Add(category, blocks);
 				}
-				infos.Add(info);
-			}
 
-			foreach (var key in AllBlock.Keys)
-			{
-				AllBlock[key].Sort();
+				if(blocks.ContainsKey(blockID))
+                {
+					// カテゴリ、IDの重複
+					// ありえないケース
+					// 正しい値が調査出来るまで発生する
+					// Log出しのみする
+					String log = $"Duplicate\nCategory = {category} ID = {blockID}\n{blocks[blockID]}\n{name}";
+					ErrorLog.Add(log);
+					continue;
+				}
+				
+				blocks.Add(blockID, name);
 			}
 		}
 
@@ -102,7 +110,7 @@ namespace DQB2ProcessEditor
 			count *= BitConverter.ToUInt16(buffer, 0x30002);
 			count *= BitConverter.ToUInt16(buffer, 0x30004);
 
-			var blockDictionary = new Dictionary<UInt32, UInt16>();
+			var blockDictionary = new Dictionary<UInt32, UInt32>();
 			for (int i = 0; i < count; i++)
 			{
 				UInt32 key = BitConverter.ToUInt32(buffer, i * 6 + 0);
@@ -118,53 +126,57 @@ namespace DQB2ProcessEditor
 			foreach (var key in blockDictionary.Keys)
 			{
 				Byte[] value = BitConverter.GetBytes(key);
-				UInt16 id = BitConverter.ToUInt16(value, 0);
+				UInt16 blockID = BitConverter.ToUInt16(value, 0);
 				UInt16 category = BitConverter.ToUInt16(value, 2);
-				if(id == 0)
+
+				// ブロックのIDはカテゴリとIDを逆として扱う.
+				if(blockID == 0)
                 {
-					id = category;
+					blockID = category;
 					category = 0;
                 }
-				var info = Search(category, id);
-				if (info == null) continue;
+				var ids = Search(category, blockID);
+				if (ids == null || ids.Count == 0)
+				{
+					String log = $"Unknown\nCategory = {category} ID = {blockID}";
+					ErrorLog.Add(log);
+					continue;
+				}
 
-				items.Add(new Item() { ID = info.ID, Count = blockDictionary[key] });
+				count = blockDictionary[key];
+				foreach (var id in ids)
+				{
+					for (int i = 0; i < count / 999; i++)
+					{
+						items.Add(new Item() { ID = id, Count = 999 });
+					}
+					count %= 999;
+					if (count != 0)
+					{
+						items.Add(new Item() { ID = id, Count = (UInt16)count });
+					}
+				}
 			}
 
 			return items;
 		}
 
-		private ItemInfo Search(UInt16 category, UInt16 id)
+		private List<UInt16> Search(UInt16 category, UInt16 id)
 		{
-			if (!AllBlock.ContainsKey(category)) return null;
+			List<UInt16> ids = new List<UInt16>();
+			if (!AllBlock.ContainsKey(category)) return ids;
 
-			var infos = AllBlock[category];
-			if(id == 3)
-            {
-				category = 0;
-            }
-			int min = 0;
-			int max = infos.Count;
-			String name = "";
-			for (; min < max;)
-			{
-				int mid = (min + max) / 2;
-				if (infos[mid].ID == id)
-				{
-					name = infos[mid].Name;
-					break;
-				}
-				else if (infos[mid].ID > id) max = mid;
-				else min = mid + 1;
-			}
-			if (String.IsNullOrEmpty(name)) return null;
+			var blocks = AllBlock[category];
+			if (!blocks.ContainsKey(id)) return ids;
+			String name = blocks[id];
+			if (String.IsNullOrEmpty(name)) return ids;
 
-			foreach (var item in AllItem)
+			foreach (var info in AllItem)
 			{
-				if (name == item.Name) return item;
+				if (name == info.Name) ids.Add(info.ID);
 			}
 
-			return null;
+			return ids;
 		}
 	}
 }
