@@ -14,6 +14,7 @@ namespace DQB2ProcessEditor
 		public ViewModel()
 		{
 			CreateItem();
+			CreateBlock();
 		}
 
 		public bool InjectionItem(UInt16 itemID)
@@ -94,12 +95,6 @@ namespace DQB2ProcessEditor
 			return true;
 		}
 
-		public bool WritePlayerJumpPower()
-        {
-			var pm = new ProcessMemory();
-			return pm.WritePlayerJumpPower(PlayerJumpPower);
-		}
-
 		public bool ClearItem()
 		{
 			var pm = new ProcessMemory();
@@ -120,13 +115,42 @@ namespace DQB2ProcessEditor
 
 		public void FilterItem()
 		{
-			Info.Filter(ItemNameFilter);
+			Info.ItemFilter(ItemNameFilter);
+		}
+
+		public bool ImportBluePrint(String filename)
+        {
+			var pm = new ProcessMemory();
+			if (!pm.CalcPlayerAddress()) return false;
+
+			var append = Info.BluePrintLoad(filename);
+			if (append == null || append.Count == 0) return false;
+
+			int index = 0;
+			var items = pm.ReadItem(ProcessMemory.CarryType.eBag);
+			foreach(var item in items)
+            {
+				if(item.ID == 0 && item.Count == 0)
+                {
+					item.ID = append[index].ID;
+					item.Count = append[index].Count;
+					index++;
+					if (index >= append.Count) break;
+				}
+			}
+			pm.WriteItems(ProcessMemory.CarryType.eBag, items);
+			return true;
 		}
 
 		private void CreateItem()
 		{
-			Info.Load();
-			Info.Filter("");
+			Info.ItemLoad();
+			Info.ItemFilter("");
 		}
+
+		private void CreateBlock()
+        {
+			Info.BlockLoad();
+        }
 	}
 }

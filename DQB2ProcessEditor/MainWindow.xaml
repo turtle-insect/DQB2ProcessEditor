@@ -40,7 +40,18 @@
                     </DockPanel>
                 </Grid>
                 <Button DockPanel.Dock="Bottom" Content="Injection All Item" Click="ButtonInjectionAllItem_Click"/>
-                <ListBox ItemsSource="{Binding Info.FilterItem}" DisplayMemberPath="Name" MouseDoubleClick="ListBoxItem_MouseDoubleClick"/>
+                <ListBox ItemsSource="{Binding Info.FilterItem}" MouseDoubleClick="ListBoxItem_MouseDoubleClick">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="{Binding Name}"/>
+                                <Label Content=" {"/>
+                                <Label Content="{Binding ID}"/>
+                                <Label Content="}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </DockPanel>
         </TabItem>
         <TabItem Header="Advance">
@@ -86,11 +97,8 @@
                     </ComboBox>
                     <Button Content="                " Click="ButtonClearBagPage_Click"/>
                 </StackPanel>
-                <Label Grid.Row="4" Content="Player Jump Power"/>
-                <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal">
-                    <TextBox Text="{Binding PlayerJumpPower, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
-                    <Button Content="                " Click="ButtonWritePlayerJumpPower_Click"/>
-                </StackPanel>
+                <Label Grid.Row="4" Content="Import BluePrint in Bag"/>
+                <Button Grid.Row="4" Grid.Column="1" Click="ButtonBluePrintImport_Click"/>
             </Grid>
         </TabItem>
         <TabItem Header="Setting">

@@ -81,6 +81,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BlockInfo.cs" />
     <Compile Include="Carry.cs" />
     <Compile Include="CarryTypeConverter.cs" />
     <Compile Include="Info.cs" />

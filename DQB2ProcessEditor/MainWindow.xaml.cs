@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Win32;
 
 namespace DQB2ProcessEditor
 {
@@ -54,14 +55,6 @@ namespace DQB2ProcessEditor
 			vm.WriteInventoryItemCount();
 		}
 
-		private void ButtonWritePlayerJumpPower_Click(object sender, RoutedEventArgs e)
-		{
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-
-			vm.WritePlayerJumpPower();
-		}
-
 		private void ButtonClearInventory_Click(object sender, RoutedEventArgs e)
 		{
 			var vm = DataContext as ViewModel;
@@ -84,6 +77,17 @@ namespace DQB2ProcessEditor
 			if (vm == null) return;
 
 			vm.ClearItem();
+		}
+
+        private void ButtonBluePrintImport_Click(object sender, RoutedEventArgs e)
+        {
+			var vm = DataContext as ViewModel;
+			if (vm == null) return;
+
+			var dlg = new OpenFileDialog();
+			if (dlg.ShowDialog() == false) return;
+
+			vm.ImportBluePrint(dlg.FileName);
 		}
     }
 }

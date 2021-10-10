@@ -37,17 +37,6 @@ namespace DQB2ProcessEditor
 			return true;
 		}
 
-		public bool WritePlayerJumpPower(float power)
-		{
-			String ProcName = Properties.Settings.Default.ProcessName;
-			int pID = mMemory.GetProcIdFromName(ProcName);
-			if (mMemory.OpenProcess(pID) == false) return false;
-
-			// DQB2.exe+1AA049
-
-			return mMemory.WriteMemory(ProcName + ".exe+0x133A8B8,0x58,0x10,0x2A4", "float", power.ToString());
-		}
-
 		public List<Item> ReadItem(CarryType type)
 		{
 			if (mBaseAddress == 0) return null;
