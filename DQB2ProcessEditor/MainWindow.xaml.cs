@@ -39,6 +39,17 @@ namespace DQB2ProcessEditor
 			vm.InjectionItem(info.ID);
 		}
 
+		private void ListBoxBackpack_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			var backpack = (sender as ListBox)?.SelectedItem as Backpack;
+			if (backpack == null) return;
+
+			var vm = DataContext as ViewModel;
+			if (vm == null) return;
+
+			vm.BackpaktoBag(backpack);
+		}
+
 		private void ButtonInjectionAllItem_Click(object sender, RoutedEventArgs e)
 		{
 			var vm = DataContext as ViewModel;

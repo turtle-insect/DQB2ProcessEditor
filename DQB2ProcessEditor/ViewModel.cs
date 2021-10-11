@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 
 namespace DQB2ProcessEditor
 {
@@ -8,6 +9,7 @@ namespace DQB2ProcessEditor
 		public String ItemNameFilter { get; set; }
 		public ProcessMemory.CarryType CarryType { get; set; }
 		public int ClearBagPageIndex { get; set; }
+		public ObservableCollection<Backpack> Backpacks { get; private set; } = new ObservableCollection<Backpack>();
 
 
 		public ViewModel()
@@ -113,6 +115,19 @@ namespace DQB2ProcessEditor
 			var pm = new ProcessMemory();
 			if (!pm.CalcPlayerAddress()) return false;
 
+			if (Backpacks.Count > 50)
+			{
+				for(int i = 50; i >= 0; i++)
+                {
+					if(Backpacks[i].Lock == false)
+                    {
+						Backpacks.RemoveAt(i);
+						break;
+                    }
+				}
+			}
+			Backpacks.Insert(0, new Backpack(type, pm.ReadItem(type)));
+
 			pm.ClearItem(type);
 			return true;
 		}
@@ -143,6 +158,15 @@ namespace DQB2ProcessEditor
 				}
 			}
 			pm.WriteItems(ProcessMemory.CarryType.eBag, items);
+			return true;
+		}
+
+		public bool BackpaktoBag(Backpack backpack)
+        {
+			var pm = new ProcessMemory();
+			if (!pm.CalcPlayerAddress()) return false;
+
+			pm.WriteItems(backpack.Type, backpack.Items);
 			return true;
 		}
 

@@ -8,6 +8,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed"
+        FocusManager.FocusedElement="{Binding ElementName=TextBoxFilter}"
         Title="DQB2 Process Editor (Steam)" Height="450" Width="800">
     <Window.DataContext>
         <local:ViewModel/>
@@ -36,19 +37,18 @@
                     <DockPanel Grid.Row="1" Grid.Column="1">
                         <TextBox DockPanel.Dock="Right" Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
                         <Label DockPanel.Dock="Right" Content="Count"/>
-                        <TextBox Text="{Binding ItemNameFilter, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBoxItemFilter_TextChanged"/>
+                        <TextBox x:Name="TextBoxFilter"
+                                 Text="{Binding ItemNameFilter, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBoxItemFilter_TextChanged"/>
                     </DockPanel>
                 </Grid>
                 <Button DockPanel.Dock="Bottom" Content="Injection All Item" Click="ButtonInjectionAllItem_Click"/>
                 <ListBox ItemsSource="{Binding Info.FilterItem}" MouseDoubleClick="ListBoxItem_MouseDoubleClick">
+                    <ListBox.Resources>
+                        <local:ItemConverter x:Key="ItemConverter"/>
+                    </ListBox.Resources>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding Name}"/>
-                                <Label Content=" {"/>
-                                <Label Content="{Binding ID}"/>
-                                <Label Content="}"/>
-                            </StackPanel>
+                            <Label Content="{Binding Converter={StaticResource ItemConverter}}"/>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
@@ -106,6 +106,19 @@
                 <Label Grid.Row="6" Content="Import" FontWeight="Bold"/>
                 <Label Grid.Row="7" Content="Import BluePrint in Bag"/>
                 <Button Grid.Row="7" Grid.Column="1" Click="ButtonBluePrintImport_Click"/>
+                <Label Grid.Row="8" Content="Backpack" FontWeight="Bold"/>
+                <ListBox Grid.Row="9" Grid.Column="1"
+                         ItemsSource="{Binding Backpacks}"
+                         MouseDoubleClick="ListBoxBackpack_MouseDoubleClick">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox Content="🔒" IsChecked="{Binding Lock}" VerticalAlignment="Center"/>
+                                <Label Content="{Binding BackupTime}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </Grid>
         </TabItem>
         <TabItem Header="Setting">

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -15,9 +16,14 @@ namespace DQB2ProcessEditor
 		public void ItemFilter(String filter)
 		{
 			FilterItem.Clear();
+			String originalFilter = filter;
+			String hiraganaFilter = ToHiragana(filter);
+
 			foreach (var info in AllItem)
 			{
-				if (String.IsNullOrEmpty(filter) || info.Name.IndexOf(filter) >= 0)
+				if (String.IsNullOrEmpty(filter) ||
+					info.Name.IndexOf(filter) >= 0 ||
+					ToHiragana(info.Name).IndexOf(hiraganaFilter) >= 0)
 				{
 					FilterItem.Add(info);
 				}
@@ -38,9 +44,13 @@ namespace DQB2ProcessEditor
 				if (line[0] == '#') continue;
 
 				var items = line.Split('\t');
-				if (items.Length != 2) continue;
+				if (items.Length != 4) continue;
 
-				var info = new ItemInfo() { ID = Convert.ToUInt16(items[0]), Name = items[1] };
+				var info = new ItemInfo();
+				info.ID = Convert.ToUInt16(items[0]);
+				info.Name = items[1];
+				info.Rare = Convert.ToUInt16(items[2]);
+				info.Link = items[3] == "True";
 				if (info.ID == 0) continue;
 
 				AllItem.Add(info);
@@ -173,10 +183,25 @@ namespace DQB2ProcessEditor
 
 			foreach (var info in AllItem)
 			{
-				if (name == info.Name) ids.Add(info.ID);
+				if (name == info.Name)
+				{
+					if(info.Link)
+                    {
+						ids.Clear();
+						ids.Add(info.ID);
+						break;
+					}
+					ids.Add(info.ID);
+				}
 			}
 
 			return ids;
+		}
+
+		private String ToHiragana(String value)
+		{
+			if (value == null) return null;
+			return new String(value.Select(c => (c >= 'ァ' && c <= 'ヶ') ? (char)(c + 'ぁ' - 'ァ') : c).ToArray());
 		}
 	}
 }
