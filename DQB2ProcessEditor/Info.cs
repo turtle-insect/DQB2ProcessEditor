@@ -18,12 +18,14 @@ namespace DQB2ProcessEditor
 			FilterItem.Clear();
 			String originalFilter = filter;
 			String hiraganaFilter = ToHiragana(filter);
+			String lowerFilter = filter.ToLower();
 
 			foreach (var info in AllItem)
 			{
 				if (String.IsNullOrEmpty(filter) ||
 					info.Name.IndexOf(filter) >= 0 ||
-					ToHiragana(info.Name).IndexOf(hiraganaFilter) >= 0)
+					ToHiragana(info.Name).IndexOf(hiraganaFilter) >= 0 ||
+					info.Name.ToLower().IndexOf(lowerFilter) >= 0)
 				{
 					FilterItem.Add(info);
 				}
