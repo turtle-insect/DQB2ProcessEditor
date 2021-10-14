@@ -6,6 +6,7 @@ namespace DQB2ProcessEditor
 	{
 		public UInt16 ID { get; set; }
 		public String Name { get; set; }
+		public String Ruby { get; set; }
 		public UInt16 Rare { get; set; }
 		public bool Link { get; set; }
 	}

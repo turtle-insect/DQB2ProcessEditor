@@ -18,14 +18,12 @@ namespace DQB2ProcessEditor
 			FilterItem.Clear();
 			String originalFilter = filter;
 			String hiraganaFilter = ToHiragana(filter);
-			String lowerFilter = filter.ToLower();
 
 			foreach (var info in AllItem)
 			{
 				if (String.IsNullOrEmpty(filter) ||
 					info.Name.IndexOf(filter) >= 0 ||
-					ToHiragana(info.Name).IndexOf(hiraganaFilter) >= 0 ||
-					info.Name.ToLower().IndexOf(lowerFilter) >= 0)
+					info.Ruby.IndexOf(hiraganaFilter) >= 0)
 				{
 					FilterItem.Add(info);
 				}
@@ -46,13 +44,14 @@ namespace DQB2ProcessEditor
 				if (line[0] == '#') continue;
 
 				var items = line.Split('\t');
-				if (items.Length != 4) continue;
+				if (items.Length != 5) continue;
 
 				var info = new ItemInfo();
 				info.ID = Convert.ToUInt16(items[0]);
 				info.Name = items[1];
-				info.Rare = Convert.ToUInt16(items[2]);
-				info.Link = items[3] == "True";
+				info.Ruby = items[2];
+				info.Rare = Convert.ToUInt16(items[3]);
+				info.Link = items[4] == "TRUE";
 				if (info.ID == 0) continue;
 
 				AllItem.Add(info);
