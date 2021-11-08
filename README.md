@@ -1,3 +1,5 @@
+![DL Count](https://img.shields.io/github/downloads/turtle-insect/DQB2ProcessEditor/total.svg)
+
 # DQB2ProcessEditor
 Steam Dragon Quest Builders 2 Process Editor
 
