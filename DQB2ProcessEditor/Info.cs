@@ -109,7 +109,7 @@ namespace DQB2ProcessEditor
 			}
 		}
 
-		public List<Item> BluePrintLoad(String filename)
+		public List<Item> BluePrintItemLoad(String filename)
         {
 			var items = new List<Item>();
 			if (!System.IO.File.Exists(filename)) return items;
