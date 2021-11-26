@@ -54,7 +54,7 @@
 					</DockPanel>
                 </Grid>
                 <Button DockPanel.Dock="Bottom" Content="Injection All Item" Click="ButtonInjectionAllItem_Click"/>
-                <ListBox ItemsSource="{Binding Info.FilterItem}" MouseDoubleClick="ListBoxItem_MouseDoubleClick">
+                <ListBox ItemsSource="{Binding FilterItems}" MouseDoubleClick="ListBoxItem_MouseDoubleClick">
                     <ListBox.Resources>
 						<local:ItemIDConverter x:Key="ItemIDConverter"/>
 						<local:ItemImageConverter x:Key="ItemImageConverter"/>

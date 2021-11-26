@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace DQB2ProcessEditor
 {
     class ViewModel
 	{
-		public Info Info { get; set; } = Info.GetInstance();
+		public Info Info { get; private set; } = Info.GetInstance();
 		public String ItemNameFilter { get; set; }
 		public UInt16 ItemCategoryFilter { get; set; }
 		public ProcessMemory.CarryType CarryType { get; set; }
 		public int ClearBagPageIndex { get; set; }
 		public int BluePrintIndex { get; set; }
+		public ObservableCollection<ItemInfo> FilterItems { get; private set; } = new ObservableCollection<ItemInfo>();
 		public ObservableCollection<Backpack> Backpacks { get; private set; } = new ObservableCollection<Backpack>();
 
 
@@ -69,11 +71,11 @@ namespace DQB2ProcessEditor
 			var items = pm.ReadItem(CarryType);
 			if (items == null) return false;
 			int filterIndex = 0;
-			for (int index = 0; index < items.Count && filterIndex < Info.FilterItem.Count; index++)
+			for (int index = 0; index < items.Count && filterIndex < FilterItems.Count; index++)
 			{
 				if (items[index].ID == 0)
 				{
-					items[index].ID = Info.FilterItem[filterIndex].ID;
+					items[index].ID = FilterItems[filterIndex].ID;
 					items[index].Count = Properties.Settings.Default.ItemCount;
 					filterIndex++;
 				}
@@ -137,7 +139,27 @@ namespace DQB2ProcessEditor
 
 		public void FilterItem()
 		{
-			Info.ItemFilter(ItemNameFilter, ItemCategoryFilter);
+			FilterItems.Clear();
+			String originalFilter = ItemNameFilter;
+			String hiraganaFilter = ToHiragana(ItemNameFilter);
+			UInt16 category = 0;
+			if(Info.ItemCategory.Count > ItemCategoryFilter)
+			{
+				category = Info.ItemCategory[ItemCategoryFilter].ID;
+			}
+
+			foreach (var info in Info.AllItem)
+			{
+				if (category == 0 || category == info.Category)
+				{
+					if (String.IsNullOrEmpty(ItemNameFilter) ||
+						info.Name.IndexOf(ItemNameFilter) >= 0 ||
+						info.Ruby.IndexOf(hiraganaFilter) >= 0)
+					{
+						FilterItems.Add(info);
+					}
+				}
+			}
 		}
 
 		public bool ImportBluePrint(String filename)
@@ -208,8 +230,8 @@ namespace DQB2ProcessEditor
 		private void CreateItem()
 		{
 			Info.ItemLoad();
-			Info.ItemKindLoad();
-			Info.ItemFilter(ItemNameFilter, ItemCategoryFilter);
+			Info.ItemCategoryLoad();
+			FilterItem();
 		}
 
 		private void CreateImage()
@@ -221,5 +243,11 @@ namespace DQB2ProcessEditor
         {
 			Info.BlockLoad();
         }
+
+		private String ToHiragana(String value)
+		{
+			if (value == null) return null;
+			return new String(value.Select(c => (c >= 'ァ' && c <= 'ヶ') ? (char)(c + 'ぁ' - 'ァ') : c).ToArray());
+		}
 	}
 }

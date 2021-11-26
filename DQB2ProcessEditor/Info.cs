@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Media.Imaging;
@@ -10,40 +9,18 @@ namespace DQB2ProcessEditor
     class Info
 	{
 		private static readonly Info mThis = new Info();
-		private List<ItemInfo> AllItem = new List<ItemInfo>(4000);
+		public List<ItemInfo> AllItem { get; private set; } = new List<ItemInfo>(4000);
 		public Dictionary<UInt16, BitmapImage> AllImage = new Dictionary<UInt16, BitmapImage>(1500);
 
 		public List<ItemCategory> ItemCategory { get; private set; } = new List<ItemCategory>(20);
 
 		// Category -> <ID, Name>
 		private Dictionary<UInt16, Dictionary<UInt16, String>> AllBlock = new Dictionary<UInt16, Dictionary<UInt16, String>>();
-		public ObservableCollection<ItemInfo> FilterItem { get; private set; } = new ObservableCollection<ItemInfo>();
 		public ObservableCollection<String> ErrorLog { get; private set; } = new ObservableCollection<String>();
 
 		private Info() { }
 
 		public static Info GetInstance() { return mThis; }
-
-		public void ItemFilter(String name, UInt16 kindIndex)
-		{
-			FilterItem.Clear();
-			String originalFilter = name;
-			String hiraganaFilter = ToHiragana(name);
-			UInt16 kind = ItemCategory[kindIndex].ID;
-
-			foreach (var info in AllItem)
-			{
-				if(kind == 0 || info.Kind == kind)
-				{
-					if (String.IsNullOrEmpty(name) ||
-						info.Name.IndexOf(name) >= 0 ||
-						info.Ruby.IndexOf(hiraganaFilter) >= 0)
-					{
-						FilterItem.Add(info);
-					}
-				}
-			}
-		}
 
 		public void ItemLoad()
 		{
@@ -75,14 +52,14 @@ namespace DQB2ProcessEditor
 				}
 				if (!String.IsNullOrEmpty(items[6]))
 				{
-					info.Kind = Convert.ToUInt16(items[6]);
+					info.Category = Convert.ToUInt16(items[6]);
 				}
 
 				AllItem.Add(info);
 			}
 		}
 
-		public void ItemKindLoad()
+		public void ItemCategoryLoad()
 		{
 			String filename = @"info\item_category.txt";
 			String dir = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), @"info\image\category");
@@ -277,12 +254,6 @@ namespace DQB2ProcessEditor
 			}
 
 			return ids;
-		}
-
-		private String ToHiragana(String value)
-		{
-			if (value == null) return null;
-			return new String(value.Select(c => (c >= 'ァ' && c <= 'ヶ') ? (char)(c + 'ぁ' - 'ァ') : c).ToArray());
 		}
 	}
 }
