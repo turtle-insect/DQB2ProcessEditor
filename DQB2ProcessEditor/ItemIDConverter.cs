@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace DQB2ProcessEditor
 {
-    class ItemConverter : IValueConverter
+    class ItemIDConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

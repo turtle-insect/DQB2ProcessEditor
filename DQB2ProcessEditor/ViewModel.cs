@@ -5,8 +5,9 @@ namespace DQB2ProcessEditor
 {
     class ViewModel
 	{
-		public Info Info { get; set; } = new Info();
+		public Info Info { get; set; } = Info.GetInstance();
 		public String ItemNameFilter { get; set; }
+		public UInt16 ItemCategoryFilter { get; set; }
 		public ProcessMemory.CarryType CarryType { get; set; }
 		public int ClearBagPageIndex { get; set; }
 		public int BluePrintIndex { get; set; }
@@ -21,6 +22,7 @@ namespace DQB2ProcessEditor
 		public void LoadInfo()
         {
 			CreateItem();
+			CreateImage();
 			CreateBlock();
 		}
 
@@ -135,7 +137,7 @@ namespace DQB2ProcessEditor
 
 		public void FilterItem()
 		{
-			Info.ItemFilter(ItemNameFilter);
+			Info.ItemFilter(ItemNameFilter, ItemCategoryFilter);
 		}
 
 		public bool ImportBluePrint(String filename)
@@ -206,7 +208,13 @@ namespace DQB2ProcessEditor
 		private void CreateItem()
 		{
 			Info.ItemLoad();
-			Info.ItemFilter(ItemNameFilter);
+			Info.ItemKindLoad();
+			Info.ItemFilter(ItemNameFilter, ItemCategoryFilter);
+		}
+
+		private void CreateImage()
+		{
+			Info.ItemImageLoad();
 		}
 
 		private void CreateBlock()

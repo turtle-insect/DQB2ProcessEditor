@@ -33,23 +33,40 @@
                         <ComboBoxItem Content="Inventory"/>
                         <ComboBoxItem Content="Bag"/>
                     </ComboBox>
-                    <Label Grid.Row="1" Content="Filter"/>
-                    <DockPanel Grid.Row="1" Grid.Column="1">
-                        <TextBox DockPanel.Dock="Right" Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
-                        <Label DockPanel.Dock="Right" Content="Count"/>
-                        <TextBox x:Name="TextBoxFilter"
+                    <Label Grid.Row="1" Content="Filter" VerticalContentAlignment="Center"/>
+					<DockPanel Grid.Row="1" Grid.Column="1">
+						<TextBox DockPanel.Dock="Right" VerticalContentAlignment="Center"
+								 Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+						<Label DockPanel.Dock="Right" Content="Count" VerticalContentAlignment="Center"/>
+						<ComboBox DockPanel.Dock="Right" ItemsSource="{Binding Info.ItemCategory}" SelectionChanged="ComboBoxItemFilter_SelectionChanged"
+								  SelectedIndex="{Binding ItemCategoryFilter}" Width="150">
+							<ComboBox.ItemTemplate>
+								<DataTemplate>
+									<StackPanel Orientation="Horizontal">
+										<Image Source="{Binding Image}" Width="32"/>
+										<Label Content="{Binding Name}" VerticalAlignment="Center"/>
+									</StackPanel>
+								</DataTemplate>
+							</ComboBox.ItemTemplate>
+						</ComboBox>
+						<TextBox x:Name="TextBoxFilter" VerticalContentAlignment="Center"
                                  Text="{Binding ItemNameFilter, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBoxItemFilter_TextChanged"/>
-                    </DockPanel>
+					</DockPanel>
                 </Grid>
                 <Button DockPanel.Dock="Bottom" Content="Injection All Item" Click="ButtonInjectionAllItem_Click"/>
                 <ListBox ItemsSource="{Binding Info.FilterItem}" MouseDoubleClick="ListBoxItem_MouseDoubleClick">
                     <ListBox.Resources>
-                        <local:ItemConverter x:Key="ItemConverter"/>
+						<local:ItemIDConverter x:Key="ItemIDConverter"/>
+						<local:ItemImageConverter x:Key="ItemImageConverter"/>
                     </ListBox.Resources>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding Converter={StaticResource ItemConverter}}"/>
-                        </DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<Image Source="{Binding Image, Converter={StaticResource ItemImageConverter}}"
+									   Width="{Binding Path=ItemImageSize, Source={x:Static properties:Settings.Default}}"/>
+								<Label Content="{Binding Converter={StaticResource ItemIDConverter}}" VerticalAlignment="Center"/>
+							</StackPanel>
+						</DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </DockPanel>
@@ -165,7 +182,8 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
-                    <RowDefinition Height="10*"/>
+					<RowDefinition/>
+                    <RowDefinition Height="9*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -173,12 +191,14 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="Global" FontWeight="Bold"/>
                 <Label Grid.Row="1" Content="Process Name"/>
-                <Label Grid.Row="2" Content="Reload Info/*.txt"/>
-                <Button Grid.Row="2" Grid.Column="1" Click="ButtonReloadInfo_Click"/>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=ProcessName, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                <Label Grid.Row="3" Content="Inventory" FontWeight="Bold"/>
-                <CheckBox Grid.Row="4" Grid.ColumnSpan="2" Content="If the inventory is full, overwrite it." IsChecked="{Binding Path=ItemForceWrite, Source={x:Static properties:Settings.Default}}" VerticalAlignment="Center"/>
-                <ComboBox Grid.Row="4" Grid.Column="1" SelectedIndex="{Binding Path=InventoryIndex, Source={x:Static properties:Settings.Default}}">
+				<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=ProcessName, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+				<Label Grid.Row="2" Content="Item Image Size"/>
+				<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=ItemImageSize, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="3" Content="Reload Info/*.txt"/>
+				<Button Grid.Row="3" Grid.Column="1" Click="ButtonReloadInfo_Click"/>
+				<Label Grid.Row="4" Content="Inventory" FontWeight="Bold"/>
+                <CheckBox Grid.Row="5" Grid.ColumnSpan="2" Content="If the inventory is full, overwrite it." IsChecked="{Binding Path=ItemForceWrite, Source={x:Static properties:Settings.Default}}" VerticalAlignment="Center"/>
+                <ComboBox Grid.Row="5" Grid.Column="1" SelectedIndex="{Binding Path=InventoryIndex, Source={x:Static properties:Settings.Default}}">
                     <ComboBoxItem Content="Inventory 01"/>
                     <ComboBoxItem Content="Inventory 02"/>
                     <ComboBoxItem Content="Inventory 03"/>
@@ -195,8 +215,8 @@
                     <ComboBoxItem Content="Inventory 14"/>
                     <ComboBoxItem Content="Inventory 15"/>
                 </ComboBox>
-                <Label Grid.Row="5" Content="Error Log" FontWeight="Bold"/>
-                <ListBox Grid.Row="6" Grid.ColumnSpan="2" ItemsSource="{Binding Info.ErrorLog}">
+                <Label Grid.Row="6" Content="Error Log" FontWeight="Bold"/>
+                <ListBox Grid.Row="7" Grid.ColumnSpan="2" ItemsSource="{Binding Info.ErrorLog}">
                 </ListBox>
             </Grid>
         </TabItem>

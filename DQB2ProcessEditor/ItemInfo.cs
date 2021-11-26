@@ -9,5 +9,7 @@ namespace DQB2ProcessEditor
 		public String Ruby { get; set; }
 		public UInt16 Rare { get; set; }
 		public bool Link { get; set; }
+		public UInt16 Image { get; set; }
+		public UInt16 Kind { get; set; }
 	}
 }

@@ -2,30 +2,45 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Media.Imaging;
+using System.Threading.Tasks;
 
 namespace DQB2ProcessEditor
 {
     class Info
 	{
-		private List<ItemInfo> AllItem = new List<ItemInfo>();
+		private static readonly Info mThis = new Info();
+		private List<ItemInfo> AllItem = new List<ItemInfo>(4000);
+		public Dictionary<UInt16, BitmapImage> AllImage = new Dictionary<UInt16, BitmapImage>(1500);
+
+		public List<ItemCategory> ItemCategory { get; private set; } = new List<ItemCategory>(20);
+
 		// Category -> <ID, Name>
 		private Dictionary<UInt16, Dictionary<UInt16, String>> AllBlock = new Dictionary<UInt16, Dictionary<UInt16, String>>();
 		public ObservableCollection<ItemInfo> FilterItem { get; private set; } = new ObservableCollection<ItemInfo>();
 		public ObservableCollection<String> ErrorLog { get; private set; } = new ObservableCollection<String>();
 
-		public void ItemFilter(String filter)
+		private Info() { }
+
+		public static Info GetInstance() { return mThis; }
+
+		public void ItemFilter(String name, UInt16 kindIndex)
 		{
 			FilterItem.Clear();
-			String originalFilter = filter;
-			String hiraganaFilter = ToHiragana(filter);
+			String originalFilter = name;
+			String hiraganaFilter = ToHiragana(name);
+			UInt16 kind = ItemCategory[kindIndex].ID;
 
 			foreach (var info in AllItem)
 			{
-				if (String.IsNullOrEmpty(filter) ||
-					info.Name.IndexOf(filter) >= 0 ||
-					info.Ruby.IndexOf(hiraganaFilter) >= 0)
+				if(kind == 0 || info.Kind == kind)
 				{
-					FilterItem.Add(info);
+					if (String.IsNullOrEmpty(name) ||
+						info.Name.IndexOf(name) >= 0 ||
+						info.Ruby.IndexOf(hiraganaFilter) >= 0)
+					{
+						FilterItem.Add(info);
+					}
 				}
 			}
 		}
@@ -44,18 +59,70 @@ namespace DQB2ProcessEditor
 				if (line[0] == '#') continue;
 
 				var items = line.Split('\t');
-				if (items.Length != 5) continue;
+				if (items.Length < 7) continue;
 
 				var info = new ItemInfo();
 				info.ID = Convert.ToUInt16(items[0]);
+				if (info.ID == 0) continue;
+
 				info.Name = items[1];
 				info.Ruby = items[2];
 				info.Rare = Convert.ToUInt16(items[3]);
 				info.Link = items[4] == "TRUE";
-				if (info.ID == 0) continue;
+				if (!String.IsNullOrEmpty(items[5]))
+				{
+					info.Image = Convert.ToUInt16(items[5]);
+				}
+				if (!String.IsNullOrEmpty(items[6]))
+				{
+					info.Kind = Convert.ToUInt16(items[6]);
+				}
 
 				AllItem.Add(info);
 			}
+		}
+
+		public void ItemKindLoad()
+		{
+			String filename = @"info\item_category.txt";
+			String dir = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), @"info\image\category");
+			if (!System.IO.File.Exists(filename)) return;
+
+			ItemCategory.Clear();
+			foreach (var text in System.IO.File.ReadAllLines(filename))
+			{
+				var line = text.Replace("\n", "");
+				line = line.Replace("\r", "");
+				if (line.Length < 3) continue;
+				if (line[0] == '#') continue;
+
+				var items = line.Split('\t');
+				if (items.Length < 2) continue;
+
+				var category = new ItemCategory();
+				category.ID = Convert.ToUInt16(items[0]);
+				category.Name = items[1];
+				category.Image = ImageLoad(System.IO.Path.Combine(dir, items[0] + ".png"));
+
+				ItemCategory.Add(category);
+			}
+		}
+
+		public void ItemImageLoad()
+		{
+			String dir = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), @"info\image\item");
+			if (!System.IO.Directory.Exists(dir)) return;
+
+			AllImage.Clear();
+			Parallel.ForEach(System.IO.Directory.GetFiles(dir), file =>
+			{
+				UInt16 index;
+				if (UInt16.TryParse(System.IO.Path.GetFileNameWithoutExtension(file), out index))
+				{
+					AllImage.Add(index, ImageLoad(file));
+				}
+
+			});
 		}
 
 		public void BlockLoad()
@@ -170,6 +237,19 @@ namespace DQB2ProcessEditor
 			}
 
 			return items;
+		}
+
+		private BitmapImage ImageLoad(String filename)
+		{
+			if(!System.IO.File.Exists(filename)) return null;
+
+			var image = new BitmapImage();
+			image.BeginInit();
+			image.CacheOption = BitmapCacheOption.OnLoad;
+			image.UriSource = new Uri(filename);
+			image.EndInit();
+			image.Freeze();
+			return image;
 		}
 
 		private List<UInt16> Search(UInt16 category, UInt16 id)

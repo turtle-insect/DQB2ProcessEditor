@@ -14,5 +14,8 @@
     <Setting Name="ProcessName" Type="System.String" Scope="User">
       <Value Profile="(Default)">DQB2</Value>
     </Setting>
+    <Setting Name="ItemImageSize" Type="System.UInt16" Scope="User">
+      <Value Profile="(Default)">64</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

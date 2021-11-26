@@ -28,6 +28,13 @@ namespace DQB2ProcessEditor
 			vm.FilterItem();
 		}
 
+		private void ComboBoxItemFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		{
+			var vm = DataContext as ViewModel;
+			if (vm == null) return;
+			vm.FilterItem();
+		}
+
 		private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
 			var info = (sender as ListBox)?.SelectedItem as ItemInfo;
