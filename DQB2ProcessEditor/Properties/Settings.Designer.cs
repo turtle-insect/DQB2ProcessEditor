@@ -37,30 +37,6 @@ namespace DQB2ProcessEditor.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ItemForceWrite {
-            get {
-                return ((bool)(this["ItemForceWrite"]));
-            }
-            set {
-                this["ItemForceWrite"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int InventoryIndex {
-            get {
-                return ((int)(this["InventoryIndex"]));
-            }
-            set {
-                this["InventoryIndex"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("DQB2")]
         public string ProcessName {
             get {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -28,7 +29,7 @@ namespace DQB2ProcessEditor
 			CreateBlock();
 		}
 
-		public bool InjectionItem(UInt16 itemID)
+		public bool InjectionItem(IEnumerable iterator)
 		{
 			var pm = new ProcessMemory();
 			if (!pm.CalcPlayerAddress()) return false;
@@ -37,47 +38,24 @@ namespace DQB2ProcessEditor
 			// 存在しないところを探す.
 			var items = pm.ReadItem(CarryType);
 			if (items == null) return false;
-			for (int index = 0; index < items.Count; index++)
+			int itemIndex = 0;
+			foreach(var item in iterator)
 			{
-				if(items[index].ID == 0)
+				if (itemIndex >= items.Count) break;
+
+				var info = item as ItemInfo;
+				if (info == null) continue;
+				
+				for (; itemIndex < items.Count; itemIndex++)
 				{
-					items[index].ID = itemID;
-					items[index].Count = Properties.Settings.Default.ItemCount;
-					pm.WriteItem(CarryType, index, items[index]);
-					return true;
-				}
-			}
+					if (items[itemIndex].ID == 0)
+					{
 
-			if (CarryType == ProcessMemory.CarryType.eBag || Properties.Settings.Default.ItemForceWrite == false)
-			{
-				return false;
-			}
-
-			// 設定によって強制的に上書き.
-			var item = new Item();
-			item.ID = itemID;
-			item.Count = Properties.Settings.Default.ItemCount;
-			pm.WriteItem(CarryType, Properties.Settings.Default.InventoryIndex, item);
-			return true;
-		}
-
-		public bool InjectionAllItem()
-		{
-			var pm = new ProcessMemory();
-			if (!pm.CalcPlayerAddress()) return false;
-
-			// アイテムの情報取得.
-			// 存在しないところを探す.
-			var items = pm.ReadItem(CarryType);
-			if (items == null) return false;
-			int filterIndex = 0;
-			for (int index = 0; index < items.Count && filterIndex < FilterItems.Count; index++)
-			{
-				if (items[index].ID == 0)
-				{
-					items[index].ID = FilterItems[filterIndex].ID;
-					items[index].Count = Properties.Settings.Default.ItemCount;
-					filterIndex++;
+						items[itemIndex].ID = info.ID;
+						items[itemIndex].Count = Properties.Settings.Default.ItemCount;
+						itemIndex++;
+						break;
+					}
 				}
 			}
 

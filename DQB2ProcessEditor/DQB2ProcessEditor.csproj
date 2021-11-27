@@ -54,6 +54,9 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>DQB2ProcessEditor.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Memory, Version=1.2.21.0, Culture=neutral, processorArchitecture=AMD64">
       <HintPath>..\packages\Memory.dll.x64.1.2.21\lib\netstandard2.0\Memory.dll</HintPath>
@@ -131,6 +134,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="DQB2ProcessEditor.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

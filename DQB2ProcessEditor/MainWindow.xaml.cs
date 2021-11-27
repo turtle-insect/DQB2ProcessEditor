@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -21,29 +23,40 @@ namespace DQB2ProcessEditor
 			Properties.Settings.Default.Save();
 		}
 
-		private void TextBoxItemFilter_TextChanged(object sender, TextChangedEventArgs e)
+		private void FilterItem(object sender, RoutedEventArgs e)
 		{
 			var vm = DataContext as ViewModel;
 			if (vm == null) return;
 			vm.FilterItem();
 		}
 
-		private void ComboBoxItemFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+		private void InjectionItem(object sender, RoutedEventArgs e)
 		{
+			var dc = (sender as FrameworkElement)?.DataContext;
+			IEnumerable items = dc as IEnumerable;
+			if (items == null) return;
+
 			var vm = DataContext as ViewModel;
 			if (vm == null) return;
-			vm.FilterItem();
+			vm.InjectionItem(items);
 		}
 
-		private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+		private void InjectionSelectItem(object sender, RoutedEventArgs e)
 		{
-			var info = (sender as ListBox)?.SelectedItem as ItemInfo;
-			if (info == null) return;
+			var items = ListBoxFilterItem.SelectedItems as IEnumerable;
+			if (items == null) return;
 
 			var vm = DataContext as ViewModel;
 			if (vm == null) return;
+			vm.InjectionItem(items);
+		}
 
-			vm.InjectionItem(info.ID);
+		private void ButtonWriteItemCount_Click(object sender, RoutedEventArgs e)
+		{
+			var vm = DataContext as ViewModel;
+			if (vm == null) return;
+
+			vm.WriteInventoryItemCount();
 		}
 
 		private void ListBoxBackpack_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -55,22 +68,6 @@ namespace DQB2ProcessEditor
 			if (vm == null) return;
 
 			vm.BackpaktoBag(backpack);
-		}
-
-		private void ButtonInjectionAllItem_Click(object sender, RoutedEventArgs e)
-		{
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-			
-			vm.InjectionAllItem();
-		}
-
-		private void ButtonWriteItemCount_Click(object sender, RoutedEventArgs e)
-		{
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-
-			vm.WriteInventoryItemCount();
 		}
 
 		private void ButtonClearInventory_Click(object sender, RoutedEventArgs e)

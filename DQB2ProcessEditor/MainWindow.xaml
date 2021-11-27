@@ -8,7 +8,6 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Closed="Window_Closed"
-        FocusManager.FocusedElement="{Binding ElementName=TextBoxFilter}"
         Title="DQB2 Process Editor (Steam)" Height="550" Width="800">
     <Window.DataContext>
         <local:ViewModel/>
@@ -38,7 +37,7 @@
 						<TextBox DockPanel.Dock="Right" VerticalContentAlignment="Center"
 								 Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
 						<Label DockPanel.Dock="Right" Content="Count" VerticalContentAlignment="Center"/>
-						<ComboBox DockPanel.Dock="Right" ItemsSource="{Binding Info.ItemCategory}" SelectionChanged="ComboBoxItemFilter_SelectionChanged"
+						<ComboBox DockPanel.Dock="Right" ItemsSource="{Binding Info.ItemCategory}" SelectionChanged="FilterItem"
 								  SelectedIndex="{Binding ItemCategoryFilter}" Width="150">
 							<ComboBox.ItemTemplate>
 								<DataTemplate>
@@ -49,12 +48,20 @@
 								</DataTemplate>
 							</ComboBox.ItemTemplate>
 						</ComboBox>
-						<TextBox x:Name="TextBoxFilter" VerticalContentAlignment="Center"
-                                 Text="{Binding ItemNameFilter, UpdateSourceTrigger=PropertyChanged}" TextChanged="TextBoxItemFilter_TextChanged"/>
+						<TextBox VerticalContentAlignment="Center"
+                                 Text="{Binding ItemNameFilter, UpdateSourceTrigger=PropertyChanged}" TextChanged="FilterItem"/>
 					</DockPanel>
                 </Grid>
-                <Button DockPanel.Dock="Bottom" Content="Injection All Item" Click="ButtonInjectionAllItem_Click"/>
-                <ListBox ItemsSource="{Binding FilterItems}" MouseDoubleClick="ListBoxItem_MouseDoubleClick">
+				<Button DockPanel.Dock="Bottom" Content="Injection All Item" DataContext="{Binding ElementName=ListBoxFilterItem, Path=Items}"
+						Click="InjectionItem"/>
+                <ListBox x:Name="ListBoxFilterItem" ItemsSource="{Binding FilterItems}" SelectionMode="Extended"
+						 MouseDoubleClick="InjectionSelectItem">
+					<ListBox.ContextMenu>
+						<ContextMenu>
+							<MenuItem Header="Injection Item" DataContext="{Binding ElementName=ListBoxFilterItem, Path=SelectedItems}"
+									  Click="InjectionSelectItem"/>
+						</ContextMenu> 
+					</ListBox.ContextMenu>
                     <ListBox.Resources>
 						<local:ItemIDConverter x:Key="ItemIDConverter"/>
 						<local:ItemImageConverter x:Key="ItemImageConverter"/>
@@ -180,10 +187,8 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
 					<RowDefinition/>
-                    <RowDefinition Height="9*"/>
+					<RowDefinition Height="11*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -196,27 +201,8 @@
 				<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=ItemImageSize, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
                 <Label Grid.Row="3" Content="Reload Info/*.txt"/>
 				<Button Grid.Row="3" Grid.Column="1" Click="ButtonReloadInfo_Click"/>
-				<Label Grid.Row="4" Content="Inventory" FontWeight="Bold"/>
-                <CheckBox Grid.Row="5" Grid.ColumnSpan="2" Content="If the inventory is full, overwrite it." IsChecked="{Binding Path=ItemForceWrite, Source={x:Static properties:Settings.Default}}" VerticalAlignment="Center"/>
-                <ComboBox Grid.Row="5" Grid.Column="1" SelectedIndex="{Binding Path=InventoryIndex, Source={x:Static properties:Settings.Default}}">
-                    <ComboBoxItem Content="Inventory 01"/>
-                    <ComboBoxItem Content="Inventory 02"/>
-                    <ComboBoxItem Content="Inventory 03"/>
-                    <ComboBoxItem Content="Inventory 04"/>
-                    <ComboBoxItem Content="Inventory 05"/>
-                    <ComboBoxItem Content="Inventory 06"/>
-                    <ComboBoxItem Content="Inventory 07"/>
-                    <ComboBoxItem Content="Inventory 08"/>
-                    <ComboBoxItem Content="Inventory 09"/>
-                    <ComboBoxItem Content="Inventory 10"/>
-                    <ComboBoxItem Content="Inventory 11"/>
-                    <ComboBoxItem Content="Inventory 12"/>
-                    <ComboBoxItem Content="Inventory 13"/>
-                    <ComboBoxItem Content="Inventory 14"/>
-                    <ComboBoxItem Content="Inventory 15"/>
-                </ComboBox>
-                <Label Grid.Row="6" Content="Error Log" FontWeight="Bold"/>
-                <ListBox Grid.Row="7" Grid.ColumnSpan="2" ItemsSource="{Binding Info.ErrorLog}">
+				<Label Grid.Row="4" Content="Error Log" FontWeight="Bold"/>
+                <ListBox Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding Info.ErrorLog}">
                 </ListBox>
             </Grid>
         </TabItem>
