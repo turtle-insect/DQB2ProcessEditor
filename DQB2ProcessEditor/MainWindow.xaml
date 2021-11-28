@@ -28,15 +28,18 @@
                         <ColumnDefinition Width="8*"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="Type"/>
-                    <ComboBox Grid.Column="1" SelectedIndex="{Binding CarryType, Converter={StaticResource CarryTypeConverter}}">
-                        <ComboBoxItem Content="Inventory"/>
-                        <ComboBoxItem Content="Bag"/>
-                    </ComboBox>
-                    <Label Grid.Row="1" Content="Filter" VerticalContentAlignment="Center"/>
-					<DockPanel Grid.Row="1" Grid.Column="1">
+					<DockPanel Grid.Column="1">
 						<TextBox DockPanel.Dock="Right" VerticalContentAlignment="Center"
 								 Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
-						<Label DockPanel.Dock="Right" Content="Count" VerticalContentAlignment="Center"/>
+						<Label DockPanel.Dock="Right" Content="Count"/>
+						<ComboBox Grid.Column="1" SelectedIndex="{Binding CarryType, Converter={StaticResource CarryTypeConverter}}">
+							<ComboBoxItem Content="Inventory"/>
+							<ComboBoxItem Content="Bag"/>
+						</ComboBox>
+					</DockPanel>
+                    <Label Grid.Row="1" Content="Filter" VerticalContentAlignment="Center"/>
+					<DockPanel Grid.Row="1" Grid.Column="1">
+						<CheckBox DockPanel.Dock="Right" Content="Tile" IsChecked="{Binding ItemFilterTile}" VerticalAlignment="Center"/>
 						<ComboBox DockPanel.Dock="Right" ItemsSource="{Binding Info.ItemCategory}" SelectionChanged="FilterItem"
 								  SelectedIndex="{Binding ItemCategoryFilter}" Width="150">
 							<ComboBox.ItemTemplate>
@@ -54,7 +57,7 @@
                 </Grid>
 				<Button DockPanel.Dock="Bottom" Content="Injection All Item" DataContext="{Binding ElementName=ListBoxFilterItem, Path=Items}"
 						Click="InjectionItem"/>
-                <ListBox x:Name="ListBoxFilterItem" ItemsSource="{Binding FilterItems}" SelectionMode="Extended"
+                <ListBox x:Name="ListBoxFilterItem" ItemsSource="{Binding FilterItems}" SelectionMode="Extended" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 						 MouseDoubleClick="InjectionSelectItem">
 					<ListBox.ContextMenu>
 						<ContextMenu>
@@ -66,16 +69,46 @@
 						<local:ItemIDConverter x:Key="ItemIDConverter"/>
 						<local:ItemImageConverter x:Key="ItemImageConverter"/>
                     </ListBox.Resources>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-							<StackPanel Orientation="Horizontal">
-								<Image Source="{Binding Image, Converter={StaticResource ItemImageConverter}}"
-									   Width="{Binding Path=ItemImageSize, Source={x:Static properties:Settings.Default}}"/>
-								<Label Content="{Binding Converter={StaticResource ItemIDConverter}}" VerticalAlignment="Center"/>
-							</StackPanel>
-						</DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+					<ListBox.Style>
+						<Style TargetType="ListBox">
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding ItemFilterTile}" Value="true">
+									<Setter Property="ItemsPanel">
+										<Setter.Value>
+											<ItemsPanelTemplate>
+												<WrapPanel/>
+											</ItemsPanelTemplate>
+										</Setter.Value>
+									</Setter>
+									<Setter Property="ItemTemplate">
+										<Setter.Value>
+											<DataTemplate>
+												<StackPanel Orientation="Horizontal">
+													<Image Source="{Binding Image, Converter={StaticResource ItemImageConverter}}"
+														   ToolTip="{Binding Converter={StaticResource ItemIDConverter}}"
+														   Width="{Binding Path=ItemImageSize, Source={x:Static properties:Settings.Default}}"/>
+												</StackPanel>
+											</DataTemplate>
+										</Setter.Value>
+									</Setter>
+								</DataTrigger>
+								<DataTrigger Binding="{Binding ItemFilterTile}" Value="false">
+									<Setter Property="ItemTemplate">
+										<Setter.Value>
+											<DataTemplate>
+												<StackPanel Orientation="Horizontal">
+													<Image Source="{Binding Image, Converter={StaticResource ItemImageConverter}}"
+														   Width="{Binding Path=ItemImageSize, Source={x:Static properties:Settings.Default}}"/>
+													<Label Content="{Binding Converter={StaticResource ItemIDConverter}}" VerticalAlignment="Center"/>
+												</StackPanel>
+											</DataTemplate>
+										</Setter.Value>
+									</Setter>
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</ListBox.Style>
+				</ListBox>
             </DockPanel>
         </TabItem>
         <TabItem Header="Advance">

@@ -96,7 +96,10 @@ namespace DQB2ProcessEditor
 				UInt16 index;
 				if (UInt16.TryParse(System.IO.Path.GetFileNameWithoutExtension(file), out index))
 				{
-					AllImage.Add(index, ImageLoad(file));
+					if (!AllImage.ContainsKey(index))
+					{
+						AllImage.Add(index, ImageLoad(file));
+					}
 				}
 
 			});
@@ -185,12 +188,24 @@ namespace DQB2ProcessEditor
 				UInt16 category = BitConverter.ToUInt16(value, 2);
 
 				// ブロックのIDはカテゴリとIDを逆として扱う.
-				if(blockID == 0)
-                {
+				if (blockID == 0)
+				{
 					blockID = category;
 					category = 0;
-                }
-				var ids = Search(category, blockID);
+				}
+
+				// 水中にある場合、カテゴリーが揺れるので補完する
+				// 1780,2047のカテゴリから探すと良さそう
+				var categoryList = new List<UInt16>() { category, 2047, 1780 };
+				List<UInt16> ids = null;
+				foreach (var id in categoryList)
+				{
+					ids = Search(id, blockID);
+					if (ids != null && ids.Count > 0) break;
+				}
+
+				// 無い物を調査出来る様にしておく
+				// ある程度整理出来たら本処理は不要
 				if (ids == null || ids.Count == 0)
 				{
 					String log = $"Unknown\nCategory = {category} ID = {blockID}";

@@ -8,6 +8,7 @@ namespace DQB2ProcessEditor
     class ViewModel
 	{
 		public Info Info { get; private set; } = Info.GetInstance();
+		public bool ItemFilterTile { get; set; } = false;
 		public String ItemNameFilter { get; set; }
 		public UInt16 ItemCategoryFilter { get; set; }
 		public ProcessMemory.CarryType CarryType { get; set; }
