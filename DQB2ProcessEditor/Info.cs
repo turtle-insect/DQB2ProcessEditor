@@ -96,10 +96,7 @@ namespace DQB2ProcessEditor
 				UInt16 index;
 				if (UInt16.TryParse(System.IO.Path.GetFileNameWithoutExtension(file), out index))
 				{
-					if (!AllImage.ContainsKey(index))
-					{
-						AllImage.Add(index, ImageLoad(file));
-					}
+					AllImage.Add(index, ImageLoad(file));
 				}
 
 			});
