@@ -1,5 +1,11 @@
 ![DL Count](https://img.shields.io/github/downloads/turtle-insect/DQB2ProcessEditor/total.svg)
 
+<p>
+  <a>
+  <img src="https://user-images.githubusercontent.com/30800900/143938683-a4228976-8dba-4c5a-bce4-9a37aab72404.png"/>
+  </a>
+</p>
+
 # DQB2ProcessEditor
 Steam Dragon Quest Builders 2 Process Editor
 
@@ -22,14 +28,17 @@ https://github.com/turtle-insect/DQB2
 3. 追加したいアイテムを『Filter』に設定
 4. アイテムが絞りこまれる
 5. ダブルクリックで対象追加、『Injection All Item』で全て追加
+6. 右クリックで選択アイテムを追加
 
 ## Advance
 1. 全てのアイテムの個数変更
 2. Inventoryのアイテム全てクリア
 3. Bagのアイテム全てクリア
 4. Bagのアイテムページ指定でクリア
-5. 『CMNDAT.exe』で抽出した設計図のアイテムを自動でBagに追加
-6. クリアしたInventoryやBagの復元
+5. クリアしたInventoryやBagの復元
+6. 設計図のクリア
+7. 設計図の保存
+8. 設計図の読み込み
 
 ## Setting
 1. 対象のプロセス名設定
