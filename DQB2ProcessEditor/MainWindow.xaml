@@ -17,58 +17,58 @@
     </Window.Resources>
     <TabControl>
         <TabItem Header="Item Injection">
-            <DockPanel>
-                <Grid DockPanel.Dock="Top">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="8*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Content="Type"/>
-					<DockPanel Grid.Column="1">
-						<TextBox DockPanel.Dock="Right" VerticalContentAlignment="Center"
+			<Grid DockPanel.Dock="Top">
+				<Grid.RowDefinitions>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition Height="13*"/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition Width="8*"/>
+				</Grid.ColumnDefinitions>
+				<Label Content="Type"/>
+				<DockPanel Grid.Column="1">
+					<ComboBox SelectedIndex="{Binding CarryType, Converter={StaticResource CarryTypeConverter}}" Width="150">
+						<ComboBoxItem Content="Inventory"/>
+						<ComboBoxItem Content="Bag"/>
+					</ComboBox>
+					<Label Content="Count"/>
+					<TextBox VerticalContentAlignment="Center"
 								 Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
-						<Label DockPanel.Dock="Right" Content="Count"/>
-						<ComboBox Grid.Column="1" SelectedIndex="{Binding CarryType, Converter={StaticResource CarryTypeConverter}}">
-							<ComboBoxItem Content="Inventory"/>
-							<ComboBoxItem Content="Bag"/>
-						</ComboBox>
-					</DockPanel>
-                    <Label Grid.Row="1" Content="Filter" VerticalContentAlignment="Center"/>
-					<DockPanel Grid.Row="1" Grid.Column="1">
-						<CheckBox DockPanel.Dock="Right" Content="Tile" IsChecked="{Binding ItemFilterTile}" VerticalAlignment="Center"/>
-						<ComboBox DockPanel.Dock="Right" ItemsSource="{Binding Info.ItemCategory}" SelectionChanged="FilterItem"
+					<Slider Minimum="1" Maximum="999" Value="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}}"/>
+				</DockPanel>
+				<Label Grid.Row="1" Content="Filter" VerticalContentAlignment="Center"/>
+				<DockPanel Grid.Row="1" Grid.Column="1">
+					<CheckBox DockPanel.Dock="Right" Content="Tile" IsChecked="{Binding ItemFilterTile}" VerticalAlignment="Center"/>
+					<ComboBox ItemsSource="{Binding Info.ItemCategory}" SelectionChanged="FilterItem"
 								  SelectedIndex="{Binding ItemCategoryFilter}" Width="150">
-							<ComboBox.ItemTemplate>
-								<DataTemplate>
-									<StackPanel Orientation="Horizontal">
-										<Image Source="{Binding Image}" Width="32"/>
-										<Label Content="{Binding Name}" VerticalAlignment="Center"/>
-									</StackPanel>
-								</DataTemplate>
-							</ComboBox.ItemTemplate>
-						</ComboBox>
-						<TextBox VerticalContentAlignment="Center"
+						<ComboBox.ItemTemplate>
+							<DataTemplate>
+								<StackPanel Orientation="Horizontal">
+									<Image Source="{Binding Image}" Width="32"/>
+									<Label Content="{Binding Name}" VerticalAlignment="Center"/>
+								</StackPanel>
+							</DataTemplate>
+						</ComboBox.ItemTemplate>
+					</ComboBox>
+					<TextBox VerticalContentAlignment="Center"
                                  Text="{Binding ItemNameFilter, UpdateSourceTrigger=PropertyChanged}" TextChanged="FilterItem"/>
-					</DockPanel>
-                </Grid>
-				<Button DockPanel.Dock="Bottom" Content="Injection All Item" DataContext="{Binding ElementName=ListBoxFilterItem, Path=Items}"
-						Click="InjectionItem"/>
-                <ListBox x:Name="ListBoxFilterItem" ItemsSource="{Binding FilterItems}" SelectionMode="Extended" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+				</DockPanel>
+				<ListBox x:Name="ListBoxFilterItem" Grid.Row="2" Grid.ColumnSpan="2"
+							 ItemsSource="{Binding FilterItems}" SelectionMode="Extended" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 						 MouseDoubleClick="InjectionSelectItem">
 					<ListBox.ContextMenu>
 						<ContextMenu>
 							<MenuItem Header="Injection Item" DataContext="{Binding ElementName=ListBoxFilterItem, Path=SelectedItems}"
 									  Click="InjectionSelectItem"/>
-						</ContextMenu> 
+						</ContextMenu>
 					</ListBox.ContextMenu>
-                    <ListBox.Resources>
+					<ListBox.Resources>
 						<local:ItemIDConverter x:Key="ItemIDConverter"/>
 						<local:ItemImageConverter x:Key="ItemImageConverter"/>
-                    </ListBox.Resources>
+					</ListBox.Resources>
 					<ListBox.Style>
 						<Style TargetType="ListBox">
 							<Style.Triggers>
@@ -109,8 +109,10 @@
 						</Style>
 					</ListBox.Style>
 				</ListBox>
-            </DockPanel>
-        </TabItem>
+				<Button Grid.Row="3" Grid.ColumnSpan="2" Content="Injection All Item" DataContext="{Binding ElementName=ListBoxFilterItem, Path=Items}"
+						Click="InjectionItem"/>
+			</Grid>
+		</TabItem>
         <TabItem Header="Advance">
             <Grid>
                 <Grid.RowDefinitions>
@@ -136,16 +138,17 @@
                 <Label Content="Count" FontWeight="Bold"/>
                 <DockPanel Grid.Row="1">
                     <Label DockPanel.Dock="Left" Content="All"/>
-                    <Label DockPanel.Dock="Right" Content="Item Count"/>
+                    <Label DockPanel.Dock="Right" Content="Count"/>
                     <ComboBox SelectedIndex="{Binding CarryType, Converter={StaticResource CarryTypeConverter}}">
                         <ComboBoxItem Content="Inventory"/>
                         <ComboBoxItem Content="Bag"/>
                     </ComboBox>
                 </DockPanel>
-                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                <DockPanel Grid.Row="1" Grid.Column="1">
                     <TextBox Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
                     <Button Content="                " Click="ButtonWriteItemCount_Click"/>
-                </StackPanel>
+					<Slider Minimum="1" Maximum="999" Value="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}}"/>
+				</DockPanel>
                 <Label Grid.Row="2" Content="Clear" FontWeight="Bold"/>
 				<Label Grid.Row="3" Content="Clear Inventory All"/>
                 <Button Grid.Row="3" Grid.Column="1" Click="ButtonClearInventory_Click"/>
