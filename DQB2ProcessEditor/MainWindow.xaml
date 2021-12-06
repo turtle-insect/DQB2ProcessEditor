@@ -37,7 +37,8 @@
 					<Label Content="Count"/>
 					<TextBox VerticalContentAlignment="Center"
 								 Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
-					<Slider Minimum="1" Maximum="999" Value="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}}"/>
+					<Slider Margin="5,0,5,0" Minimum="1" Maximum="999" VerticalAlignment="Center"
+							Value="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}}"/>
 				</DockPanel>
 				<Label Grid.Row="1" Content="Filter" VerticalContentAlignment="Center"/>
 				<DockPanel Grid.Row="1" Grid.Column="1">
@@ -147,7 +148,8 @@
                 <DockPanel Grid.Row="1" Grid.Column="1">
                     <TextBox Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
                     <Button Content="                " Click="ButtonWriteItemCount_Click"/>
-					<Slider Minimum="1" Maximum="999" Value="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}}"/>
+					<Slider Margin="5,0,5,0" Minimum="1" Maximum="999" VerticalAlignment="Center"
+							Value="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}}"/>
 				</DockPanel>
                 <Label Grid.Row="2" Content="Clear" FontWeight="Bold"/>
 				<Label Grid.Row="3" Content="Clear Inventory All"/>
