@@ -113,7 +113,10 @@ namespace DQB2ProcessEditor
 			var dlg = new OpenFileDialog();
 			if (dlg.ShowDialog() == false) return;
 
-			vm.ImportBluePrint(dlg.FileName);
+			int index = 0;
+			int.TryParse((sender as Button)?.DataContext.ToString(), out index);
+
+			vm.ImportBluePrint(dlg.FileName, index);
 		}
 
 		private void ButtonExportBluePrint_Click(object sender, RoutedEventArgs e)
@@ -124,7 +127,10 @@ namespace DQB2ProcessEditor
 			var dlg = new SaveFileDialog();
 			if (dlg.ShowDialog() == false) return;
 
-			vm.ExportBluePrint(dlg.FileName);
+			int index = 0;
+			int.TryParse((sender as Button)?.DataContext.ToString(), out index);
+
+			vm.ExportBluePrint(dlg.FileName, index);
 		}
 
 		private void ButtonClearBluePrint_Click(object sender, RoutedEventArgs e)
@@ -132,7 +138,21 @@ namespace DQB2ProcessEditor
 			var vm = DataContext as ViewModel;
 			if (vm == null) return;
 
-			vm.ClearBluePrint();
+			int index = 0;
+			int.TryParse((sender as Button)?.DataContext.ToString(), out index);
+
+			vm.ClearBluePrint(index);
+		}
+
+		private void ButtonClearAllBluePrint_Click(object sender, RoutedEventArgs e)
+		{
+			var vm = DataContext as ViewModel;
+			if (vm == null) return;
+
+			for (int index = 0; index < 4; index++)
+			{
+				vm.ClearBluePrint(index);
+			}
 		}
 
 		private void ButtonReloadInfo_Click(object sender, RoutedEventArgs e)

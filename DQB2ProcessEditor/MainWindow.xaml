@@ -171,37 +171,29 @@
                 </StackPanel>
 				<Label Grid.Row="6" Content="Clear BluePrint"/>
 				<StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
-					<ComboBox Width="80" SelectedIndex="{Binding BluePrintIndex}">
-						<ComboBoxItem Content="Red"/>
-						<ComboBoxItem Content="Blue"/>
-						<ComboBoxItem Content="Green"/>
-						<ComboBoxItem Content="Yellow"/>
-					</ComboBox>
-					<Button Content="                " Click="ButtonClearBluePrint_Click"/>
+					<Button DataContext="0" Content="                " Background="LightPink" Click="ButtonClearBluePrint_Click"/>
+					<Button DataContext="1" Content="                " Background="LightBlue" Click="ButtonClearBluePrint_Click"/>
+					<Button DataContext="2" Content="                " Background="LightGreen" Click="ButtonClearBluePrint_Click"/>
+					<Button DataContext="3" Content="                " Background="LightYellow" Click="ButtonClearBluePrint_Click"/>
+					<Button Content="        ALL        " Click="ButtonClearAllBluePrint_Click"/>
 				</StackPanel>
                 <Label Grid.Row="7" Content="Import" FontWeight="Bold"/>
 				<Label Grid.Row="8" Content="Import BluePrint"/>
 				<StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal">
-					<ComboBox Width="80" SelectedIndex="{Binding BluePrintIndex}">
-						<ComboBoxItem Content="Red"/>
-						<ComboBoxItem Content="Blue"/>
-						<ComboBoxItem Content="Green"/>
-						<ComboBoxItem Content="Yellow"/>
-					</ComboBox>
-					<Button Content="                " Click="ButtonImportBluePrint_Click"/>
+					<Button DataContext="0" Content="                " Background="LightPink" Click="ButtonImportBluePrint_Click"/>
+					<Button DataContext="1" Content="                " Background="LightBlue" Click="ButtonImportBluePrint_Click"/>
+					<Button DataContext="2" Content="                " Background="LightGreen" Click="ButtonImportBluePrint_Click"/>
+					<Button DataContext="3" Content="                " Background="LightYellow" Click="ButtonImportBluePrint_Click"/>
 				</StackPanel>
 				<Label Grid.Row="9" Content="Import BluePrint's Item in Bag"/>
 				<Button Grid.Row="9" Grid.Column="1" Click="ButtonImportBluePrintItem_Click"/>
 				<Label Grid.Row="10" Content="Export" FontWeight="Bold"/>
 				<Label Grid.Row="11" Content="Export BluePrint"/>
 				<StackPanel Grid.Row="11" Grid.Column="1" Orientation="Horizontal">
-					<ComboBox Width="80" SelectedIndex="{Binding BluePrintIndex}">
-						<ComboBoxItem Content="Red"/>
-						<ComboBoxItem Content="Blue"/>
-						<ComboBoxItem Content="Green"/>
-						<ComboBoxItem Content="Yellow"/>
-					</ComboBox>
-					<Button Content="                " Click="ButtonExportBluePrint_Click"/>
+					<Button DataContext="0" Content="                " Background="LightPink" Click="ButtonExportBluePrint_Click"/>
+					<Button DataContext="1" Content="                " Background="LightBlue" Click="ButtonExportBluePrint_Click"/>
+					<Button DataContext="2" Content="                " Background="LightGreen" Click="ButtonExportBluePrint_Click"/>
+					<Button DataContext="3" Content="                " Background="LightYellow" Click="ButtonExportBluePrint_Click"/>
 				</StackPanel>
 				<Label Grid.Row="12" Content="Backpack" FontWeight="Bold"/>
                 <ListBox Grid.Row="13" Grid.Column="1"

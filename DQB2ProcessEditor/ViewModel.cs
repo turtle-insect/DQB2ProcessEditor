@@ -13,7 +13,6 @@ namespace DQB2ProcessEditor
 		public UInt16 ItemCategoryFilter { get; set; }
 		public ProcessMemory.CarryType CarryType { get; set; }
 		public int ClearBagPageIndex { get; set; }
-		public int BluePrintIndex { get; set; }
 		public ObservableCollection<ItemInfo> FilterItems { get; private set; } = new ObservableCollection<ItemInfo>();
 		public ObservableCollection<Backpack> Backpacks { get; private set; } = new ObservableCollection<Backpack>();
 
@@ -141,7 +140,7 @@ namespace DQB2ProcessEditor
 			}
 		}
 
-		public bool ImportBluePrint(String filename)
+		public bool ImportBluePrint(String filename, int index)
 		{
 			var pm = new ProcessMemory();
 			if (!pm.CalcPlayerAddress()) return false;
@@ -150,26 +149,26 @@ namespace DQB2ProcessEditor
 			Byte[] buffer = System.IO.File.ReadAllBytes(filename);
 			if (buffer.Length != 0x30008) return false;
 
-			pm.WriteBluePrint(BluePrintIndex, ref buffer);
+			pm.WriteBluePrint(index, ref buffer);
 			return true;
 		}
 
-		public bool ExportBluePrint(String filename)
+		public bool ExportBluePrint(String filename, int index)
 		{
 			var pm = new ProcessMemory();
 			if (!pm.CalcPlayerAddress()) return false;
 
-			Byte[] buffer = pm.ReadBluePrint(BluePrintIndex);
+			Byte[] buffer = pm.ReadBluePrint(index);
 			System.IO.File.WriteAllBytes(filename, buffer);
 			return true;
 		}
 
-		public bool ClearBluePrint()
+		public bool ClearBluePrint(int index)
 		{
 			var pm = new ProcessMemory();
 			if (!pm.CalcPlayerAddress()) return false;
 
-			pm.ClearBluePrint(BluePrintIndex);
+			pm.ClearBluePrint(index);
 			return true;
 		}
 
