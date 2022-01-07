@@ -94,7 +94,18 @@ namespace DQB2ProcessEditor
 			vm.ClearItem();
 		}
 
-        private void ButtonImportBluePrintItem_Click(object sender, RoutedEventArgs e)
+		private void ButtonImportBluePrintMemoryItem_Click(object sender, RoutedEventArgs e)
+		{
+			var vm = DataContext as ViewModel;
+			if (vm == null) return;
+
+			int index = 0;
+			int.TryParse((sender as Button)?.DataContext.ToString(), out index);
+
+			vm.ImportBluePrintItem(index);
+		}
+
+		private void ButtonImportBluePrintFileItem_Click(object sender, RoutedEventArgs e)
         {
 			var vm = DataContext as ViewModel;
 			if (vm == null) return;

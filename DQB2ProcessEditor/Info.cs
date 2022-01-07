@@ -153,12 +153,10 @@ namespace DQB2ProcessEditor
 			}
 		}
 
-		public List<Item> BluePrintItemLoad(String filename)
+		public List<Item> BluePrintItemLoad(Byte[] buffer)
         {
 			var items = new List<Item>();
-			if (!System.IO.File.Exists(filename)) return items;
 
-			Byte[] buffer = System.IO.File.ReadAllBytes(filename);
 			if (buffer.Length != 0x30008) return items;
 
 			UInt32 count = BitConverter.ToUInt16(buffer, 0x30000);
@@ -227,6 +225,7 @@ namespace DQB2ProcessEditor
 
 			return items;
 		}
+
 
 		private BitmapImage ImageLoad(String filename)
 		{

@@ -172,20 +172,36 @@ namespace DQB2ProcessEditor
 			return true;
 		}
 
-		public bool ImportBluePrintItem(String filename)
-        {
+		public bool ImportBluePrintItem(int index)
+		{
 			var pm = new ProcessMemory();
 			if (!pm.CalcPlayerAddress()) return false;
 
-			var append = Info.BluePrintItemLoad(filename);
+			Byte[] buffer = pm.ReadBluePrint(index);
+			return ImportBluePrintItem(buffer);
+		}
+
+		public bool ImportBluePrintItem(String filename)
+        {
+			if (!System.IO.File.Exists(filename)) return false;
+			Byte[] buffer = System.IO.File.ReadAllBytes(filename);
+			return ImportBluePrintItem(buffer);
+		}
+
+		private bool ImportBluePrintItem(Byte[] buffer)
+		{
+			var pm = new ProcessMemory();
+			if (!pm.CalcPlayerAddress()) return false;
+
+			var append = Info.BluePrintItemLoad(buffer);
 			if (append == null || append.Count == 0) return false;
 
 			int index = 0;
 			var items = pm.ReadItem(ProcessMemory.CarryType.eBag);
-			foreach(var item in items)
-            {
-				if(item.ID == 0 && item.Count == 0)
-                {
+			foreach (var item in items)
+			{
+				if (item.ID == 0 && item.Count == 0)
+				{
 					item.ID = append[index].ID;
 					item.Count = append[index].Count;
 					index++;

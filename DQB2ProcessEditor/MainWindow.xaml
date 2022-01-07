@@ -188,7 +188,14 @@
 					<Button DataContext="0" Content="                " Background="White" Click="ButtonImportBluePrint_Click"/>
 				</StackPanel>
 				<Label Grid.Row="9" Content="Import BluePrint's Item in Bag"/>
-				<Button Grid.Row="9" Grid.Column="1" Click="ButtonImportBluePrintItem_Click"/>
+				<StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal">
+					<Button DataContext="4" Content="                " Background="LightPink" Click="ButtonImportBluePrintMemoryItem_Click"/>
+					<Button DataContext="5" Content="                " Background="LightBlue" Click="ButtonImportBluePrintMemoryItem_Click"/>
+					<Button DataContext="6" Content="                " Background="LightGreen" Click="ButtonImportBluePrintMemoryItem_Click"/>
+					<Button DataContext="7" Content="                " Background="LightYellow" Click="ButtonImportBluePrintMemoryItem_Click"/>
+					<Button DataContext="0" Content="                " Background="White" Click="ButtonImportBluePrintMemoryItem_Click"/>
+					<Button Content="        File        " Click="ButtonImportBluePrintFileItem_Click"/>
+				</StackPanel>
 				<Label Grid.Row="10" Content="Export" FontWeight="Bold"/>
 				<Label Grid.Row="11" Content="Export BluePrint"/>
 				<StackPanel Grid.Row="11" Grid.Column="1" Orientation="Horizontal">
