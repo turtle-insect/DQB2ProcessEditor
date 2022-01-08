@@ -39,6 +39,7 @@ https://github.com/turtle-insect/DQB2
 6. 設計図のクリア
 7. 設計図の保存
 8. 設計図の読み込み
+9. 設計図のアイテム取得
 
 ## Setting
 1. 対象のプロセス名設定
