@@ -2,7 +2,7 @@
 
 <p>
   <a>
-  <img src="https://user-images.githubusercontent.com/30800900/144719392-5c175dcf-8bb2-456f-946e-81fc631e0c64.png"/>
+    <img src="https://user-images.githubusercontent.com/30800900/144719392-5c175dcf-8bb2-456f-946e-81fc631e0c64.png"/>
   </a>
 </p>
 
@@ -14,12 +14,7 @@ STEAM ドラゴンクエストビルダーズ2のプロセスメモリ編集Tool
 
 # 一緒に
 https://github.com/turtle-insect/DQB2  
-※『/info/item.txt』&『/info/block.txt』
 
-# 使い方
-※『CMNDAT.exe』と同じ階層に設置する事を想定しています
-1. ドラゴンクエストビルダーズ2を起動する
-2. Toolを起動する
 
 # 詳細
 ## Item Injection
