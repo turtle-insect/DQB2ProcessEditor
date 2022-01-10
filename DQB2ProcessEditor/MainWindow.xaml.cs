@@ -13,13 +13,45 @@ namespace DQB2ProcessEditor
     /// </summary>
     public partial class MainWindow : Window
 	{
+		private KeybordHook mHook = new KeybordHook();
+
 		public MainWindow()
 		{
 			InitializeComponent();
 		}
 
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			mHook.KeyDownEvent += MHook_KeyDownEvent;
+			mHook.Hook();
+		}
+
+		private void MHook_KeyDownEvent(int keyCode)
+		{
+			if (Properties.Settings.Default.KeybordHook)
+			{
+				var vm = DataContext as ViewModel;
+				if (vm == null) return;
+
+				switch (keyCode)
+				{
+					case 112:   // F1
+						vm.WriteInventoryItemCount();
+						break;
+
+					case 113:   // F2
+						vm.WriteBagItemCount();
+						break;
+
+					default:
+						break;
+				}
+			}
+		}
+
 		private void Window_Closed(object sender, EventArgs e)
 		{
+			mHook.UnHook();
 			Properties.Settings.Default.Save();
 		}
 
@@ -56,7 +88,7 @@ namespace DQB2ProcessEditor
 			var vm = DataContext as ViewModel;
 			if (vm == null) return;
 
-			vm.WriteInventoryItemCount();
+			vm.WriteItemCount();
 		}
 
 		private void ListBoxBackpack_MouseDoubleClick(object sender, MouseButtonEventArgs e)

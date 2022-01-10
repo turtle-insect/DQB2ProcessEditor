@@ -11,5 +11,8 @@
     <Setting Name="ItemImageSize" Type="System.UInt16" Scope="User">
       <Value Profile="(Default)">64</Value>
     </Setting>
+    <Setting Name="KeybordHook" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

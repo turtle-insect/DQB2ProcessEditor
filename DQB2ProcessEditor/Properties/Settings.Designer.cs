@@ -58,5 +58,17 @@ namespace DQB2ProcessEditor.Properties {
                 this["ItemImageSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool KeybordHook {
+            get {
+                return ((bool)(this["KeybordHook"]));
+            }
+            set {
+                this["KeybordHook"] = value;
+            }
+        }
     }
 }

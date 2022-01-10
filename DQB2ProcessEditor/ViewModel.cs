@@ -63,14 +63,29 @@ namespace DQB2ProcessEditor
 			return true;
 		}
 
+		public bool WriteItemCount()
+		{
+			return WriteItemCount(CarryType);
+		}
+
 		public bool WriteInventoryItemCount()
+		{
+			return WriteItemCount(ProcessMemory.CarryType.eInventory);
+		}
+
+		public bool WriteBagItemCount()
+		{
+			return WriteItemCount(ProcessMemory.CarryType.eBag);
+		}
+
+		private bool WriteItemCount(ProcessMemory.CarryType type)
 		{
 			var pm = new ProcessMemory();
 			if (!pm.CalcPlayerAddress()) return false;
 
 			// アイテムの情報取得.
 			// 存在しているところを探す.
-			var items = pm.ReadItem(CarryType);
+			var items = pm.ReadItem(type);
 			if (items == null) return false;
 			for (int index = 0; index < items.Count; index++)
 			{
@@ -80,7 +95,7 @@ namespace DQB2ProcessEditor
 				}
 			}
 
-			pm.WriteItems(CarryType, items);
+			pm.WriteItems(type, items);
 			return true;
 		}
 

@@ -1,22 +1,23 @@
 ﻿<Window x:Class="DQB2ProcessEditor.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:properties="clr-namespace:DQB2ProcessEditor.Properties"
-        xmlns:local="clr-namespace:DQB2ProcessEditor"
-        mc:Ignorable="d"
-        WindowStartupLocation="CenterScreen"
-        Closed="Window_Closed"
-        Title="DQB2 Process Editor (Steam)" Height="550" Width="800">
-    <Window.DataContext>
-        <local:ViewModel/>
-    </Window.DataContext>
-    <Window.Resources>
-        <local:CarryTypeConverter x:Key="CarryTypeConverter"/>
-    </Window.Resources>
-    <TabControl>
-        <TabItem Header="Item Injection">
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:properties="clr-namespace:DQB2ProcessEditor.Properties"
+		xmlns:local="clr-namespace:DQB2ProcessEditor"
+		mc:Ignorable="d"
+		WindowStartupLocation="CenterScreen"
+		Loaded="Window_Loaded"
+		Closed="Window_Closed"
+		Title="DQB2 Process Editor (Steam)" Height="550" Width="800">
+	<Window.DataContext>
+		<local:ViewModel/>
+	</Window.DataContext>
+	<Window.Resources>
+		<local:CarryTypeConverter x:Key="CarryTypeConverter"/>
+	</Window.Resources>
+	<TabControl>
+		<TabItem Header="Item Injection">
 			<Grid DockPanel.Dock="Top">
 				<Grid.RowDefinitions>
 					<RowDefinition/>
@@ -55,7 +56,7 @@
 						</ComboBox.ItemTemplate>
 					</ComboBox>
 					<TextBox VerticalContentAlignment="Center"
-                                 Text="{Binding ItemNameFilter, UpdateSourceTrigger=PropertyChanged}" TextChanged="FilterItem"/>
+								 Text="{Binding ItemNameFilter, UpdateSourceTrigger=PropertyChanged}" TextChanged="FilterItem"/>
 				</DockPanel>
 				<ListBox x:Name="ListBoxFilterItem" Grid.Row="2" Grid.ColumnSpan="2"
 							 ItemsSource="{Binding FilterItems}" SelectionMode="Extended" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -114,137 +115,147 @@
 						Click="InjectionItem"/>
 			</Grid>
 		</TabItem>
-        <TabItem Header="Advance">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
+		<TabItem Header="Advance">
+			<Grid>
+				<Grid.RowDefinitions>
 					<RowDefinition/>
 					<RowDefinition/>
 					<RowDefinition/>
 					<RowDefinition/>
-                    <RowDefinition Height="3*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Count" FontWeight="Bold"/>
-                <DockPanel Grid.Row="1">
-                    <Label DockPanel.Dock="Left" Content="All"/>
-                    <Label DockPanel.Dock="Right" Content="Count"/>
-                    <ComboBox SelectedIndex="{Binding CarryType, Converter={StaticResource CarryTypeConverter}}">
-                        <ComboBoxItem Content="Inventory"/>
-                        <ComboBoxItem Content="Bag"/>
-                    </ComboBox>
-                </DockPanel>
-                <DockPanel Grid.Row="1" Grid.Column="1">
-                    <TextBox Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
-                    <Button Content="                " Click="ButtonWriteItemCount_Click"/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition Height="3*"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition Width="2.5*"/>
+				</Grid.ColumnDefinitions>
+				<Label Content="Count" FontWeight="Bold"/>
+				<DockPanel Grid.Row="1">
+					<Label DockPanel.Dock="Left" Content="All"/>
+					<Label DockPanel.Dock="Right" Content="Count"/>
+					<ComboBox SelectedIndex="{Binding CarryType, Converter={StaticResource CarryTypeConverter}}">
+						<ComboBoxItem Content="Inventory"/>
+						<ComboBoxItem Content="Bag"/>
+					</ComboBox>
+				</DockPanel>
+				<DockPanel Grid.Row="1" Grid.Column="1">
+					<TextBox Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+					<Button Width="60" Click="ButtonWriteItemCount_Click"/>
 					<Slider Margin="5,0,5,0" Minimum="1" Maximum="999" VerticalAlignment="Center"
 							Value="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}}"/>
 				</DockPanel>
-                <Label Grid.Row="2" Content="Clear" FontWeight="Bold"/>
+				<Label Grid.Row="2" Content="Clear" FontWeight="Bold"/>
 				<Label Grid.Row="3" Content="Clear Inventory All"/>
-                <Button Grid.Row="3" Grid.Column="1" Click="ButtonClearInventory_Click"/>
+				<Button Grid.Row="3" Grid.Column="1" Click="ButtonClearInventory_Click"/>
 				<Label Grid.Row="4" Content="Clear Bag All"/>
-                <Button Grid.Row="4" Grid.Column="1" Click="ButtonClearBag_Click"/>
+				<Button Grid.Row="4" Grid.Column="1" Click="ButtonClearBag_Click"/>
 				<Label Grid.Row="5" Content="Clear Bag"/>
-                <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
-                    <ComboBox SelectedIndex="{Binding ClearBagPageIndex}" Width="80">
-                        <ComboBoxItem Content="Page 1"/>
-                        <ComboBoxItem Content="Page 2"/>
-                        <ComboBoxItem Content="Page 3"/>
-                        <ComboBoxItem Content="Page 4"/>
-                        <ComboBoxItem Content="Page 5"/>
-                        <ComboBoxItem Content="Page 6"/>
-                        <ComboBoxItem Content="Page 7"/>
-                    </ComboBox>
-                    <Button Content="                " Click="ButtonClearBagPage_Click"/>
-                </StackPanel>
+				<StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
+					<ComboBox SelectedIndex="{Binding ClearBagPageIndex}" Width="80">
+						<ComboBoxItem Content="Page 1"/>
+						<ComboBoxItem Content="Page 2"/>
+						<ComboBoxItem Content="Page 3"/>
+						<ComboBoxItem Content="Page 4"/>
+						<ComboBoxItem Content="Page 5"/>
+						<ComboBoxItem Content="Page 6"/>
+						<ComboBoxItem Content="Page 7"/>
+					</ComboBox>
+					<Button Width="60" Click="ButtonClearBagPage_Click"/>
+				</StackPanel>
 				<Label Grid.Row="6" Content="Clear BluePrint"/>
 				<StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
-					<Button DataContext="4" Content="                " Background="LightPink" Click="ButtonClearBluePrint_Click"/>
-					<Button DataContext="5" Content="                " Background="LightBlue" Click="ButtonClearBluePrint_Click"/>
-					<Button DataContext="6" Content="                " Background="LightGreen" Click="ButtonClearBluePrint_Click"/>
-					<Button DataContext="7" Content="                " Background="LightYellow" Click="ButtonClearBluePrint_Click"/>
-					<Button DataContext="0" Content="                " Background="White" Click="ButtonClearBluePrint_Click"/>
-					<Button Content="        ALL        " Click="ButtonClearAllBluePrint_Click"/>
+					<Button Width="60" DataContext="4" Background="LightPink" Click="ButtonClearBluePrint_Click"/>
+					<Button Width="60" DataContext="5" Background="LightBlue" Click="ButtonClearBluePrint_Click"/>
+					<Button Width="60" DataContext="6" Background="LightGreen" Click="ButtonClearBluePrint_Click"/>
+					<Button Width="60" DataContext="7" Background="LightYellow" Click="ButtonClearBluePrint_Click"/>
+					<Button Width="60" DataContext="0" Background="White" Click="ButtonClearBluePrint_Click"/>
+					<Button Width="60" Content="ALL" Click="ButtonClearAllBluePrint_Click"/>
 				</StackPanel>
-                <Label Grid.Row="7" Content="Import" FontWeight="Bold"/>
+				<Label Grid.Row="7" Content="Import" FontWeight="Bold"/>
 				<Label Grid.Row="8" Content="Import BluePrint"/>
 				<StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal">
-					<Button DataContext="4" Content="                " Background="LightPink" Click="ButtonImportBluePrint_Click"/>
-					<Button DataContext="5" Content="                " Background="LightBlue" Click="ButtonImportBluePrint_Click"/>
-					<Button DataContext="6" Content="                " Background="LightGreen" Click="ButtonImportBluePrint_Click"/>
-					<Button DataContext="7" Content="                " Background="LightYellow" Click="ButtonImportBluePrint_Click"/>
-					<Button DataContext="0" Content="                " Background="White" Click="ButtonImportBluePrint_Click"/>
+					<Button Width="60" DataContext="4" Background="LightPink" Click="ButtonImportBluePrint_Click"/>
+					<Button Width="60" DataContext="5" Background="LightBlue" Click="ButtonImportBluePrint_Click"/>
+					<Button Width="60" DataContext="6" Background="LightGreen" Click="ButtonImportBluePrint_Click"/>
+					<Button Width="60" DataContext="7" Background="LightYellow" Click="ButtonImportBluePrint_Click"/>
+					<Button Width="60" DataContext="0" Background="White" Click="ButtonImportBluePrint_Click"/>
 				</StackPanel>
 				<Label Grid.Row="9" Content="Import BluePrint's Item in Bag"/>
 				<StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal">
-					<Button DataContext="4" Content="                " Background="LightPink" Click="ButtonImportBluePrintMemoryItem_Click"/>
-					<Button DataContext="5" Content="                " Background="LightBlue" Click="ButtonImportBluePrintMemoryItem_Click"/>
-					<Button DataContext="6" Content="                " Background="LightGreen" Click="ButtonImportBluePrintMemoryItem_Click"/>
-					<Button DataContext="7" Content="                " Background="LightYellow" Click="ButtonImportBluePrintMemoryItem_Click"/>
-					<Button DataContext="0" Content="                " Background="White" Click="ButtonImportBluePrintMemoryItem_Click"/>
-					<Button Content="        File        " Click="ButtonImportBluePrintFileItem_Click"/>
+					<Button Width="60" DataContext="4" Background="LightPink" Click="ButtonImportBluePrintMemoryItem_Click"/>
+					<Button Width="60" DataContext="5" Background="LightBlue" Click="ButtonImportBluePrintMemoryItem_Click"/>
+					<Button Width="60" DataContext="6" Background="LightGreen" Click="ButtonImportBluePrintMemoryItem_Click"/>
+					<Button Width="60" DataContext="7" Background="LightYellow" Click="ButtonImportBluePrintMemoryItem_Click"/>
+					<Button Width="60" DataContext="0" Content="online1" Background="White" Click="ButtonImportBluePrintMemoryItem_Click"/>
+					<Button Width="60" DataContext="1" Content="online2" Background="White" Click="ButtonImportBluePrintMemoryItem_Click"/>
+					<Button Width="60" DataContext="2" Content="online3" Background="White" Click="ButtonImportBluePrintMemoryItem_Click"/>
+					<Button Width="60" DataContext="3" Content="online4" Background="White" Click="ButtonImportBluePrintMemoryItem_Click"/>
+					<Button Width="60" Content="File" Click="ButtonImportBluePrintFileItem_Click"/>
 				</StackPanel>
 				<Label Grid.Row="10" Content="Export" FontWeight="Bold"/>
 				<Label Grid.Row="11" Content="Export BluePrint"/>
 				<StackPanel Grid.Row="11" Grid.Column="1" Orientation="Horizontal">
-					<Button DataContext="4" Content="                " Background="LightPink" Click="ButtonExportBluePrint_Click"/>
-					<Button DataContext="5" Content="                " Background="LightBlue" Click="ButtonExportBluePrint_Click"/>
-					<Button DataContext="6" Content="                " Background="LightGreen" Click="ButtonExportBluePrint_Click"/>
-					<Button DataContext="7" Content="                " Background="LightYellow" Click="ButtonExportBluePrint_Click"/>
-					<Button DataContext="0" Content="                " Background="White" Click="ButtonExportBluePrint_Click"/>
+					<Button Width="60" DataContext="4" Background="LightPink" Click="ButtonExportBluePrint_Click"/>
+					<Button Width="60" DataContext="5" Background="LightBlue" Click="ButtonExportBluePrint_Click"/>
+					<Button Width="60" DataContext="6" Background="LightGreen" Click="ButtonExportBluePrint_Click"/>
+					<Button Width="60" DataContext="7" Background="LightYellow" Click="ButtonExportBluePrint_Click"/>
+					<Button Width="60" DataContext="0" Content="online1" Background="White" Click="ButtonExportBluePrint_Click"/>
+					<Button Width="60" DataContext="1" Content="online2" Background="White" Click="ButtonExportBluePrint_Click"/>
+					<Button Width="60" DataContext="2" Content="online3" Background="White" Click="ButtonExportBluePrint_Click"/>
+					<Button Width="60" DataContext="3" Content="online4" Background="White" Click="ButtonExportBluePrint_Click"/>
 				</StackPanel>
 				<Label Grid.Row="12" Content="Backpack" FontWeight="Bold"/>
-                <ListBox Grid.Row="13" Grid.Column="1"
-                         ItemsSource="{Binding Backpacks}"
-                         MouseDoubleClick="ListBoxBackpack_MouseDoubleClick">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <CheckBox Content="🔒" IsChecked="{Binding Lock}" VerticalAlignment="Center"/>
-                                <Label Content="{Binding BackupTime}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
-        </TabItem>
-        <TabItem Header="Setting">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
+				<ListBox Grid.Row="13" Grid.Column="1"
+						 ItemsSource="{Binding Backpacks}"
+						 MouseDoubleClick="ListBoxBackpack_MouseDoubleClick">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<CheckBox Content="🔒" IsChecked="{Binding Lock}" VerticalAlignment="Center"/>
+								<Label Content="{Binding BackupTime}"/>
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Grid>
+		</TabItem>
+		<TabItem Header="Setting">
+			<Grid>
+				<Grid.RowDefinitions>
 					<RowDefinition/>
-					<RowDefinition Height="11*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Global" FontWeight="Bold"/>
-                <Label Grid.Row="1" Content="Process Name"/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition Height="10*"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition Width="2*"/>
+				</Grid.ColumnDefinitions>
+				<Label Content="Global" FontWeight="Bold"/>
+				<Label Grid.Row="1" Content="Process Name"/>
 				<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=ProcessName, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
 				<Label Grid.Row="2" Content="Item Image Size"/>
 				<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=ItemImageSize, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-                <Label Grid.Row="3" Content="Reload Info/*.txt"/>
-				<Button Grid.Row="3" Grid.Column="1" Click="ButtonReloadInfo_Click"/>
-				<Label Grid.Row="4" Content="Error Log" FontWeight="Bold"/>
-                <ListBox Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding Info.ErrorLog}">
-                </ListBox>
-            </Grid>
-        </TabItem>
-    </TabControl>
+				<Label Grid.Row="3" Content="Keybord Hook"/>
+				<CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding Path=KeybordHook, Source={x:Static properties:Settings.Default}}" VerticalAlignment="Center"
+						  ToolTip="F1 -> All Inventory Item Count&#xa;F2 -> All Bag Item Count"/>
+				<Label Grid.Row="4" Content="Reload Info/*.txt"/>
+				<Button Grid.Row="4" Grid.Column="1" Click="ButtonReloadInfo_Click"/>
+				<Label Grid.Row="5" Content="Error Log" FontWeight="Bold"/>
+				<ListBox Grid.Row="6" Grid.ColumnSpan="2" ItemsSource="{Binding Info.ErrorLog}">
+				</ListBox>
+			</Grid>
+		</TabItem>
+	</TabControl>
 </Window>
