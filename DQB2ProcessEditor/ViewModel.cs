@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -29,7 +30,7 @@ namespace DQB2ProcessEditor
 			CreateBlock();
 		}
 
-		public bool InjectionItem(IEnumerable iterator)
+		public bool InjectionItemInfo(IEnumerable iterator)
 		{
 			var pm = new ProcessMemory();
 			if (!pm.CalcPlayerAddress()) return false;
@@ -53,6 +54,38 @@ namespace DQB2ProcessEditor
 
 						items[itemIndex].ID = info.ID;
 						items[itemIndex].Count = Properties.Settings.Default.ItemCount;
+						itemIndex++;
+						break;
+					}
+				}
+			}
+
+			pm.WriteItems(CarryType, items);
+			return true;
+		}
+
+		public bool InjectionItem(List<Item> TemplateItems)
+		{
+			var pm = new ProcessMemory();
+			if (!pm.CalcPlayerAddress()) return false;
+
+			// アイテムの情報取得.
+			// 存在しないところを探す.
+			var items = pm.ReadItem(CarryType);
+			if (items == null) return false;
+			int itemIndex = 0;
+			foreach (var item in TemplateItems)
+			{
+				if (itemIndex >= items.Count) break;
+
+
+				for (; itemIndex < items.Count; itemIndex++)
+				{
+					if (items[itemIndex].ID == 0)
+					{
+
+						items[itemIndex].ID = item.ID;
+						items[itemIndex].Count = item.Count;
 						itemIndex++;
 						break;
 					}
@@ -240,6 +273,7 @@ namespace DQB2ProcessEditor
 		{
 			Info.ItemLoad();
 			Info.ItemCategoryLoad();
+			Info.ItemTemplateLoad();
 			FilterItem();
 		}
 

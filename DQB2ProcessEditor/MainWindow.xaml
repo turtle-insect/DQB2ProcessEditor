@@ -131,7 +131,8 @@
 					<RowDefinition/>
 					<RowDefinition/>
 					<RowDefinition/>
-					<RowDefinition Height="3*"/>
+					<RowDefinition/>
+					<RowDefinition Height="2*"/>
 				</Grid.RowDefinitions>
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition/>
@@ -200,9 +201,14 @@
 					<Button Width="60" DataContext="3" Content="online4" Background="White" Click="ButtonImportBluePrintMemoryItem_Click"/>
 					<Button Width="60" Content="File" Click="ButtonImportBluePrintFileItem_Click"/>
 				</StackPanel>
-				<Label Grid.Row="10" Content="Export" FontWeight="Bold"/>
-				<Label Grid.Row="11" Content="Export BluePrint"/>
-				<StackPanel Grid.Row="11" Grid.Column="1" Orientation="Horizontal">
+				<Label Grid.Row="10" Content="Import Template Item"/>
+				<StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal">
+					<ComboBox Name="ComboBoxItemTemplate" SelectedIndex="0" Width="300" ItemsSource="{Binding Info.ItemTemplate}" DisplayMemberPath="Name"/>
+					<Button Width="60" DataContext="{Binding ElementName=ComboBoxItemTemplate, Path=SelectedItem.Items}" Click="ButtonImportTemplateItem_Click"/>
+				</StackPanel>
+				<Label Grid.Row="11" Content="Export" FontWeight="Bold"/>
+				<Label Grid.Row="12" Content="Export BluePrint"/>
+				<StackPanel Grid.Row="12" Grid.Column="1" Orientation="Horizontal">
 					<Button Width="60" DataContext="4" Background="LightPink" Click="ButtonExportBluePrint_Click"/>
 					<Button Width="60" DataContext="5" Background="LightBlue" Click="ButtonExportBluePrint_Click"/>
 					<Button Width="60" DataContext="6" Background="LightGreen" Click="ButtonExportBluePrint_Click"/>
@@ -212,8 +218,8 @@
 					<Button Width="60" DataContext="2" Content="online3" Background="White" Click="ButtonExportBluePrint_Click"/>
 					<Button Width="60" DataContext="3" Content="online4" Background="White" Click="ButtonExportBluePrint_Click"/>
 				</StackPanel>
-				<Label Grid.Row="12" Content="Backpack" FontWeight="Bold"/>
-				<ListBox Grid.Row="13" Grid.Column="1"
+				<Label Grid.Row="13" Content="Backpack" FontWeight="Bold"/>
+				<ListBox Grid.Row="14" Grid.Column="1"
 						 ItemsSource="{Binding Backpacks}"
 						 MouseDoubleClick="ListBoxBackpack_MouseDoubleClick">
 					<ListBox.ItemTemplate>
@@ -247,9 +253,9 @@
 				<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=ProcessName, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
 				<Label Grid.Row="2" Content="Item Image Size"/>
 				<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=ItemImageSize, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
-				<Label Grid.Row="3" Content="Keybord Hook"/>
-				<CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding Path=KeybordHook, Source={x:Static properties:Settings.Default}}" VerticalAlignment="Center"
-						  ToolTip="F1 -> All Inventory Item Count&#xa;F2 -> All Bag Item Count"/>
+				<Label Grid.Row="3" Content="Keyboard Hook"/>
+				<CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding Path=KeyboardHook, Source={x:Static properties:Settings.Default}}" VerticalAlignment="Center"
+						  ToolTip="F1  -> All Inventory Item Count&#xa;F2  -> All Bag Item Count&#xa;F10 -> Import Item Template first&#xa;F11 -> Import Item Template second"/>
 				<Label Grid.Row="4" Content="Reload Info/*.txt"/>
 				<Button Grid.Row="4" Grid.Column="1" Click="ButtonReloadInfo_Click"/>
 				<Label Grid.Row="5" Content="Error Log" FontWeight="Bold"/>

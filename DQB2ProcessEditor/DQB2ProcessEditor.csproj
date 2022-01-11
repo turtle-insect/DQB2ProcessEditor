@@ -92,7 +92,8 @@
     <Compile Include="Item.cs" />
     <Compile Include="ItemIDConverter.cs" />
     <Compile Include="ItemCategory.cs" />
-    <Compile Include="KeybordHook.cs" />
+    <Compile Include="ItemTemplate.cs" />
+    <Compile Include="KeyboardHook.cs" />
     <Compile Include="ProcessMemory.cs" />
     <Compile Include="ViewModel.cs" />
     <Page Include="MainWindow.xaml">

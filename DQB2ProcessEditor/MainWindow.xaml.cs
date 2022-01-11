@@ -13,7 +13,7 @@ namespace DQB2ProcessEditor
     /// </summary>
     public partial class MainWindow : Window
 	{
-		private KeybordHook mHook = new KeybordHook();
+		private KeyboardHook mHook = new KeyboardHook();
 
 		public MainWindow()
 		{
@@ -28,7 +28,7 @@ namespace DQB2ProcessEditor
 
 		private void MHook_KeyDownEvent(int keyCode)
 		{
-			if (Properties.Settings.Default.KeybordHook)
+			if (Properties.Settings.Default.KeyboardHook)
 			{
 				var vm = DataContext as ViewModel;
 				if (vm == null) return;
@@ -41,6 +41,20 @@ namespace DQB2ProcessEditor
 
 					case 113:   // F2
 						vm.WriteBagItemCount();
+						break;
+
+					case 121:   // F10
+						if (Info.GetInstance().ItemTemplate.Count > 0)
+						{
+							vm.InjectionItem(Info.GetInstance().ItemTemplate[0].Items);
+						}
+						break;
+
+					case 122:   // F11
+						if (Info.GetInstance().ItemTemplate.Count > 1)
+						{
+							vm.InjectionItem(Info.GetInstance().ItemTemplate[1].Items);
+						}
 						break;
 
 					default:
@@ -65,17 +79,28 @@ namespace DQB2ProcessEditor
 		private void InjectionItem(object sender, RoutedEventArgs e)
 		{
 			var dc = (sender as FrameworkElement)?.DataContext;
-			IEnumerable items = dc as IEnumerable;
+			var items = dc as IEnumerable;
 			if (items == null) return;
 
 			var vm = DataContext as ViewModel;
 			if (vm == null) return;
-			vm.InjectionItem(items);
+			vm.InjectionItemInfo(items);
 		}
 
 		private void InjectionSelectItem(object sender, RoutedEventArgs e)
 		{
 			var items = ListBoxFilterItem.SelectedItems as IEnumerable;
+			if (items == null) return;
+
+			var vm = DataContext as ViewModel;
+			if (vm == null) return;
+			vm.InjectionItemInfo(items);
+		}
+
+		private void ButtonImportTemplateItem_Click(object sender, RoutedEventArgs e)
+		{
+			var dc = (sender as FrameworkElement)?.DataContext;
+			var items = dc as List<Item>;
 			if (items == null) return;
 
 			var vm = DataContext as ViewModel;

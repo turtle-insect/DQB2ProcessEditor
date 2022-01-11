@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DQB2ProcessEditor
 {
-	internal class KeybordHook
+	internal class KeyboardHook
 	{
 		public delegate void KeyEventHandler(int keyCode);
 		public event KeyEventHandler KeyDownEvent;
@@ -37,7 +37,7 @@ namespace DQB2ProcessEditor
 		{
 			if (mHhook == IntPtr.Zero)
 			{
-				mProc = new HookProc(KeybordProc);
+				mProc = new HookProc(KeyboardProc);
 				using (var process = Process.GetCurrentProcess())
 				{
 					using (var module = process.MainModule)
@@ -56,7 +56,7 @@ namespace DQB2ProcessEditor
 			}
 		}
 
-		private IntPtr KeybordProc(int nCode, IntPtr wParam, IntPtr lParam)
+		private IntPtr KeyboardProc(int nCode, IntPtr wParam, IntPtr lParam)
 		{
 			if (wParam == (IntPtr)WM_KEYDOWN)
 			{

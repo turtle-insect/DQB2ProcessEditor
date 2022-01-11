@@ -62,12 +62,12 @@ namespace DQB2ProcessEditor.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool KeybordHook {
+        public bool KeyboardHook {
             get {
-                return ((bool)(this["KeybordHook"]));
+                return ((bool)(this["KeyboardHook"]));
             }
             set {
-                this["KeybordHook"] = value;
+                this["KeyboardHook"] = value;
             }
         }
     }

@@ -14,6 +14,8 @@ namespace DQB2ProcessEditor
 
 		public List<ItemCategory> ItemCategory { get; private set; } = new List<ItemCategory>(20);
 
+		public List<ItemTemplate> ItemTemplate { get; private set; } = new List<ItemTemplate>(10);
+
 		// Category -> <ID, Name>
 		private Dictionary<UInt16, Dictionary<UInt16, String>> AllBlock = new Dictionary<UInt16, Dictionary<UInt16, String>>();
 		public ObservableCollection<String> ErrorLog { get; private set; } = new ObservableCollection<String>();
@@ -56,6 +58,41 @@ namespace DQB2ProcessEditor
 				}
 
 				AllItem.Add(info);
+			}
+		}
+
+		public void ItemTemplateLoad()
+		{
+			String path = @"info\template";
+			if (!System.IO.Directory.Exists(path)) return;
+
+			ItemTemplate.Clear();
+			foreach (var filename in System.IO.Directory.GetFiles(path))
+			{
+				var template = new ItemTemplate();
+				template.Name = System.IO.Path.GetFileName(filename);
+
+				foreach (var text in System.IO.File.ReadAllLines(filename))
+				{
+					var line = text.Replace("\n", "");
+					line = line.Replace("\r", "");
+					if (line.Length < 3) continue;
+					if (line[0] == '#') continue;
+
+					var items = line.Split('\t');
+					if (items.Length < 2) continue;
+
+					var item = new Item();
+					item.ID = Convert.ToUInt16(items[0]);
+					item.Count = Convert.ToUInt16(items[1]);
+					if (item.Count > 999) item.Count = 999;
+					template.Items.Add(item);
+				}
+
+				if (template.Items.Count > 0)
+				{
+					ItemTemplate.Add(template);
+				}
 			}
 		}
 
