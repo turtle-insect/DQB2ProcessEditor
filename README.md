@@ -18,6 +18,9 @@ https://store.steampowered.com/app/1072420
 # 一緒に
 https://github.com/turtle-insect/DQB2  
 
+# Build環境
+* Windows 10(64bit)
+* Visual Studio 2022
 
 # 詳細
 ## Item Injection
