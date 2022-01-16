@@ -12,6 +12,9 @@ Steam Dragon Quest Builders 2 Process Editor
 # 概要
 STEAM ドラゴンクエストビルダーズ2のプロセスメモリ編集Tool
 
+# ソフト
+https://store.steampowered.com/app/1072420
+
 # 一緒に
 https://github.com/turtle-insect/DQB2  
 
