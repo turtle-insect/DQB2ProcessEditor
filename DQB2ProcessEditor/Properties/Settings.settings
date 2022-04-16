@@ -5,14 +5,14 @@
     <Setting Name="ItemCount" Type="System.UInt16" Scope="User">
       <Value Profile="(Default)">500</Value>
     </Setting>
-    <Setting Name="ProcessName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">DQB2</Value>
-    </Setting>
     <Setting Name="ItemImageSize" Type="System.UInt16" Scope="User">
       <Value Profile="(Default)">64</Value>
     </Setting>
     <Setting Name="KeyboardHook" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ProcessIndex" Type="System.UInt16" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

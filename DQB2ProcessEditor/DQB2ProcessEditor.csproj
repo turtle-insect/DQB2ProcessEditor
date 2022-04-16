@@ -94,6 +94,7 @@
     <Compile Include="ItemCategory.cs" />
     <Compile Include="ItemTemplate.cs" />
     <Compile Include="KeyboardHook.cs" />
+    <Compile Include="ProcessInfo.cs" />
     <Compile Include="ProcessMemory.cs" />
     <Compile Include="ViewModel.cs" />
     <Page Include="MainWindow.xaml">

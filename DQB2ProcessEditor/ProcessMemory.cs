@@ -10,6 +10,7 @@ namespace DQB2ProcessEditor
 			eInventory,
 			eBag,
 		}
+
 		Dictionary<CarryType, Carry> Carrys = new Dictionary<CarryType, Carry>()
 		{
 			{CarryType.eInventory,  new Carry(){ Distance = 0xB88650, ItemCount = 15 } },
@@ -18,10 +19,9 @@ namespace DQB2ProcessEditor
 		private readonly Memory.Mem mMemory = new Memory.Mem();
 		private UInt64 mBaseAddress;
 
-		public bool CalcPlayerAddress()
+		public bool CalcPlayerAddress(ProcessInfo info)
 		{
-			String ProcName = Properties.Settings.Default.ProcessName;
-			int pID = mMemory.GetProcIdFromName(ProcName);
+			int pID = mMemory.GetProcIdFromName(info.Name);
 			if (mMemory.OpenProcess(pID) == false) return false;
 
 			// 主人公のアドレス取得からインベントリのアドレス取得
@@ -29,11 +29,9 @@ namespace DQB2ProcessEditor
 			// mov rax, [DQB2.exe + 0x137E490]
 			// mov rcx, [rax + 60]
 
-			Byte[] buffer = mMemory.ReadBytes(ProcName + ".exe+0x137E490,0x60", 8);
-			UInt64 address = BitConverter.ToUInt64(buffer, 0);
-			if (address == 0) return false;
-
-			mBaseAddress = address;
+			Byte[] buffer = mMemory.ReadBytes(info.Name + $".exe+{info.Address},0x60", 8);
+			mBaseAddress = BitConverter.ToUInt64(buffer, 0);
+			if (mBaseAddress == 0) return false;
 			return true;
 		}
 

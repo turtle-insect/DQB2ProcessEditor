@@ -9,6 +9,7 @@ namespace DQB2ProcessEditor
     class ViewModel
 	{
 		public Info Info { get; private set; } = Info.GetInstance();
+		public List<ProcessInfo> processInfos { get; private set; } = new List<ProcessInfo>();
 		public bool ItemFilterTile { get; set; } = false;
 		public String ItemNameFilter { get; set; }
 		public UInt16 ItemCategoryFilter { get; set; }
@@ -21,6 +22,10 @@ namespace DQB2ProcessEditor
 		public ViewModel()
 		{
 			LoadInfo();
+
+			processInfos.Add(new ProcessInfo() { Name = "DQB2", Address = "0x137E490" });
+			processInfos.Add(new ProcessInfo() { Name = "DQB2_EU", Address = "0x13AF558" });
+			processInfos.Add(new ProcessInfo() { Name = "DQB2_AS", Address = "0x139D3F8" });
 		}
 
 		public void LoadInfo()
@@ -32,8 +37,8 @@ namespace DQB2ProcessEditor
 
 		public bool InjectionItemInfo(IEnumerable iterator)
 		{
-			var pm = new ProcessMemory();
-			if (!pm.CalcPlayerAddress()) return false;
+			var pm = CreateProcessMemory();
+			if (pm == null) return false;
 
 			// アイテムの情報取得.
 			// 存在しないところを探す.
@@ -66,8 +71,8 @@ namespace DQB2ProcessEditor
 
 		public bool InjectionItem(List<Item> TemplateItems)
 		{
-			var pm = new ProcessMemory();
-			if (!pm.CalcPlayerAddress()) return false;
+			var pm = CreateProcessMemory();
+			if (pm == null) return false;
 
 			// アイテムの情報取得.
 			// 存在しないところを探す.
@@ -113,8 +118,8 @@ namespace DQB2ProcessEditor
 
 		private bool WriteItemCount(ProcessMemory.CarryType type)
 		{
-			var pm = new ProcessMemory();
-			if (!pm.CalcPlayerAddress()) return false;
+			var pm = CreateProcessMemory();
+			if (pm == null) return false;
 
 			// アイテムの情報取得.
 			// 存在しているところを探す.
@@ -134,8 +139,8 @@ namespace DQB2ProcessEditor
 
 		public bool ClearItem()
 		{
-			var pm = new ProcessMemory();
-			if (!pm.CalcPlayerAddress()) return false;
+			var pm = CreateProcessMemory();
+			if (pm == null) return false;
 
 			pm.ClearItem(ClearBagPageIndex);
 			return true;
@@ -143,8 +148,8 @@ namespace DQB2ProcessEditor
 
 		public bool ClearItem(ProcessMemory.CarryType type)
 		{
-			var pm = new ProcessMemory();
-			if (!pm.CalcPlayerAddress()) return false;
+			var pm = CreateProcessMemory();
+			if (pm == null) return false;
 
 			if (Backpacks.Count > 50)
 			{
@@ -190,8 +195,8 @@ namespace DQB2ProcessEditor
 
 		public bool ImportBluePrint(String filename, int index)
 		{
-			var pm = new ProcessMemory();
-			if (!pm.CalcPlayerAddress()) return false;
+			var pm = CreateProcessMemory();
+			if (pm == null) return false;
 
 			if (!System.IO.File.Exists(filename)) return false;
 			Byte[] buffer = System.IO.File.ReadAllBytes(filename);
@@ -203,8 +208,8 @@ namespace DQB2ProcessEditor
 
 		public bool ExportBluePrint(String filename, int index)
 		{
-			var pm = new ProcessMemory();
-			if (!pm.CalcPlayerAddress()) return false;
+			var pm = CreateProcessMemory();
+			if (pm == null) return false;
 
 			Byte[] buffer = pm.ReadBluePrint(index);
 			System.IO.File.WriteAllBytes(filename, buffer);
@@ -213,8 +218,8 @@ namespace DQB2ProcessEditor
 
 		public bool ClearBluePrint(int index)
 		{
-			var pm = new ProcessMemory();
-			if (!pm.CalcPlayerAddress()) return false;
+			var pm = CreateProcessMemory();
+			if (pm == null) return false;
 
 			pm.ClearBluePrint(index);
 			return true;
@@ -222,8 +227,8 @@ namespace DQB2ProcessEditor
 
 		public bool ImportBluePrintItem(int index)
 		{
-			var pm = new ProcessMemory();
-			if (!pm.CalcPlayerAddress()) return false;
+			var pm = CreateProcessMemory();
+			if (pm == null) return false;
 
 			Byte[] buffer = pm.ReadBluePrint(index);
 			return ImportBluePrintItem(buffer);
@@ -238,8 +243,8 @@ namespace DQB2ProcessEditor
 
 		private bool ImportBluePrintItem(Byte[] buffer)
 		{
-			var pm = new ProcessMemory();
-			if (!pm.CalcPlayerAddress()) return false;
+			var pm = CreateProcessMemory();
+			if (pm == null) return false;
 
 			var append = Info.BluePrintItemLoad(buffer);
 			if (append == null || append.Count == 0) return false;
@@ -262,11 +267,19 @@ namespace DQB2ProcessEditor
 
 		public bool BackpaktoBag(Backpack backpack)
         {
-			var pm = new ProcessMemory();
-			if (!pm.CalcPlayerAddress()) return false;
+			var pm = CreateProcessMemory();
+			if (pm == null) return false;
 
 			pm.WriteItems(backpack.Type, backpack.Items);
 			return true;
+		}
+
+		private ProcessMemory CreateProcessMemory()
+		{
+			var pm = new ProcessMemory();
+			if (!pm.CalcPlayerAddress(processInfos[Properties.Settings.Default.ProcessIndex])) return null;
+
+			return pm;
 		}
 
 		private void CreateItem()

@@ -250,7 +250,7 @@
 				</Grid.ColumnDefinitions>
 				<Label Content="Global" FontWeight="Bold"/>
 				<Label Grid.Row="1" Content="Process Name"/>
-				<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=ProcessName, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
+				<ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding processInfos}" SelectedIndex="{Binding Path=ProcessIndex, Source={x:Static properties:Settings.Default}}" DisplayMemberPath="Name"/>
 				<Label Grid.Row="2" Content="Item Image Size"/>
 				<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=ItemImageSize, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
 				<Label Grid.Row="3" Content="Keyboard Hook"/>
