@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Windows.Media.Imaging;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace DQB2ProcessEditor
 {
-    class Info
+	internal class Info
 	{
 		private static readonly Info mThis = new Info();
 		public List<ItemInfo> AllItem { get; private set; } = new List<ItemInfo>(4000);
@@ -164,7 +164,7 @@ namespace DQB2ProcessEditor
 				UInt16 blockID = Convert.ToUInt16(items[1]);
 				String name = items[2];
 
-				Dictionary<UInt16, String> blocks = null; 
+				Dictionary<UInt16, String>? blocks = null;
 				if (AllBlock.ContainsKey(category))
 				{
 					blocks = AllBlock[category];
@@ -175,8 +175,8 @@ namespace DQB2ProcessEditor
 					AllBlock.Add(category, blocks);
 				}
 
-				if(blocks.ContainsKey(blockID))
-                {
+				if (blocks.ContainsKey(blockID))
+				{
 					// カテゴリ、IDの重複
 					// ありえないケース
 					// 正しい値が調査出来るまで発生する
@@ -185,13 +185,13 @@ namespace DQB2ProcessEditor
 					ErrorLog.Add(log);
 					continue;
 				}
-				
+
 				blocks.Add(blockID, name);
 			}
 		}
 
 		public List<Item> BluePrintItemLoad(Byte[] buffer)
-        {
+		{
 			var items = new List<Item>();
 
 			if (buffer.Length != 0x30008) return items;
@@ -229,7 +229,7 @@ namespace DQB2ProcessEditor
 				// 水中にある場合、カテゴリーが揺れるので補完する
 				// 1780,2047のカテゴリから探すと良さそう
 				var categoryList = new List<UInt16>() { category, 2047, 1780 };
-				List<UInt16> ids = null;
+				List<UInt16>? ids = null;
 				foreach (var id in categoryList)
 				{
 					ids = Search(id, blockID);
@@ -266,9 +266,9 @@ namespace DQB2ProcessEditor
 
 		private BitmapImage ImageLoad(String filename)
 		{
-			if(!System.IO.File.Exists(filename)) return null;
-
 			var image = new BitmapImage();
+			if (!System.IO.File.Exists(filename)) return image;
+
 			image.BeginInit();
 			image.CacheOption = BitmapCacheOption.OnLoad;
 			image.UriSource = new Uri(filename);
@@ -291,8 +291,8 @@ namespace DQB2ProcessEditor
 			{
 				if (name == info.Name)
 				{
-					if(info.Link)
-                    {
+					if (info.Link)
+					{
 						ids.Clear();
 						ids.Add(info.ID);
 						break;

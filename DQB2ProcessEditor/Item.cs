@@ -2,7 +2,7 @@
 
 namespace DQB2ProcessEditor
 {
-    class Item
+	internal class Item
 	{
 		public UInt16 ID { get; set; }
 		public UInt16 Count { get; set; }

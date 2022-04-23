@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace DQB2ProcessEditor
 {
-    class ItemIDConverter : IValueConverter
+	internal class ItemIDConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -22,7 +19,7 @@ namespace DQB2ProcessEditor
             {
                 sb.Append("☆");
             }
-            if(info.Link)
+            if (info.Link)
             {
                 sb.Append(" 🔗");
             }

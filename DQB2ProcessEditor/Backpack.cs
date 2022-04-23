@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DQB2ProcessEditor
 {
-    class Backpack
-    {
+	internal class Backpack
+	{
         public bool Lock { get; set; }
         public ProcessMemory.CarryType Type { get; private set; }
         public String BackupTime { get; private set; }
@@ -18,7 +15,7 @@ namespace DQB2ProcessEditor
             Type = type;
             DateTime dt = DateTime.Now;
             BackupTime = $"{dt.Year}/{dt.Month}/{dt.Day} {dt.Hour}:{dt.Minute}:{dt.Second}";
-            if(type == ProcessMemory.CarryType.eBag)
+            if (type == ProcessMemory.CarryType.eBag)
             {
                 BackupTime += " 👜";
             }

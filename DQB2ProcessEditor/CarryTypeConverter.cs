@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace DQB2ProcessEditor
 {
-    class CarryTypeConverter : IValueConverter
+	internal class CarryTypeConverter : IValueConverter
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{

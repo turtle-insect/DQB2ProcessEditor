@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DQB2ProcessEditor
 {
 	internal class KeyboardHook
 	{
 		public delegate void KeyEventHandler(int keyCode);
-		public event KeyEventHandler KeyDownEvent;
+		public event KeyEventHandler? KeyDownEvent;
 
 		private const int WH_KEYBOARD_LL = 0x000D;
 		private const int WM_KEYDOWN = 0x0100;
@@ -31,7 +27,7 @@ namespace DQB2ProcessEditor
 		private static extern IntPtr GetModuleHandle(string lpModuleName);
 
 		private IntPtr mHhook = IntPtr.Zero;
-		private HookProc mProc;
+		private HookProc? mProc;
 
 		public void Hook()
 		{
@@ -40,9 +36,11 @@ namespace DQB2ProcessEditor
 				mProc = new HookProc(KeyboardProc);
 				using (var process = Process.GetCurrentProcess())
 				{
-					using (var module = process.MainModule)
+					using (var module = process?.MainModule)
 					{
-						mHhook = SetWindowsHookEx(WH_KEYBOARD_LL, mProc, module.BaseAddress, 0);
+						IntPtr address = module?.BaseAddress ?? IntPtr.Zero;
+						if (address == IntPtr.Zero) return;
+						mHhook = SetWindowsHookEx(WH_KEYBOARD_LL, mProc, address, 0);
 					}
 				}
 			}

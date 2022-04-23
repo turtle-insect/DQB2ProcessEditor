@@ -6,12 +6,12 @@ using System.Linq;
 
 namespace DQB2ProcessEditor
 {
-    class ViewModel
+	internal class ViewModel
 	{
 		public Info Info { get; private set; } = Info.GetInstance();
 		public List<ProcessInfo> processInfos { get; private set; } = new List<ProcessInfo>();
 		public bool ItemFilterTile { get; set; } = false;
-		public String ItemNameFilter { get; set; }
+		public String ItemNameFilter { get; set; } = "";
 		public UInt16 ItemCategoryFilter { get; set; }
 		public ProcessMemory.CarryType CarryType { get; set; }
 		public int ClearBagPageIndex { get; set; }
@@ -29,7 +29,7 @@ namespace DQB2ProcessEditor
 		}
 
 		public void LoadInfo()
-        {
+		{
 			CreateItem();
 			CreateImage();
 			CreateBlock();
@@ -45,13 +45,13 @@ namespace DQB2ProcessEditor
 			var items = pm.ReadItem(CarryType);
 			if (items == null) return false;
 			int itemIndex = 0;
-			foreach(var item in iterator)
+			foreach (var item in iterator)
 			{
 				if (itemIndex >= items.Count) break;
 
 				var info = item as ItemInfo;
 				if (info == null) continue;
-				
+
 				for (; itemIndex < items.Count; itemIndex++)
 				{
 					if (items[itemIndex].ID == 0)
@@ -153,13 +153,13 @@ namespace DQB2ProcessEditor
 
 			if (Backpacks.Count > 50)
 			{
-				for(int i = 50; i >= 0; i++)
-                {
-					if(Backpacks[i].Lock == false)
-                    {
+				for (int i = 50; i >= 0; i++)
+				{
+					if (Backpacks[i].Lock == false)
+					{
 						Backpacks.RemoveAt(i);
 						break;
-                    }
+					}
 				}
 			}
 			Backpacks.Insert(0, new Backpack(type, pm.ReadItem(type)));
@@ -174,7 +174,7 @@ namespace DQB2ProcessEditor
 			String originalFilter = ItemNameFilter;
 			String hiraganaFilter = ToHiragana(ItemNameFilter);
 			UInt16 category = 0;
-			if(Info.ItemCategory.Count > ItemCategoryFilter)
+			if (Info.ItemCategory.Count > ItemCategoryFilter)
 			{
 				category = Info.ItemCategory[ItemCategoryFilter].ID;
 			}
@@ -184,8 +184,8 @@ namespace DQB2ProcessEditor
 				if (category == 0 || category == info.Category)
 				{
 					if (String.IsNullOrEmpty(ItemNameFilter) ||
-						info.Name.IndexOf(ItemNameFilter) >= 0 ||
-						info.Ruby.IndexOf(hiraganaFilter) >= 0)
+						info.Name?.IndexOf(ItemNameFilter) >= 0 ||
+						info.Ruby?.IndexOf(hiraganaFilter) >= 0)
 					{
 						FilterItems.Add(info);
 					}
@@ -235,7 +235,7 @@ namespace DQB2ProcessEditor
 		}
 
 		public bool ImportBluePrintItem(String filename)
-        {
+		{
 			if (!System.IO.File.Exists(filename)) return false;
 			Byte[] buffer = System.IO.File.ReadAllBytes(filename);
 			return ImportBluePrintItem(buffer);
@@ -266,7 +266,7 @@ namespace DQB2ProcessEditor
 		}
 
 		public bool BackpaktoBag(Backpack backpack)
-        {
+		{
 			var pm = CreateProcessMemory();
 			if (pm == null) return false;
 
@@ -274,7 +274,7 @@ namespace DQB2ProcessEditor
 			return true;
 		}
 
-		private ProcessMemory CreateProcessMemory()
+		private ProcessMemory? CreateProcessMemory()
 		{
 			var pm = new ProcessMemory();
 			if (!pm.CalcPlayerAddress(processInfos[Properties.Settings.Default.ProcessIndex])) return null;
@@ -296,14 +296,14 @@ namespace DQB2ProcessEditor
 		}
 
 		private void CreateBlock()
-        {
+		{
 			Info.BlockLoad();
-        }
+		}
 
 		private String ToHiragana(String value)
 		{
-			if (value == null) return null;
 			return new String(value.Select(c => (c >= 'ァ' && c <= 'ヶ') ? (char)(c + 'ぁ' - 'ァ') : c).ToArray());
 		}
 	}
 }
+

@@ -2,7 +2,7 @@
 
 namespace DQB2ProcessEditor
 {
-    class Carry
+	internal class Carry
 	{
 		public UInt64 Distance { get; set; }
 		public int ItemCount { get; set; }

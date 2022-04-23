@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DQB2ProcessEditor
 {
-    class ProcessMemory
+	internal class ProcessMemory
 	{
 		public enum CarryType
 		{
@@ -37,9 +37,9 @@ namespace DQB2ProcessEditor
 
 		public List<Item> ReadItem(CarryType type)
 		{
-			if (mBaseAddress == 0) return null;
-
 			var Items = new List<Item>();
+			if (mBaseAddress == 0) return Items;
+			
 			var carry = Carrys[type];
 			UInt64 address = mBaseAddress + carry.Distance;
 			Byte[] buffer = mMemory.ReadBytes(address.ToString("x"), carry.ItemCount * 2 * 2);

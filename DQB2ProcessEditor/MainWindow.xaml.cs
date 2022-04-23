@@ -1,17 +1,17 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.Win32;
 
 namespace DQB2ProcessEditor
 {
-    /// <summary>
-    /// MainWindow.xaml の相互作用ロジック
-    /// </summary>
-    public partial class MainWindow : Window
+	/// <summary>
+	/// Interaction logic for MainWindow.xaml
+	/// </summary>
+	public partial class MainWindow : Window
 	{
 		private KeyboardHook mHook = new KeyboardHook();
 
@@ -163,7 +163,7 @@ namespace DQB2ProcessEditor
 		}
 
 		private void ButtonImportBluePrintFileItem_Click(object sender, RoutedEventArgs e)
-        {
+		{
 			var vm = DataContext as ViewModel;
 			if (vm == null) return;
 
@@ -224,7 +224,7 @@ namespace DQB2ProcessEditor
 		}
 
 		private void ButtonReloadInfo_Click(object sender, RoutedEventArgs e)
-        {
+		{
 			var vm = DataContext as ViewModel;
 			if (vm == null) return;
 
