@@ -26,6 +26,12 @@ namespace DQB2ProcessEditor
 			mHook.Hook();
 		}
 
+		private void Window_Closed(object sender, EventArgs e)
+		{
+			mHook.UnHook();
+			Properties.Settings.Default.Save();
+		}
+
 		private void MHook_KeyDownEvent(int keyCode)
 		{
 			if (Properties.Settings.Default.KeyboardHook)
@@ -63,30 +69,6 @@ namespace DQB2ProcessEditor
 			}
 		}
 
-		private void Window_Closed(object sender, EventArgs e)
-		{
-			mHook.UnHook();
-			Properties.Settings.Default.Save();
-		}
-
-		private void FilterItem(object sender, RoutedEventArgs e)
-		{
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-			vm.FilterItem();
-		}
-
-		private void InjectionItem(object sender, RoutedEventArgs e)
-		{
-			var dc = (sender as FrameworkElement)?.DataContext;
-			var items = dc as IEnumerable;
-			if (items == null) return;
-
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-			vm.InjectionItemInfo(items);
-		}
-
 		private void InjectionSelectItem(object sender, RoutedEventArgs e)
 		{
 			var items = ListBoxFilterItem.SelectedItems as IEnumerable;
@@ -95,25 +77,6 @@ namespace DQB2ProcessEditor
 			var vm = DataContext as ViewModel;
 			if (vm == null) return;
 			vm.InjectionItemInfo(items);
-		}
-
-		private void ButtonImportTemplateItem_Click(object sender, RoutedEventArgs e)
-		{
-			var dc = (sender as FrameworkElement)?.DataContext;
-			var items = dc as List<Item>;
-			if (items == null) return;
-
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-			vm.InjectionItem(items);
-		}
-
-		private void ButtonWriteItemCount_Click(object sender, RoutedEventArgs e)
-		{
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-
-			vm.WriteItemCount();
 		}
 
 		private void ListBoxBackpack_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -125,110 +88,6 @@ namespace DQB2ProcessEditor
 			if (vm == null) return;
 
 			vm.BackpaktoBag(backpack);
-		}
-
-		private void ButtonClearInventory_Click(object sender, RoutedEventArgs e)
-		{
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-
-			vm.ClearItem(ProcessMemory.CarryType.eInventory);
-		}
-
-		private void ButtonClearBag_Click(object sender, RoutedEventArgs e)
-		{
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-
-			vm.ClearItem(ProcessMemory.CarryType.eBag);
-		}
-
-		private void ButtonClearBagPage_Click(object sender, RoutedEventArgs e)
-		{
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-
-			vm.ClearItem();
-		}
-
-		private void ButtonImportBluePrintMemoryItem_Click(object sender, RoutedEventArgs e)
-		{
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-
-			int index = 0;
-			int.TryParse((sender as Button)?.DataContext.ToString(), out index);
-
-			vm.ImportBluePrintItem(index);
-		}
-
-		private void ButtonImportBluePrintFileItem_Click(object sender, RoutedEventArgs e)
-		{
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-
-			var dlg = new OpenFileDialog();
-			if (dlg.ShowDialog() == false) return;
-
-			vm.ImportBluePrintItem(dlg.FileName);
-		}
-
-		private void ButtonImportBluePrint_Click(object sender, RoutedEventArgs e)
-		{
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-
-			var dlg = new OpenFileDialog();
-			if (dlg.ShowDialog() == false) return;
-
-			int index = 0;
-			int.TryParse((sender as Button)?.DataContext.ToString(), out index);
-
-			vm.ImportBluePrint(dlg.FileName, index);
-		}
-
-		private void ButtonExportBluePrint_Click(object sender, RoutedEventArgs e)
-		{
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-
-			var dlg = new SaveFileDialog();
-			if (dlg.ShowDialog() == false) return;
-
-			int index = 0;
-			int.TryParse((sender as Button)?.DataContext.ToString(), out index);
-
-			vm.ExportBluePrint(dlg.FileName, index);
-		}
-
-		private void ButtonClearBluePrint_Click(object sender, RoutedEventArgs e)
-		{
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-
-			int index = 0;
-			int.TryParse((sender as Button)?.DataContext.ToString(), out index);
-
-			vm.ClearBluePrint(index);
-		}
-
-		private void ButtonClearAllBluePrint_Click(object sender, RoutedEventArgs e)
-		{
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-
-			for (int index = 0; index < 4; index++)
-			{
-				vm.ClearBluePrint(index);
-			}
-		}
-
-		private void ButtonReloadInfo_Click(object sender, RoutedEventArgs e)
-		{
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-
-			vm.LoadInfo();
 		}
 	}
 }

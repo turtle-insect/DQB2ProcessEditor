@@ -44,8 +44,8 @@
 				<Label Grid.Row="1" Content="Filter" VerticalContentAlignment="Center"/>
 				<DockPanel Grid.Row="1" Grid.Column="1">
 					<CheckBox DockPanel.Dock="Right" Content="Tile" IsChecked="{Binding ItemFilterTile}" VerticalAlignment="Center"/>
-					<ComboBox ItemsSource="{Binding Info.ItemCategory}" SelectionChanged="FilterItem"
-								  SelectedIndex="{Binding ItemCategoryFilter}" Width="150">
+					<ComboBox ItemsSource="{Binding Info.ItemCategory}"
+								  SelectedIndex="{Binding ItemCategoryIndex}" Width="150">
 						<ComboBox.ItemTemplate>
 							<DataTemplate>
 								<StackPanel Orientation="Horizontal">
@@ -56,7 +56,7 @@
 						</ComboBox.ItemTemplate>
 					</ComboBox>
 					<TextBox VerticalContentAlignment="Center"
-								 Text="{Binding ItemNameFilter, UpdateSourceTrigger=PropertyChanged}" TextChanged="FilterItem"/>
+								 Text="{Binding ItemNameFilter, UpdateSourceTrigger=PropertyChanged}"/>
 				</DockPanel>
 				<ListBox x:Name="ListBoxFilterItem" Grid.Row="2" Grid.ColumnSpan="2"
 							 ItemsSource="{Binding FilterItems}" SelectionMode="Extended" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -111,8 +111,7 @@
 						</Style>
 					</ListBox.Style>
 				</ListBox>
-				<Button Grid.Row="3" Grid.ColumnSpan="2" Content="Injection All Item" DataContext="{Binding ElementName=ListBoxFilterItem, Path=Items}"
-						Click="InjectionItem"/>
+				<Button Grid.Row="3" Grid.ColumnSpan="2" Content="Injection All Item" Command="{Binding ImportItemCommand}"/>
 			</Grid>
 		</TabItem>
 		<TabItem Header="Advance">
@@ -149,15 +148,15 @@
 				</DockPanel>
 				<DockPanel Grid.Row="1" Grid.Column="1">
 					<TextBox Text="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Width="80"/>
-					<Button Width="60" Click="ButtonWriteItemCount_Click"/>
+					<Button Width="60" Command="{Binding WriteItemCountCommand}"/>
 					<Slider Margin="5,0,5,0" Minimum="1" Maximum="999" VerticalAlignment="Center"
 							Value="{Binding Path=ItemCount, Source={x:Static properties:Settings.Default}}"/>
 				</DockPanel>
 				<Label Grid.Row="2" Content="Clear" FontWeight="Bold"/>
 				<Label Grid.Row="3" Content="Clear Inventory All"/>
-				<Button Grid.Row="3" Grid.Column="1" Click="ButtonClearInventory_Click"/>
+				<Button Grid.Row="3" Grid.Column="1" Command="{Binding ClearItemCommand}" CommandParameter="0"/>
 				<Label Grid.Row="4" Content="Clear Bag All"/>
-				<Button Grid.Row="4" Grid.Column="1" Click="ButtonClearBag_Click"/>
+				<Button Grid.Row="4" Grid.Column="1" Command="{Binding ClearItemCommand}" CommandParameter="1"/>
 				<Label Grid.Row="5" Content="Clear Bag"/>
 				<StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal">
 					<ComboBox SelectedIndex="{Binding ClearBagPageIndex}" Width="80">
@@ -169,54 +168,54 @@
 						<ComboBoxItem Content="Page 6"/>
 						<ComboBoxItem Content="Page 7"/>
 					</ComboBox>
-					<Button Width="60" Click="ButtonClearBagPage_Click"/>
+					<Button Width="60" Command="{Binding ClearBagPageCommand}"/>
 				</StackPanel>
 				<Label Grid.Row="6" Content="Clear BluePrint"/>
 				<StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal">
-					<Button Width="60" DataContext="4" Background="LightPink" Click="ButtonClearBluePrint_Click"/>
-					<Button Width="60" DataContext="5" Background="LightBlue" Click="ButtonClearBluePrint_Click"/>
-					<Button Width="60" DataContext="6" Background="LightGreen" Click="ButtonClearBluePrint_Click"/>
-					<Button Width="60" DataContext="7" Background="LightYellow" Click="ButtonClearBluePrint_Click"/>
-					<Button Width="60" DataContext="0" Background="White" Click="ButtonClearBluePrint_Click"/>
-					<Button Width="60" Content="ALL" Click="ButtonClearAllBluePrint_Click"/>
+					<Button Width="60" Background="LightPink" Command="{Binding ClearBluePrintCommand}" CommandParameter="4"/>
+					<Button Width="60" Background="LightBlue" Command="{Binding ClearBluePrintCommand}" CommandParameter="5"/>
+					<Button Width="60" Background="LightGreen" Command="{Binding ClearBluePrintCommand}" CommandParameter="6"/>
+					<Button Width="60" Background="LightYellow" Command="{Binding ClearBluePrintCommand}" CommandParameter="7"/>
+					<Button Width="60" Background="White" Command="{Binding ClearBluePrintCommand}" CommandParameter="0"/>
+					<Button Width="60" Content="ALL" Command="{Binding ClearBluePrintAllCommand}"/>
 				</StackPanel>
 				<Label Grid.Row="7" Content="Import" FontWeight="Bold"/>
 				<Label Grid.Row="8" Content="Import BluePrint"/>
 				<StackPanel Grid.Row="8" Grid.Column="1" Orientation="Horizontal">
-					<Button Width="60" DataContext="4" Background="LightPink" Click="ButtonImportBluePrint_Click"/>
-					<Button Width="60" DataContext="5" Background="LightBlue" Click="ButtonImportBluePrint_Click"/>
-					<Button Width="60" DataContext="6" Background="LightGreen" Click="ButtonImportBluePrint_Click"/>
-					<Button Width="60" DataContext="7" Background="LightYellow" Click="ButtonImportBluePrint_Click"/>
-					<Button Width="60" DataContext="0" Background="White" Click="ButtonImportBluePrint_Click"/>
+					<Button Width="60" Background="LightPink" Command="{Binding ImportBluePrintCommand}" CommandParameter="4"/>
+					<Button Width="60" Background="LightBlue" Command="{Binding ImportBluePrintCommand}" CommandParameter="5"/>
+					<Button Width="60" Background="LightGreen" Command="{Binding ImportBluePrintCommand}" CommandParameter="6"/>
+					<Button Width="60" Background="LightYellow" Command="{Binding ImportBluePrintCommand}" CommandParameter="7"/>
+					<Button Width="60" Background="White" Command="{Binding ImportBluePrintCommand}" CommandParameter="0"/>
 				</StackPanel>
 				<Label Grid.Row="9" Content="Import BluePrint's Item in Bag"/>
 				<StackPanel Grid.Row="9" Grid.Column="1" Orientation="Horizontal">
-					<Button Width="60" DataContext="4" Background="LightPink" Click="ButtonImportBluePrintMemoryItem_Click"/>
-					<Button Width="60" DataContext="5" Background="LightBlue" Click="ButtonImportBluePrintMemoryItem_Click"/>
-					<Button Width="60" DataContext="6" Background="LightGreen" Click="ButtonImportBluePrintMemoryItem_Click"/>
-					<Button Width="60" DataContext="7" Background="LightYellow" Click="ButtonImportBluePrintMemoryItem_Click"/>
-					<Button Width="60" DataContext="0" Content="online1" Background="White" Click="ButtonImportBluePrintMemoryItem_Click"/>
-					<Button Width="60" DataContext="1" Content="online2" Background="White" Click="ButtonImportBluePrintMemoryItem_Click"/>
-					<Button Width="60" DataContext="2" Content="online3" Background="White" Click="ButtonImportBluePrintMemoryItem_Click"/>
-					<Button Width="60" DataContext="3" Content="online4" Background="White" Click="ButtonImportBluePrintMemoryItem_Click"/>
-					<Button Width="60" Content="File" Click="ButtonImportBluePrintFileItem_Click"/>
+					<Button Width="60" Background="LightPink" Command="{Binding ImportBluePrintItemMemoryCommand}" CommandParameter="4"/>
+					<Button Width="60" Background="LightBlue" Command="{Binding ImportBluePrintItemMemoryCommand}" CommandParameter="5"/>
+					<Button Width="60" Background="LightGreen" Command="{Binding ImportBluePrintItemMemoryCommand}" CommandParameter="6"/>
+					<Button Width="60" Background="LightYellow" Command="{Binding ImportBluePrintItemMemoryCommand}" CommandParameter="7"/>
+					<Button Width="60" Content="online1" Background="White" Command="{Binding ImportBluePrintItemMemoryCommand}" CommandParameter="0"/>
+					<Button Width="60" Content="online2" Background="White" Command="{Binding ImportBluePrintItemMemoryCommand}" CommandParameter="1"/>
+					<Button Width="60" Content="online3" Background="White" Command="{Binding ImportBluePrintItemMemoryCommand}" CommandParameter="2"/>
+					<Button Width="60" Content="online4" Background="White" Command="{Binding ImportBluePrintItemMemoryCommand}" CommandParameter="3"/>
+					<Button Width="60" Content="File" Command="{Binding ImportBluePrintItemFileCommand}"/>
 				</StackPanel>
 				<Label Grid.Row="10" Content="Import Template Item"/>
 				<StackPanel Grid.Row="10" Grid.Column="1" Orientation="Horizontal">
-					<ComboBox Name="ComboBoxItemTemplate" SelectedIndex="0" Width="300" ItemsSource="{Binding Info.ItemTemplate}" DisplayMemberPath="Name"/>
-					<Button Width="60" DataContext="{Binding ElementName=ComboBoxItemTemplate, Path=SelectedItem.Items}" Click="ButtonImportTemplateItem_Click"/>
+					<ComboBox Width="300" SelectedIndex="{Binding ImportTemplateItemIndex}" ItemsSource="{Binding Info.ItemTemplate}" DisplayMemberPath="Name"/>
+					<Button Width="60" Command="{Binding ImportTemplateItemCommand}"/>
 				</StackPanel>
 				<Label Grid.Row="11" Content="Export" FontWeight="Bold"/>
 				<Label Grid.Row="12" Content="Export BluePrint"/>
 				<StackPanel Grid.Row="12" Grid.Column="1" Orientation="Horizontal">
-					<Button Width="60" DataContext="4" Background="LightPink" Click="ButtonExportBluePrint_Click"/>
-					<Button Width="60" DataContext="5" Background="LightBlue" Click="ButtonExportBluePrint_Click"/>
-					<Button Width="60" DataContext="6" Background="LightGreen" Click="ButtonExportBluePrint_Click"/>
-					<Button Width="60" DataContext="7" Background="LightYellow" Click="ButtonExportBluePrint_Click"/>
-					<Button Width="60" DataContext="0" Content="online1" Background="White" Click="ButtonExportBluePrint_Click"/>
-					<Button Width="60" DataContext="1" Content="online2" Background="White" Click="ButtonExportBluePrint_Click"/>
-					<Button Width="60" DataContext="2" Content="online3" Background="White" Click="ButtonExportBluePrint_Click"/>
-					<Button Width="60" DataContext="3" Content="online4" Background="White" Click="ButtonExportBluePrint_Click"/>
+					<Button Width="60" Background="LightPink" Command="{Binding ExportBluePrintCommand}" CommandParameter="4"/>
+					<Button Width="60" Background="LightBlue" Command="{Binding ExportBluePrintCommand}" CommandParameter="5"/>
+					<Button Width="60" Background="LightGreen" Command="{Binding ExportBluePrintCommand}" CommandParameter="6"/>
+					<Button Width="60" Background="LightYellow" Command="{Binding ExportBluePrintCommand}" CommandParameter="7"/>
+					<Button Width="60" Content="online1" Background="White" Command="{Binding ExportBluePrintCommand}" CommandParameter="0"/>
+					<Button Width="60" Content="online2" Background="White" Command="{Binding ExportBluePrintCommand}" CommandParameter="1"/>
+					<Button Width="60" Content="online3" Background="White" Command="{Binding ExportBluePrintCommand}" CommandParameter="2"/>
+					<Button Width="60" Content="online4" Background="White" Command="{Binding ExportBluePrintCommand}" CommandParameter="3"/>
 				</StackPanel>
 				<Label Grid.Row="13" Content="Backpack" FontWeight="Bold"/>
 				<ListBox Grid.Row="14" Grid.Column="1"
@@ -250,14 +249,14 @@
 				</Grid.ColumnDefinitions>
 				<Label Content="Global" FontWeight="Bold"/>
 				<Label Grid.Row="1" Content="Process Name"/>
-				<ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding processInfos}" SelectedIndex="{Binding Path=ProcessIndex, Source={x:Static properties:Settings.Default}}" DisplayMemberPath="Name"/>
+				<ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ProcessInfos}" SelectedIndex="{Binding Path=ProcessIndex, Source={x:Static properties:Settings.Default}}" DisplayMemberPath="Name"/>
 				<Label Grid.Row="2" Content="Item Image Size"/>
 				<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=ItemImageSize, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
 				<Label Grid.Row="3" Content="Keyboard Hook"/>
 				<CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding Path=KeyboardHook, Source={x:Static properties:Settings.Default}}" VerticalAlignment="Center"
 						  ToolTip="F1  -> All Inventory Item Count&#xa;F2  -> All Bag Item Count&#xa;F10 -> Import Item Template first&#xa;F11 -> Import Item Template second"/>
 				<Label Grid.Row="4" Content="Reload Info/*.txt"/>
-				<Button Grid.Row="4" Grid.Column="1" Click="ButtonReloadInfo_Click"/>
+				<Button Grid.Row="4" Grid.Column="1" Command="{Binding ReloadCommand}"/>
 				<Label Grid.Row="5" Content="Error Log" FontWeight="Bold"/>
 				<ListBox Grid.Row="6" Grid.ColumnSpan="2" ItemsSource="{Binding Info.ErrorLog}">
 				</ListBox>
