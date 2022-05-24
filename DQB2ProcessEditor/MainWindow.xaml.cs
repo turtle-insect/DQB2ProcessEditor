@@ -32,38 +32,37 @@ namespace DQB2ProcessEditor
 
 		private void MHook_KeyDownEvent(int keyCode)
 		{
-			if (Properties.Settings.Default.KeyboardHook)
+			if (!Properties.Settings.Default.KeyboardHook) return;
+
+			var vm = DataContext as ViewModel;
+			if (vm == null) return;
+
+			switch (keyCode)
 			{
-				var vm = DataContext as ViewModel;
-				if (vm == null) return;
+				case 112:   // F1
+					vm.WriteInventoryItemCount();
+					break;
 
-				switch (keyCode)
-				{
-					case 112:   // F1
-						vm.WriteInventoryItemCount();
-						break;
+				case 113:   // F2
+					vm.WriteBagItemCount();
+					break;
 
-					case 113:   // F2
-						vm.WriteBagItemCount();
-						break;
+				case 121:   // F10
+					if (Info.GetInstance().ItemTemplate.Count > 0)
+					{
+						vm.InjectionItem(Info.GetInstance().ItemTemplate[0].Items);
+					}
+					break;
 
-					case 121:   // F10
-						if (Info.GetInstance().ItemTemplate.Count > 0)
-						{
-							vm.InjectionItem(Info.GetInstance().ItemTemplate[0].Items);
-						}
-						break;
+				case 122:   // F11
+					if (Info.GetInstance().ItemTemplate.Count > 1)
+					{
+						vm.InjectionItem(Info.GetInstance().ItemTemplate[1].Items);
+					}
+					break;
 
-					case 122:   // F11
-						if (Info.GetInstance().ItemTemplate.Count > 1)
-						{
-							vm.InjectionItem(Info.GetInstance().ItemTemplate[1].Items);
-						}
-						break;
-
-					default:
-						break;
-				}
+				default:
+					break;
 			}
 		}
 

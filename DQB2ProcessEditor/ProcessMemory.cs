@@ -22,6 +22,7 @@ namespace DQB2ProcessEditor
 		public bool CalcPlayerAddress(ProcessInfo info)
 		{
 			int pID = mMemory.GetProcIdFromName(info.Name);
+			if(pID == 0)return false;
 			if (mMemory.OpenProcess(pID) == false) return false;
 
 			// 主人公のアドレス取得からインベントリのアドレス取得

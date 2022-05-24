@@ -31,27 +31,26 @@ namespace DQB2ProcessEditor
 
 		public void Hook()
 		{
-			if (mHhook == IntPtr.Zero)
+			UnHook();
+
+			mProc = new HookProc(KeyboardProc);
+			using (var process = Process.GetCurrentProcess())
 			{
-				mProc = new HookProc(KeyboardProc);
-				using (var process = Process.GetCurrentProcess())
+				using (var module = process?.MainModule)
 				{
-					using (var module = process?.MainModule)
-					{
-						IntPtr address = module?.BaseAddress ?? IntPtr.Zero;
-						if (address == IntPtr.Zero) return;
-						mHhook = SetWindowsHookEx(WH_KEYBOARD_LL, mProc, address, 0);
-					}
+					IntPtr address = module?.BaseAddress ?? IntPtr.Zero;
+					if (address == IntPtr.Zero) return;
+					mHhook = SetWindowsHookEx(WH_KEYBOARD_LL, mProc, address, 0);
 				}
 			}
 		}
 
 		public void UnHook()
 		{
-			if (mHhook != IntPtr.Zero)
-			{
-				UnhookWindowsHookEx(mHhook);
-			}
+			if (mHhook == IntPtr.Zero) return;
+
+			UnhookWindowsHookEx(mHhook);
+			mHhook = IntPtr.Zero;
 		}
 
 		private IntPtr KeyboardProc(int nCode, IntPtr wParam, IntPtr lParam)
