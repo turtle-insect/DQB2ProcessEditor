@@ -14,17 +14,15 @@ namespace DQB2ProcessEditor
 
 		private delegate IntPtr HookProc(int nCode, IntPtr wParam, IntPtr lParam);
 
-		[DllImport("user32.dll")]
-		private static extern IntPtr SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, uint dwThreadId);
+		[DllImport("user32")]
+		private static extern IntPtr SetWindowsHookEx([In] int idHook, [In] HookProc lpfn, [In] IntPtr hMod, [In] uint dwThreadId);
 
-		[DllImport("user32.dll")]
-		private static extern bool UnhookWindowsHookEx(IntPtr hhk);
+		[DllImport("user32")]
+		private static extern bool UnhookWindowsHookEx([In] IntPtr hhk);
 
-		[DllImport("user32.dll")]
-		private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
+		[DllImport("user32")]
+		private static extern IntPtr CallNextHookEx([In] IntPtr hhk, [In] int nCode, [In] IntPtr wParam, [In] IntPtr lParam);
 
-		[DllImport("kernel32.dll")]
-		private static extern IntPtr GetModuleHandle(string lpModuleName);
 
 		private IntPtr mHhook = IntPtr.Zero;
 		private HookProc? mProc;
