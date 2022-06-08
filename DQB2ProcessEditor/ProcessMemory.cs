@@ -30,7 +30,7 @@ namespace DQB2ProcessEditor
 			// mov rax, [DQB2.exe + 0x137E490]
 			// mov rcx, [rax + 60]
 
-			Byte[] buffer = mMemory.ReadBytes(info.Name + $".exe+{info.Address},0x60", 8);
+			Byte[] buffer = mMemory.ReadBytes($"{info.Name}.exe+{info.Address},0x60", 8);
 			mBaseAddress = BitConverter.ToUInt64(buffer, 0);
 			if (mBaseAddress == 0) return false;
 			return true;
