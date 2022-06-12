@@ -30,14 +30,9 @@ namespace DQB2ProcessEditor
 			if (!System.IO.File.Exists(filename)) return;
 
 			AllItem.Clear();
-			foreach (var text in System.IO.File.ReadAllLines(filename))
+			foreach (var line in System.IO.File.ReadAllLines(filename))
 			{
-				var line = text.Replace("\n", "");
-				line = line.Replace("\r", "");
-				if (line.Length < 3) continue;
-				if (line[0] == '#') continue;
-
-				var items = line.Split('\t');
+				var items = SplitLine(line);
 				if (items.Length < 7) continue;
 
 				var info = new ItemInfo();
@@ -72,14 +67,9 @@ namespace DQB2ProcessEditor
 				var template = new ItemTemplate();
 				template.Name = System.IO.Path.GetFileName(filename);
 
-				foreach (var text in System.IO.File.ReadAllLines(filename))
+				foreach (var line in System.IO.File.ReadAllLines(filename))
 				{
-					var line = text.Replace("\n", "");
-					line = line.Replace("\r", "");
-					if (line.Length < 3) continue;
-					if (line[0] == '#') continue;
-
-					var items = line.Split('\t');
+					var items = SplitLine(line);
 					if (items.Length < 2) continue;
 
 					var item = new Item();
@@ -103,20 +93,15 @@ namespace DQB2ProcessEditor
 			if (!System.IO.File.Exists(filename)) return;
 
 			ItemCategory.Clear();
-			foreach (var text in System.IO.File.ReadAllLines(filename))
+			foreach (var line in System.IO.File.ReadAllLines(filename))
 			{
-				var line = text.Replace("\n", "");
-				line = line.Replace("\r", "");
-				if (line.Length < 3) continue;
-				if (line[0] == '#') continue;
-
-				var items = line.Split('\t');
+				var items = SplitLine(line);
 				if (items.Length < 2) continue;
 
 				var category = new ItemCategory();
 				category.ID = Convert.ToUInt16(items[0]);
 				category.Name = items[1];
-				category.Image = ImageLoad(System.IO.Path.Combine(dir, items[0] + ".png"));
+				category.Image = ImageLoad(System.IO.Path.Combine(dir, $"{items[0]}.png"));
 
 				ItemCategory.Add(category);
 			}
@@ -146,14 +131,9 @@ namespace DQB2ProcessEditor
 
 			AllBlock.Clear();
 			ErrorLog.Clear();
-			foreach (var text in System.IO.File.ReadAllLines(filename))
+			foreach (var line in System.IO.File.ReadAllLines(filename))
 			{
-				var line = text.Replace("\n", "");
-				line = line.Replace("\r", "");
-				if (line.Length < 3) continue;
-				if (line[0] == '#') continue;
-
-				var items = line.Split('\t');
+				var items = SplitLine(line);
 				if (items.Length != 3) continue;
 
 				if (String.IsNullOrEmpty(items[0])) continue;
@@ -228,7 +208,7 @@ namespace DQB2ProcessEditor
 
 				// 水中にある場合、カテゴリーが揺れるので補完する
 				// 1780,2047のカテゴリから探すと良さそう
-				var categoryList = new List<UInt16>() { category, 2047, 1780 };
+				var categoryList = new List<UInt16>() { category, 1780, 2047 };
 				List<UInt16>? ids = null;
 				foreach (var id in categoryList)
 				{
@@ -261,6 +241,16 @@ namespace DQB2ProcessEditor
 			}
 
 			return items;
+		}
+
+		private String[] SplitLine(String oneline)
+		{
+			oneline = oneline.Replace("\n", "");
+			oneline = oneline.Replace("\r", "");
+			if (oneline.Length < 3) return new String[0];
+			if (oneline[0] == '#') return new String[0];
+
+			return oneline.Split('\t');
 		}
 
 
