@@ -11,7 +11,7 @@ namespace DQB2ProcessEditor
 			eBag,
 		}
 
-		Dictionary<CarryType, Carry> Carrys = new Dictionary<CarryType, Carry>()
+		private readonly Dictionary<CarryType, Carry> mCarrys = new Dictionary<CarryType, Carry>()
 		{
 			{CarryType.eInventory,  new Carry(){ Distance = 0xB88650, ItemCount = 15 } },
 			{CarryType.eBag,  new Carry(){ Distance = 0xB8DF74, ItemCount = 420 } },
@@ -41,30 +41,34 @@ namespace DQB2ProcessEditor
 			var Items = new List<Item>();
 			if (mBaseAddress == 0) return Items;
 			
-			var carry = Carrys[type];
+			var carry = mCarrys[type];
 			UInt64 address = mBaseAddress + carry.Distance;
 			Byte[] buffer = mMemory.ReadBytes(address.ToString("x"), carry.ItemCount * 4);
-			for (int i = 0; i < carry.ItemCount; i++)
+			for (int index = 0; index < carry.ItemCount; index++)
 			{
 				var item = new Item();
-				item.ID = BitConverter.ToUInt16(buffer, i * 4);
-				item.Count = BitConverter.ToUInt16(buffer, i * 4 + 2);
+				item.ID = BitConverter.ToUInt16(buffer, index * 4);
+				item.Count = BitConverter.ToUInt16(buffer, index * 4 + 2);
 				Items.Add(item);
 			}
 			return Items;
 		}
 
-		public void WriteItems(CarryType type, List<Item> Items)
+		public void WriteItems(CarryType type, List<Item> items)
 		{
-			for (int index = 0; index < Items.Count; index++)
+			Byte[] buffer = new Byte[items.Count * 4];
+			for (int index = 0; index < items.Count; index++)
 			{
-				WriteItem(type, index, Items[index]);
+				Array.Copy(BitConverter.GetBytes(items[index].ID), 0, buffer, index * 4, 2);
+				Array.Copy(BitConverter.GetBytes(items[index].Count), 0, buffer, index * 4 + 2, 2);
 			}
+			UInt64 address = mBaseAddress + mCarrys[type].Distance;
+			mMemory.WriteBytes(address.ToString("x"), buffer);
 		}
 
 		public void ClearItem(CarryType type)
 		{
-			var carry = Carrys[type];
+			var carry = mCarrys[type];
 			Byte[] buffer = new Byte[carry.ItemCount * 4];
 			UInt64 address = mBaseAddress + carry.Distance;
 			mMemory.WriteBytes(address.ToString("x"), buffer);
@@ -72,7 +76,7 @@ namespace DQB2ProcessEditor
 
 		public void ClearItem(int page)
 		{
-			var carry = Carrys[CarryType.eBag];
+			var carry = mCarrys[CarryType.eBag];
 			Byte[] buffer = new Byte[60 * 4];
 			UInt64 address = mBaseAddress + carry.Distance + (UInt64)page * 240;
 			mMemory.WriteBytes(address.ToString("x"), buffer);
@@ -107,16 +111,6 @@ namespace DQB2ProcessEditor
 			UInt64 address = mBaseAddress + 0x167030;
 			address += (UInt64)(index) * 0x30008;
 			return address;
-		}
-
-		private void WriteItem(CarryType type, int inventoryIndex, Item item)
-		{
-			if (mBaseAddress == 0) return;
-
-			var carry = Carrys[type];
-			UInt64 address = mBaseAddress + carry.Distance + (UInt64)inventoryIndex * 4;
-			mMemory.WriteBytes((address + 0).ToString("x"), BitConverter.GetBytes(item.ID));
-			mMemory.WriteBytes((address + 2).ToString("x"), BitConverter.GetBytes(item.Count));
 		}
 	}
 }
