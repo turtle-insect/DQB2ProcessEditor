@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ItemCount" Type="System.UInt16" Scope="User">
-      <Value Profile="(Default)">500</Value>
+      <Value Profile="(Default)">777</Value>
     </Setting>
     <Setting Name="ItemImageSize" Type="System.UInt16" Scope="User">
       <Value Profile="(Default)">64</Value>
