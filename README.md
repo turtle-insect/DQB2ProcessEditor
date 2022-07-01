@@ -12,6 +12,10 @@ Steam Dragon Quest Builders 2 Process Editor
 # 概要
 STEAM ドラゴンクエストビルダーズ2のプロセスメモリ編集Tool
 
+# 実行に必要
+* Windows マシン
+* [.NET 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)の導入
+
 # ソフト
 https://store.steampowered.com/app/1072420
 
@@ -20,7 +24,7 @@ https://github.com/turtle-insect/DQB2
 
 # Build環境
 * Windows 10(64bit)
-* Visual Studio 2022
+* [Visual Studio 2022](https://visualstudio.microsoft.com/)
 
 # 詳細
 ## Item Injection
