@@ -74,17 +74,7 @@ namespace DQB2ProcessEditor
 			ReloadCommand = new CommandAction(Reload);
 		}
 
-		public void WriteInventoryItemCount()
-		{
-			WriteItemCount(ProcessMemory.CarryType.eInventory);
-		}
-
-		public void WriteBagItemCount()
-		{
-			WriteItemCount(ProcessMemory.CarryType.eBag);
-		}
-
-		public bool InjectionItemInfo(IEnumerable iterator)
+		public bool InjectionItemInfo(IList list)
 		{
 			var pm = CreateProcessMemory();
 			if (pm == null) return false;
@@ -93,25 +83,18 @@ namespace DQB2ProcessEditor
 			// 存在しないところを探す.
 			var items = pm.ReadItem(CarryType);
 			if (items == null) return false;
-			int itemIndex = 0;
-			foreach (var item in iterator)
+			int index = 0;
+			foreach (var item in items)
 			{
-				if (itemIndex >= items.Count) break;
+				if (index >= list.Count) break;
+				if (item.ID != 0) continue;
 
-				var info = item as ItemInfo;
+				var info = list[index] as ItemInfo;
 				if (info == null) continue;
 
-				for (; itemIndex < items.Count; itemIndex++)
-				{
-					if (items[itemIndex].ID == 0)
-					{
-
-						items[itemIndex].ID = info.ID;
-						items[itemIndex].Count = Properties.Settings.Default.ItemCount;
-						itemIndex++;
-						break;
-					}
-				}
+				item.ID = info.ID;
+				item.Count = Properties.Settings.Default.ItemCount;
+				index++;
 			}
 
 			pm.WriteItems(CarryType, items);
@@ -127,23 +110,15 @@ namespace DQB2ProcessEditor
 			// 存在しないところを探す.
 			var items = pm.ReadItem(CarryType);
 			if (items == null) return false;
-			int itemIndex = 0;
-			foreach (var item in TemplateItems)
+			int index = 0;
+			foreach (var item in items)
 			{
-				if (itemIndex >= items.Count) break;
+				if(index >= TemplateItems.Count) break;
+				if (item.ID != 0) continue;
 
-
-				for (; itemIndex < items.Count; itemIndex++)
-				{
-					if (items[itemIndex].ID == 0)
-					{
-
-						items[itemIndex].ID = item.ID;
-						items[itemIndex].Count = item.Count;
-						itemIndex++;
-						break;
-					}
-				}
+				item.ID = TemplateItems[index].ID;
+				item.Count = TemplateItems[index].Count;
+				index++;
 			}
 
 			pm.WriteItems(CarryType, items);
@@ -157,6 +132,37 @@ namespace DQB2ProcessEditor
 
 			pm.WriteItems(backpack.Type, backpack.Items);
 			return true;
+		}
+
+		public void KeyboardAction(int keyCode)
+		{
+			switch (keyCode)
+			{
+				case 112:   // F1
+					WriteItemCount(ProcessMemory.CarryType.eInventory);
+					break;
+
+				case 113:   // F2
+					WriteItemCount(ProcessMemory.CarryType.eBag);
+					break;
+
+				case 121:   // F10
+					if (Info.GetInstance().ItemTemplate.Count > 0)
+					{
+						InjectionItem(Info.GetInstance().ItemTemplate[0].Items);
+					}
+					break;
+
+				case 122:   // F11
+					if (Info.GetInstance().ItemTemplate.Count > 1)
+					{
+						InjectionItem(Info.GetInstance().ItemTemplate[1].Items);
+					}
+					break;
+
+				default:
+					break;
+			}
 		}
 
 		private void FilterItem()

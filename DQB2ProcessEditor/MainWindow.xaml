@@ -60,11 +60,10 @@
 				</DockPanel>
 				<ListBox x:Name="ListBoxFilterItem" Grid.Row="2" Grid.ColumnSpan="2"
 							 ItemsSource="{Binding FilterItems}" SelectionMode="Extended" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-						 MouseDoubleClick="InjectionSelectItem">
+						 MouseDoubleClick="ListBoxFilterItem_MouseDoubleClick">
 					<ListBox.ContextMenu>
 						<ContextMenu>
-							<MenuItem Header="Injection Item" DataContext="{Binding ElementName=ListBoxFilterItem, Path=SelectedItems}"
-									  Click="InjectionSelectItem"/>
+							<MenuItem Header="Injection Item" Click="ListBoxFilterItemContextMenu_Click"/>
 						</ContextMenu>
 					</ListBox.ContextMenu>
 					<ListBox.Resources>

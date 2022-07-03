@@ -30,50 +30,14 @@ namespace DQB2ProcessEditor
 			Properties.Settings.Default.Save();
 		}
 
-		private void MHook_KeyDownEvent(int keyCode)
+		private void ListBoxFilterItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
 		{
-			if (!Properties.Settings.Default.KeyboardHook) return;
-
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-
-			switch (keyCode)
-			{
-				case 112:   // F1
-					vm.WriteInventoryItemCount();
-					break;
-
-				case 113:   // F2
-					vm.WriteBagItemCount();
-					break;
-
-				case 121:   // F10
-					if (Info.GetInstance().ItemTemplate.Count > 0)
-					{
-						vm.InjectionItem(Info.GetInstance().ItemTemplate[0].Items);
-					}
-					break;
-
-				case 122:   // F11
-					if (Info.GetInstance().ItemTemplate.Count > 1)
-					{
-						vm.InjectionItem(Info.GetInstance().ItemTemplate[1].Items);
-					}
-					break;
-
-				default:
-					break;
-			}
+			InjectionSelectItem();
 		}
 
-		private void InjectionSelectItem(object sender, RoutedEventArgs e)
+		private void ListBoxFilterItemContextMenu_Click(object sender, RoutedEventArgs e)
 		{
-			var items = ListBoxFilterItem.SelectedItems as IEnumerable;
-			if (items == null) return;
-
-			var vm = DataContext as ViewModel;
-			if (vm == null) return;
-			vm.InjectionItemInfo(items);
+			InjectionSelectItem();
 		}
 
 		private void ListBoxBackpack_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -83,8 +47,26 @@ namespace DQB2ProcessEditor
 
 			var vm = DataContext as ViewModel;
 			if (vm == null) return;
-
 			vm.BackpaktoBag(backpack);
+		}
+
+		private void MHook_KeyDownEvent(int keyCode)
+		{
+			if (!Properties.Settings.Default.KeyboardHook) return;
+
+			var vm = DataContext as ViewModel;
+			if (vm == null) return;
+			vm.KeyboardAction(keyCode);
+		}
+
+		private void InjectionSelectItem()
+		{
+			var items = ListBoxFilterItem.SelectedItems as IList;
+			if (items == null) return;
+
+			var vm = DataContext as ViewModel;
+			if (vm == null) return;
+			vm.InjectionItemInfo(items);
 		}
 	}
 }
