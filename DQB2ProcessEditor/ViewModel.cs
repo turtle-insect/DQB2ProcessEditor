@@ -202,15 +202,15 @@ namespace DQB2ProcessEditor
 
 			int index = 0;
 			var items = pm.ReadItem(ProcessMemory.CarryType.eBag);
+			if (items == null) return false;
 			foreach (var item in items)
 			{
-				if (item.ID == 0 && item.Count == 0)
-				{
-					item.ID = append[index].ID;
-					item.Count = append[index].Count;
-					index++;
-					if (index >= append.Count) break;
-				}
+				if (index >= append.Count) break;
+				if (item.ID != 0) continue;
+
+				item.ID = append[index].ID;
+				item.Count = append[index].Count;
+				index++;
 			}
 			pm.WriteItems(ProcessMemory.CarryType.eBag, items);
 			return true;
@@ -224,9 +224,13 @@ namespace DQB2ProcessEditor
 
 		private void Reload(object? parameter)
 		{
-			CreateItem();
-			CreateImage();
-			CreateBlock();
+			Info.ItemLoad();
+			Info.ItemCategoryLoad();
+			Info.ItemTemplateLoad();
+			FilterItem();
+
+			Info.ItemImageLoad();
+			Info.BlockLoad();
 		}
 
 		private void ImportItem(object? parameter)
@@ -336,12 +340,11 @@ namespace DQB2ProcessEditor
 			// 存在しているところを探す.
 			var items = pm.ReadItem(type);
 			if (items == null) return;
-			for (int index = 0; index < items.Count; index++)
+			foreach (var item in items)
 			{
-				if (items[index].ID != 0)
-				{
-					items[index].Count = Properties.Settings.Default.ItemCount;
-				}
+				if (item.ID == 0) continue;
+
+				item.Count = Properties.Settings.Default.ItemCount;
 			}
 
 			pm.WriteItems(type, items);
@@ -382,24 +385,6 @@ namespace DQB2ProcessEditor
 				}
 			}
 			Backpacks.Insert(0, new Backpack(type, pm.ReadItem(type)));
-		}
-
-		private void CreateItem()
-		{
-			Info.ItemLoad();
-			Info.ItemCategoryLoad();
-			Info.ItemTemplateLoad();
-			FilterItem();
-		}
-
-		private void CreateImage()
-		{
-			Info.ItemImageLoad();
-		}
-
-		private void CreateBlock()
-		{
-			Info.BlockLoad();
 		}
 
 		private String ToHiragana(String value)

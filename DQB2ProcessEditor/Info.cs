@@ -176,12 +176,12 @@ namespace DQB2ProcessEditor
 
 			if (buffer.Length != 0x30008) return items;
 
-			UInt32 count = BitConverter.ToUInt16(buffer, 0x30000);
-			count *= BitConverter.ToUInt16(buffer, 0x30002);
-			count *= BitConverter.ToUInt16(buffer, 0x30004);
+			UInt32 size = BitConverter.ToUInt16(buffer, 0x30000);
+			size *= BitConverter.ToUInt16(buffer, 0x30002);
+			size *= BitConverter.ToUInt16(buffer, 0x30004);
 
 			var blockDictionary = new Dictionary<UInt32, UInt32>();
-			for (int i = 0; i < count; i++)
+			for (int i = 0; i < size; i++)
 			{
 				UInt32 key = BitConverter.ToUInt32(buffer, i * 6 + 0);
 				if (key == 0) continue;
@@ -199,7 +199,7 @@ namespace DQB2ProcessEditor
 				UInt16 blockID = BitConverter.ToUInt16(value, 0);
 				UInt16 category = BitConverter.ToUInt16(value, 2);
 
-				// ブロックのIDはカテゴリとIDを逆として扱う.
+				// ブロックのIDはカテゴリとIDを逆で扱う.
 				if (blockID == 0)
 				{
 					blockID = category;
@@ -225,7 +225,7 @@ namespace DQB2ProcessEditor
 					continue;
 				}
 
-				count = blockDictionary[key];
+				UInt32 count = blockDictionary[key];
 				foreach (var id in ids)
 				{
 					for (int i = 0; i < count / 999; i++)
@@ -243,14 +243,14 @@ namespace DQB2ProcessEditor
 			return items;
 		}
 
-		private String[] SplitLine(String oneline)
+		private String[] SplitLine(String line)
 		{
-			oneline = oneline.Replace("\n", "");
-			oneline = oneline.Replace("\r", "");
-			if (oneline.Length < 3) return new String[0];
-			if (oneline[0] == '#') return new String[0];
+			line = line.Replace("\n", "");
+			line = line.Replace("\r", "");
+			if (line.Length < 3) return new String[0];
+			if (line[0] == '#') return new String[0];
 
-			return oneline.Split('\t');
+			return line.Split('\t');
 		}
 
 
