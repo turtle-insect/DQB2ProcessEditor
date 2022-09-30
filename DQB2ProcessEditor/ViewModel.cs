@@ -146,6 +146,14 @@ namespace DQB2ProcessEditor
 					WriteItemCount(ProcessMemory.CarryType.eBag);
 					break;
 
+				case 114:   // F3
+					ClearItem(ProcessMemory.CarryType.eInventory);
+					break;
+
+				case 115:   // F4
+					ClearItem(ProcessMemory.CarryType.eBag);
+					break;
+
 				case 121:   // F10
 					if (Info.GetInstance().ItemTemplate.Count > 0)
 					{
