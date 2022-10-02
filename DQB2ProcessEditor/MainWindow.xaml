@@ -253,7 +253,7 @@
 				<TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=ItemImageSize, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"/>
 				<Label Grid.Row="3" Content="Keyboard Hook"/>
 				<CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding Path=KeyboardHook, Source={x:Static properties:Settings.Default}}" VerticalAlignment="Center"
-						  ToolTip="F1  -> All Inventory Count&#xa;F2  -> All Bag Count&#xa;F3  -> Clear Inventory All&#xa;F4  -> Clear Bag All&#xa;F10 -> Import Item Template first&#xa;F11 -> Import Item Template second"/>
+						  ToolTip="F1  -> All Inventory Count&#xa;F2  -> All Bag Count&#xa;F3  -> Clear Inventory All&#xa;F4  -> Clear Bag All&#xa;F5  -> Import BluePrint's Item in Bag(Red)&#xa;F6  -> Import BluePrint's Item in Bag(Blue)&#xa;F7  -> Import BluePrint's Item in Bag(Green)&#xa;F8  -> Import BluePrint's Item in Bag(Yellow)&#xa;F9  -> Import BluePrint's Item in Bag(Online)&#xa;F10 -> Import Item Template first&#xa;F11 -> Import Item Template second"/>
 				<Label Grid.Row="4" Content="Reload Info/*.txt"/>
 				<Button Grid.Row="4" Grid.Column="1" Command="{Binding ReloadCommand}"/>
 				<Label Grid.Row="5" Content="Error Log" FontWeight="Bold"/>

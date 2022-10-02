@@ -154,6 +154,26 @@ namespace DQB2ProcessEditor
 					ClearItem(ProcessMemory.CarryType.eBag);
 					break;
 
+				case 116:   // F5
+					ImportBluePrintItemMemory(4);
+					break;
+
+				case 117:   // F6
+					ImportBluePrintItemMemory(5);
+					break;
+
+				case 118:   // F7
+					ImportBluePrintItemMemory(6);
+					break;
+
+				case 119:   // F8
+					ImportBluePrintItemMemory(7);
+					break;
+
+				case 120:   // F9
+					ImportBluePrintItemMemory(0);
+					break;
+
 				case 121:   // F10
 					if (Info.GetInstance().ItemTemplate.Count > 0)
 					{
@@ -259,10 +279,15 @@ namespace DQB2ProcessEditor
 
 		private void ImportBluePrintItemMemory(object? parameter)
 		{
+			int index = ParamIndex(parameter);
+			ImportBluePrintItemMemory(index);
+		}
+
+		private void ImportBluePrintItemMemory(int index)
+		{
 			var pm = CreateProcessMemory();
 			if (pm == null) return;
 
-			int index = ParamIndex(parameter);
 			Byte[] buffer = pm.ReadBluePrint(index);
 			ImportBluePrintItem(buffer);
 		}
@@ -331,7 +356,11 @@ namespace DQB2ProcessEditor
 		{
 			int value = ParamIndex(parameter);
 			var type = (ProcessMemory.CarryType)value;
+			ClearItem(type);
+		}
 
+		private void ClearItem(ProcessMemory.CarryType type)
+		{
 			BackupItem(type);
 
 			var pm = CreateProcessMemory();
