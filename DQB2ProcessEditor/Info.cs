@@ -183,7 +183,7 @@ namespace DQB2ProcessEditor
 			var blockDictionary = new Dictionary<UInt32, UInt32>();
 			for (int i = 0; i < size; i++)
 			{
-				UInt32 key = BitConverter.ToUInt32(buffer, i * 6 + 0);
+				UInt32 key = BitConverter.ToUInt32(buffer, i * 6);
 				if (key == 0) continue;
 
 				if (!blockDictionary.ContainsKey(key))
