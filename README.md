@@ -14,7 +14,7 @@ STEAM ドラゴンクエストビルダーズ2のプロセスメモリ編集Tool
 
 # 実行に必要
 * Windows マシン
-* [.NET 6](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)の導入
+* [.NET 7](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)の導入
 
 # ソフト
 https://store.steampowered.com/app/1072420
