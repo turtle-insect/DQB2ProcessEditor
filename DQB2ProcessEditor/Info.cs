@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
@@ -118,9 +119,11 @@ namespace DQB2ProcessEditor
 				UInt16 index;
 				if (UInt16.TryParse(System.IO.Path.GetFileNameWithoutExtension(file), out index))
 				{
-					AllImage.Add(index, ImageLoad(file));
+					if (!AllImage.ContainsKey(index))
+					{
+						AllImage.Add(index, ImageLoad(file));
+					}
 				}
-
 			});
 		}
 
@@ -259,9 +262,10 @@ namespace DQB2ProcessEditor
 			var image = new BitmapImage();
 			if (!System.IO.File.Exists(filename)) return image;
 
+			using var fs = new FileStream(filename, FileMode.Open);
 			image.BeginInit();
 			image.CacheOption = BitmapCacheOption.OnLoad;
-			image.UriSource = new Uri(filename);
+			image.StreamSource = fs;
 			image.EndInit();
 			image.Freeze();
 			return image;
