@@ -68,6 +68,7 @@
 					</ListBox.ContextMenu>
 					<ListBox.Resources>
 						<local:ItemIDConverter x:Key="ItemIDConverter"/>
+						<local:ItemColorConverter x:Key="ItemColorConverter"/>
 						<local:ItemImageConverter x:Key="ItemImageConverter"/>
 					</ListBox.Resources>
 					<ListBox.Style>
@@ -101,6 +102,8 @@
 													<Image Source="{Binding Image, Converter={StaticResource ItemImageConverter}}"
 														   Width="{Binding Path=ItemImageSize, Source={x:Static properties:Settings.Default}}"/>
 													<Label Content="{Binding Converter={StaticResource ItemIDConverter}}" VerticalAlignment="Center"/>
+													<Border Width="20" Height="20" CornerRadius="4"
+															Background="{Binding Converter={StaticResource ItemColorConverter}}" VerticalAlignment="Center"/>
 												</StackPanel>
 											</DataTemplate>
 										</Setter.Value>
