@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Memory.dll.x64" Version="1.2.24" />
+    <PackageReference Include="Memory.dll.x64" Version="1.2.27" />
   </ItemGroup>
 
   <ItemGroup>
