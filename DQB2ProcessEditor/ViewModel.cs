@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace DQB2ProcessEditor
 {
@@ -38,18 +39,18 @@ namespace DQB2ProcessEditor
 			}
 		}
 
-		public CommandAction ImportItemCommand { get; private set; }
-		public CommandAction ImportTemplateItemCommand { get; private set; }
-		public CommandAction WriteItemCountCommand { get; private set; }
-		public CommandAction ClearItemCommand { get; private set; }
-		public CommandAction ClearBagPageCommand { get; private set; }
-		public CommandAction ImportBluePrintCommand { get; private set; }
-		public CommandAction ExportBluePrintCommand { get; private set; }
-		public CommandAction ClearBluePrintCommand { get; private set; }
-		public CommandAction ClearBluePrintAllCommand { get; private set; }
-		public CommandAction ImportBluePrintItemMemoryCommand { get; private set; }
-		public CommandAction ImportBluePrintItemFileCommand { get; private set; }
-		public CommandAction ReloadCommand { get; private set; }
+		public ICommand ImportItemCommand { get; private set; }
+		public ICommand ImportTemplateItemCommand { get; private set; }
+		public ICommand WriteItemCountCommand { get; private set; }
+		public ICommand ClearItemCommand { get; private set; }
+		public ICommand ClearBagPageCommand { get; private set; }
+		public ICommand ImportBluePrintCommand { get; private set; }
+		public ICommand ExportBluePrintCommand { get; private set; }
+		public ICommand ClearBluePrintCommand { get; private set; }
+		public ICommand ClearBluePrintAllCommand { get; private set; }
+		public ICommand ImportBluePrintItemMemoryCommand { get; private set; }
+		public ICommand ImportBluePrintItemFileCommand { get; private set; }
+		public ICommand ReloadCommand { get; private set; }
 
 
 		public ViewModel()
