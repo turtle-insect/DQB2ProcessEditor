@@ -9,14 +9,14 @@ namespace DQB2ProcessEditor
 {
 	internal class ViewModel
 	{
-		public Info Info { get; init; } = Info.GetInstance();
-		public List<ProcessInfo> ProcessInfos { get; init; } = new();
+		public Info Info { get; private init; } = Info.GetInstance();
+		public List<ProcessInfo> ProcessInfos { get; private init; } = new();
 		public bool ItemFilterTile { get; set; } = false;
 		public UInt16 ImportTemplateItemIndex { get; set; }
 		public ProcessMemory.CarryType CarryType { get; set; }
 		public int ClearBagPageIndex { get; set; }
-		public ObservableCollection<ItemInfo> FilterItems { get; init; } = new();
-		public ObservableCollection<Backpack> Backpacks { get; init; } = new();
+		public ObservableCollection<ItemInfo> FilterItems { get; private init; } = new();
+		public ObservableCollection<Backpack> Backpacks { get; private init; } = new();
 
 		public String ItemNameFilter
 		{
@@ -38,18 +38,18 @@ namespace DQB2ProcessEditor
 			}
 		}
 
-		public ICommand ImportItemCommand { get; init; }
-		public ICommand ImportTemplateItemCommand { get; init; }
-		public ICommand WriteItemCountCommand { get; init; }
-		public ICommand ClearItemCommand { get; init; }
-		public ICommand ClearBagPageCommand { get; init; }
-		public ICommand ImportBluePrintCommand { get; init; }
-		public ICommand ExportBluePrintCommand { get; init; }
-		public ICommand ClearBluePrintCommand { get; init; }
-		public ICommand ClearBluePrintAllCommand { get; init; }
-		public ICommand ImportBluePrintItemMemoryCommand { get; init; }
-		public ICommand ImportBluePrintItemFileCommand { get; init; }
-		public ICommand ReloadCommand { get; init; }
+		public ICommand ImportItemCommand { get; private init; }
+		public ICommand ImportTemplateItemCommand { get; private init; }
+		public ICommand WriteItemCountCommand { get; private init; }
+		public ICommand ClearItemCommand { get; private init; }
+		public ICommand ClearBagPageCommand { get; private init; }
+		public ICommand ImportBluePrintCommand { get; private init; }
+		public ICommand ExportBluePrintCommand { get; private init; }
+		public ICommand ClearBluePrintCommand { get; private init; }
+		public ICommand ClearBluePrintAllCommand { get; private init; }
+		public ICommand ImportBluePrintItemMemoryCommand { get; private init; }
+		public ICommand ImportBluePrintItemFileCommand { get; private init; }
+		public ICommand ReloadCommand { get; private init; }
 
 
 		public ViewModel()

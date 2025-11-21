@@ -6,9 +6,9 @@ namespace DQB2ProcessEditor
 	internal class Backpack
 	{
         public bool Lock { get; set; }
-        public ProcessMemory.CarryType Type { get; private set; }
-        public String BackupTime { get; private set; }
-        public List<Item> Items { get; private set; }
+        public ProcessMemory.CarryType Type { get; private init; }
+        public String BackupTime { get; private init; }
+        public List<Item> Items { get; private init; }
 
         public Backpack(ProcessMemory.CarryType type, List<Item> items)
         {

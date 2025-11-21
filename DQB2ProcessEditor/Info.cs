@@ -9,14 +9,14 @@ namespace DQB2ProcessEditor
 {
 	internal class Info
 	{
-		private static readonly Info mThis = new Info();
-		public ObservableCollection<String> ErrorLog { get; private set; } = new();
-		public List<ItemInfo> AllItem { get; private set; } = new(4000);
-		public Dictionary<UInt16, BitmapImage> AllImage { get; private set; } = new(1500);
+		private static readonly Info mThis = new();
+		public ObservableCollection<String> ErrorLog { get; private init; } = new();
+		public List<ItemInfo> AllItem { get; private init; } = new(4000);
+		public Dictionary<UInt16, BitmapImage> AllImage { get; private init; } = new(1500);
 
-		public List<ItemCategory> ItemCategory { get; private set; } = new(20);
+		public List<ItemCategory> ItemCategory { get; private init; } = new(20);
 
-		public List<ItemTemplate> ItemTemplate { get; private set; } = new(10);
+		public List<ItemTemplate> ItemTemplate { get; private init; } = new(10);
 
 		// Category -> <ID, Name>
 		private Dictionary<UInt16, Dictionary<UInt16, String>> AllBlock = new();

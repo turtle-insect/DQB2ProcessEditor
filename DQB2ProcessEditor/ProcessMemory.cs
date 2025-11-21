@@ -11,12 +11,12 @@ namespace DQB2ProcessEditor
 			eBag,
 		}
 
-		private readonly Dictionary<CarryType, Carry> mCarrys = new Dictionary<CarryType, Carry>()
+		private readonly Dictionary<CarryType, Carry> mCarrys = new()
 		{
 			{CarryType.eInventory,  new Carry(){ Distance = 0xB88650, ItemCount = 15 } },
 			{CarryType.eBag,  new Carry(){ Distance = 0xB8DF74, ItemCount = 420 } },
 		};
-		private readonly Memory.Mem mMemory = new Memory.Mem();
+		private readonly Memory.Mem mMemory = new();
 		private UInt64 mBaseAddress;
 
 		public bool CalcPlayerAddress(ProcessInfo info)
