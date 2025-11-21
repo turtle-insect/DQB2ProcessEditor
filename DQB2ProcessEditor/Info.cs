@@ -10,16 +10,16 @@ namespace DQB2ProcessEditor
 	internal class Info
 	{
 		private static readonly Info mThis = new();
-		public ObservableCollection<String> ErrorLog { get; private init; } = new();
-		public List<ItemInfo> AllItem { get; private init; } = new(4000);
-		public Dictionary<UInt16, BitmapImage> AllImage { get; private init; } = new(1500);
+		public ObservableCollection<String> ErrorLog { get; init; } = new();
+		public List<ItemInfo> AllItem { get; init; } = new(4000);
+		public Dictionary<UInt16, BitmapImage> AllImage { get; init; } = new(1500);
 
-		public List<ItemCategory> ItemCategory { get; private init; } = new(20);
+		public List<ItemCategory> ItemCategory { get; init; } = new(20);
 
-		public List<ItemTemplate> ItemTemplate { get; private init; } = new(10);
+		public List<ItemTemplate> ItemTemplate { get; init; } = new(10);
 
 		// Category -> <ID, Name>
-		private Dictionary<UInt16, Dictionary<UInt16, String>> AllBlock = new();
+		private readonly Dictionary<UInt16, Dictionary<UInt16, String>> AllBlock = new();
 
 		private Info() { }
 
