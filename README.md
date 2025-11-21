@@ -14,7 +14,7 @@ STEAM ドラゴンクエストビルダーズ2のプロセスメモリ編集Tool
 
 # 実行に必要
 * Windows マシン
-* [.NET 9](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)の導入
+* [.NET 10](https://dotnet.microsoft.com/en-us/download/dotnet/10.0)の導入
 
 # ソフト
 https://store.steampowered.com/app/1072420
@@ -24,7 +24,7 @@ https://github.com/turtle-insect/DQB2
 
 # Build環境
 * Windows 10(64bit)
-* [Visual Studio 2022](https://visualstudio.microsoft.com/)
+* [Visual Studio 2026](https://visualstudio.microsoft.com/)
 
 # 詳細
 ## Item Injection
