@@ -18,23 +18,22 @@ namespace DQB2ProcessEditor
 		public ObservableCollection<ItemInfo> FilterItems { get; init; } = new();
 		public ObservableCollection<Backpack> Backpacks { get; init; } = new();
 
-		private String mItemNameFilter = "";
 		public String ItemNameFilter
 		{
-			get => mItemNameFilter;
+			get => field;
 			set
 			{
-				mItemNameFilter = value;
+				field = value;
 				FilterItem();
 			}
-		}
-		private UInt16 mItemCategoryIndex;
+		} = String.Empty;
+
 		public UInt16 ItemCategoryIndex
 		{
-			get => mItemCategoryIndex;
+			get => field;
 			set
 			{
-				mItemCategoryIndex = value;
+				field = value;
 				FilterItem();
 			}
 		}
