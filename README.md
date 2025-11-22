@@ -23,7 +23,7 @@ https://store.steampowered.com/app/1072420
 https://github.com/turtle-insect/DQB2  
 
 # Build環境
-* Windows 10(64bit)
+* Windows 11(64bit)
 * [Visual Studio 2026](https://visualstudio.microsoft.com/)
 
 # 詳細
